@@ -8,6 +8,7 @@ CiteGuard 只在 score 阶段、标注完成之后运行。
     uv run python -m experiments.gold evidence    # → results/gold/evidence.json + evidence.md（人工核对用）
     uv run python -m experiments.gold score       # 读 annotation.csv，输出混淆矩阵与精确率/召回率
     uv run python -m experiments.gold sample --set 2   # gold-2：从 gold-1 之外的条目中再抽 100 条（结果在 results/gold2/）
+    uv run python -m experiments.gold sample --condition S   # 第 8 步：从 S（或 B1）条件中随机抽 40 条（results/review_S/）
 """
 
 from __future__ import annotations
@@ -34,6 +35,8 @@ SAMPLE_SIZE = 100
 SEED = 20261031
 SEED2 = 20261101
 SEED3 = 20261102
+MAIN_REVIEW_SIZE = 40
+MAIN_REVIEW_SEED = 20261103
 STATUSES = ["VERIFIED", "MISMATCH", "NOT_FOUND"]
 
 
@@ -196,10 +199,18 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="金标准")
     parser.add_argument("command", choices=["sample", "evidence", "score"])
     parser.add_argument("--set", type=int, choices=[1, 2, 3], default=1)
+    parser.add_argument("--condition", choices=["B1", "S"], help="第 8 步：从该条件的输出中抽样")
     args = parser.parse_args(argv)
     sys.stdout.reconfigure(encoding="utf-8")
     gold_dir = {1: GOLD_DIR, 2: GOLD2_DIR, 3: GOLD3_DIR}[args.set]
-    if args.command == "sample":
+    if args.condition:
+        gold_dir = RESULTS_DIR / f"review_{args.condition}"
+    if args.command == "sample" and args.condition:
+        items = enumerate_references(RESULTS_DIR / "main" / args.condition)
+        chosen = sample(items, MAIN_REVIEW_SIZE, seed=MAIN_REVIEW_SEED)
+        write_csv(gold_dir / "sample.csv", chosen, ["id", "slug", "idx", "raw"])
+        print(f"{args.condition}：共 {len(items)} 条，抽取 {len(chosen)} 条 → {gold_dir / 'sample.csv'}")
+    elif args.command == "sample":
         items = enumerate_references(B0_DIR)
         previous = [GOLD_DIR, GOLD2_DIR][:args.set - 1]  # gold-2 排除 gold-1；gold-3 排除前两批（即剩余全部）
         used = {row["id"] for d in previous for row in read_csv(d / "sample.csv")}
