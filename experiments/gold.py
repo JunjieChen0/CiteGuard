@@ -1,6 +1,6 @@
 """第 7 步金标准：从 B0 输出中随机抽取引用，收集独立证据供人工标注，标注完成后再给冻结版本的 CiteGuard 打分。
 
-独立性：抽样与证据收集不使用 citeguard 包（条目切分沿用第 3 步 check_pilot 的独立实现），
+独立性：抽样与证据收集不使用 citeguard 包（条目切分用本文件中极简、可人工审查的规则），
 CiteGuard 只在 score 阶段、标注完成之后运行。
 
 用法：
@@ -15,6 +15,7 @@ import argparse
 import csv
 import json
 import random
+import re
 import sys
 import time
 from pathlib import Path
@@ -22,7 +23,6 @@ from urllib.parse import quote
 
 import httpx
 
-from experiments.check_pilot import split_references
 from experiments.pilot import RESULTS_DIR
 
 B0_DIR = RESULTS_DIR / "main" / "B0"
@@ -37,12 +37,24 @@ def _order(item_id: str) -> tuple[str, int]:
     return slug, int(idx)
 
 
+_ITEM_RE = re.compile(r"^\s*(?:\[(\d+)\]|(\d+)[.)、])\s+(.*\S)")
+_YEAR_RE = re.compile(r"(?<!\d)(?:19|20)\d{2}(?!\d)")
+
+
+def split_references_simple(text: str) -> list[str]:
+    """以 [n] 或 n. 开头且含年份的行即一条参考文献。
+
+    不依赖"参考文献"标题（Agent 常在文末说明里再次提到这个词），也排除拒答说明中的编号列表。
+    """
+    return [m.group(3) for line in text.splitlines() if (m := _ITEM_RE.match(line)) and _YEAR_RE.search(m.group(3))]
+
+
 def enumerate_references(directory: Path) -> list[dict]:
     items = []
     for path in sorted(directory.glob("*__run1.json")):
         record = json.loads(path.read_text(encoding="utf-8"))
         text = (record.get("response") or {}).get("result", "")
-        for idx, raw in enumerate(split_references(text), 1):
+        for idx, raw in enumerate(split_references_simple(text), 1):
             items.append({"id": f"{record['slug']}#{idx}", "slug": record["slug"], "idx": idx, "raw": raw})
     return items
 
@@ -95,8 +107,6 @@ def _csl_summary(data: dict) -> dict:
 
 
 def collect_evidence(item: dict, client: httpx.Client) -> dict:
-    import re
-
     raw = item["raw"]
     evidence: dict = {**item}
     doi_m = re.search(r"\b(10\.\d{4,9}/[^\s\"<>，。]+)", raw)

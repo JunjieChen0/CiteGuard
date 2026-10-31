@@ -49,3 +49,9 @@ def test_write_and_read_sample_csv(tmp_path):
     gold.write_csv(path, items, ["id", "slug", "idx", "raw"])
     with path.open(encoding="utf-8-sig") as f:
         assert next(csv.DictReader(f))["raw"] == "R, 中文"
+
+
+def test_split_ignores_trailing_notes_and_refusal_lists():
+    text = ("参考文献\n\n[1] A B. Title one. Venue, 2020. DOI: 10.1/a\n[2] C D. Title two. Venue, 2021.\n\n---\n"
+            "说明：参考文献中 [1]–[2] 与正文对应。\n1. 逐条通过 DOI 解析核对；\n2. 补齐条目。\n")
+    assert [r[:1] for r in gold.split_references_simple(text)] == ["A", "C"]
