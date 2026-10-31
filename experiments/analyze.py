@@ -18,7 +18,7 @@ from pathlib import Path
 
 from experiments.agent_runner import tool_calls
 from experiments.experiment import OUT_DIR
-from experiments.gold import split_references_simple
+from experiments.gold import agent_marks, split_references_simple
 
 STATUSES = ["VERIFIED", "MISMATCH", "NOT_FOUND", "UNKNOWN"]
 REQUIRED_REFS = 10
@@ -31,13 +31,15 @@ def collect(out_dir: Path, conditions: list[str], judge: Callable[[str], str]):
             rec = json.loads(path.read_text(encoding="utf-8"))
             resp = rec.get("response") or {}
             items = split_references_simple(resp.get("result", ""))
+            marks = agent_marks(resp.get("result", ""))
             usage = resp.get("usage") or {}
             calls = Counter(tool_calls(resp))
             verdicts = []
             for idx, raw in enumerate(items, 1):
                 v = judge(raw)
                 verdicts.append(v)
-                refs.append({"condition": cond, "slug": rec["slug"], "id": f"{rec['slug']}#{idx}", "raw": raw, "auto": v})
+                refs.append({"condition": cond, "slug": rec["slug"], "id": f"{rec['slug']}#{idx}", "raw": raw, "auto": v,
+                             "agent_mark": marks[idx - 1]})
             auto = Counter(verdicts)
             rows.append({
                 "condition": cond, "slug": rec["slug"], "kind": rec.get("kind", ""), "error": bool(rec.get("error")),
@@ -96,7 +98,7 @@ def main(argv: list[str] | None = None) -> int:
     from citeguard.parser import parse_reference
 
     checker = build_default_checker()
-    rows, refs = collect(OUT_DIR, ["B0", "B1", "S"], judge=lambda raw: checker.check(parse_reference(raw)).status.value)
+    rows, refs = collect(OUT_DIR, ["B0", "B1", "S", "S-mark", "S-noskill"], judge=lambda raw: checker.check(parse_reference(raw)).status.value)
     review_path = OUT_DIR / "review.csv"
     review = {}
     if review_path.exists():

@@ -37,6 +37,9 @@ SEED2 = 20261101
 SEED3 = 20261102
 MAIN_REVIEW_SIZE = 40
 MAIN_REVIEW_SEED = 20261103
+ABLATION_REVIEW_SEED = 20261104  # 消融条件 S-mark / S-noskill（实验设计变更记录 11）
+REVIEW_SEEDS = {"B1": MAIN_REVIEW_SEED, "S": MAIN_REVIEW_SEED,
+                "S-mark": ABLATION_REVIEW_SEED, "S-noskill": ABLATION_REVIEW_SEED}
 STATUSES = ["VERIFIED", "MISMATCH", "NOT_FOUND"]
 
 
@@ -49,12 +52,28 @@ _ITEM_RE = re.compile(r"^\s*(?:\[(\d+)\]|(\d+)[.)、])\s+(.*\S)")
 _YEAR_RE = re.compile(r"(?<!\d)(?:19|20)\d{2}(?!\d)")
 
 
+_MARK_RE = re.compile(r"\s*【核查[:：]\s*([^】]*)】")
+
+
+def split_marks(raw: str) -> tuple[str, str]:
+    """S-mark 条件中 Agent 在条目末尾加的【核查：✅】标记：返回（去掉标记的条目, 标记内容）。"""
+    marks = _MARK_RE.findall(raw)
+    return _MARK_RE.sub("", raw).strip(), " ".join(m.strip() for m in marks)
+
+
 def split_references_simple(text: str) -> list[str]:
-    """以 [n] 或 n. 开头且含年份的行即一条参考文献。
+    """以 [n] 或 n. 开头且含年份的行即一条参考文献（去掉【核查：…】标记，盲标时看不到）。
 
     不依赖"参考文献"标题（Agent 常在文末说明里再次提到这个词），也排除拒答说明中的编号列表。
     """
-    return [m.group(3) for line in text.splitlines() if (m := _ITEM_RE.match(line)) and _YEAR_RE.search(m.group(3))]
+    return [split_marks(m.group(3))[0] for line in text.splitlines()
+            if (m := _ITEM_RE.match(line)) and _YEAR_RE.search(m.group(3))]
+
+
+def agent_marks(text: str) -> list[str]:
+    """与 split_references_simple 逐条对应的 Agent 标记（无标记为空串）。"""
+    return [split_marks(m.group(3))[1] for line in text.splitlines()
+            if (m := _ITEM_RE.match(line)) and _YEAR_RE.search(m.group(3))]
 
 
 def enumerate_references(directory: Path) -> list[dict]:
@@ -199,7 +218,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="金标准")
     parser.add_argument("command", choices=["sample", "evidence", "score"])
     parser.add_argument("--set", type=int, choices=[1, 2, 3], default=1)
-    parser.add_argument("--condition", choices=["B1", "S"], help="第 8 步：从该条件的输出中抽样")
+    parser.add_argument("--condition", choices=sorted(REVIEW_SEEDS), help="第 8 步：从该条件的输出中抽样")
     args = parser.parse_args(argv)
     sys.stdout.reconfigure(encoding="utf-8")
     gold_dir = {1: GOLD_DIR, 2: GOLD2_DIR, 3: GOLD3_DIR}[args.set]
@@ -207,7 +226,7 @@ def main(argv: list[str] | None = None) -> int:
         gold_dir = RESULTS_DIR / f"review_{args.condition}"
     if args.command == "sample" and args.condition:
         items = enumerate_references(RESULTS_DIR / "main" / args.condition)
-        chosen = sample(items, MAIN_REVIEW_SIZE, seed=MAIN_REVIEW_SEED)
+        chosen = sample(items, MAIN_REVIEW_SIZE, seed=REVIEW_SEEDS[args.condition])
         write_csv(gold_dir / "sample.csv", chosen, ["id", "slug", "idx", "raw"])
         print(f"{args.condition}：共 {len(items)} 条，抽取 {len(chosen)} 条 → {gold_dir / 'sample.csv'}")
     elif args.command == "sample":

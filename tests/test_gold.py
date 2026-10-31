@@ -63,3 +63,12 @@ def test_second_sample_excludes_first(tmp_path):
     first = gold.sample(items, 10, seed=1)
     second = gold.sample([i for i in items if i["id"] not in {f["id"] for f in first}], 10, seed=2)
     assert not {i["id"] for i in first} & {i["id"] for i in second}
+
+
+def test_split_marks_hidden_for_blind_annotation():
+    text = ("## 参考文献\n[1] He K. Deep residual learning. CVPR, 2016. DOI: 10.1109/CVPR.2016.90.【核查：✅】\n"
+            "[2] Doe J. Fake paper. 2020.【核查：⚠️】\n[3] Roe R. Unmarked. 2019.")
+    assert gold.split_references_simple(text) == [
+        "He K. Deep residual learning. CVPR, 2016. DOI: 10.1109/CVPR.2016.90.", "Doe J. Fake paper. 2020.",
+        "Roe R. Unmarked. 2019."]
+    assert gold.agent_marks(text) == ["✅", "⚠️", ""]
