@@ -23,8 +23,16 @@ def test_prompts_identical_except_b1_suffix():
 
 
 def test_conditions_tools():
-    assert CONDITIONS["B0"]["tools"] is False and CONDITIONS["B1"]["tools"] is False
-    assert CONDITIONS["S"]["tools"] is True
+    assert CONDITIONS["B0"]["tools"] == [] and CONDITIONS["B1"]["tools"] == []
+    assert "Skill" in CONDITIONS["S"]["tools"] and CONDITIONS["S"]["skill"]
+
+
+def test_ablation_conditions():
+    smark, noskill = CONDITIONS["S-mark"], CONDITIONS["S-noskill"]
+    assert smark["tools"] == ["mcp__citeguard__verify_references"] and not smark["skill"]
+    assert "不要修改" in build_prompt_for("S-mark", "主题X")
+    assert "Skill" not in noskill["tools"] and not noskill["skill"]
+    assert build_prompt_for("S-noskill", "主题X") == build_prompt_for("S", "主题X")
 
 
 def test_run_condition_saves_and_skips_existing(tmp_path: Path):

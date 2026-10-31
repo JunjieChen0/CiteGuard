@@ -1,4 +1,4 @@
-"""第 7、8 步正式实验：25 个新主题 × 三种条件（B0 原生 / B1 仅提示词 / S 接入 CiteGuard）。
+"""第 7、8 步正式实验：25 个新主题 × 三种条件（B0 原生 / B1 仅提示词 / S 接入 CiteGuard），另有两个消融条件。
 
 与第 3 步试跑（开发集，用来总结判定规则）的主题完全不重叠。三种条件的提示词只有 B1 多一句，
 且都不含"不要使用任何工具"（S 必须能调用工具；B0/B1 不放行任何工具，尝试调用会被拒绝并记录）。
@@ -57,11 +57,21 @@ TEST_TOPICS: list[dict[str, str]] = [
 PROMPT = ("用中文写一篇约 600 字的综述，主题是：{topic}。"
           "文末列出 10 条英文参考文献，每条包含全部作者、标题、会议/期刊、年份、卷期页码、DOI。")
 B1_SUFFIX = "请确保每条参考文献都真实存在、题录准确；不确定的文献宁可不写，也不要编造。"
+# 消融 S-mark：只检测、不修正。不放行 search_papers，不安装 Skill（SKILL.md 要求修正，与本条件矛盾）
+SMARK_SUFFIX = ("写完后调用 verify_references 核查全部参考文献，并在每条参考文献末尾加上核查结果标记，"
+                "格式为【核查：✅】【核查：⚠️】【核查：❌】或【核查：❓】。"
+                "不要修改、删除、替换或新增任何参考文献，也不要改动正文，只添加标记。")
+VERIFY_TOOL = "mcp__citeguard__verify_references"
+SEARCH_TOOL = "mcp__citeguard__search_papers"
 
+# tools：放行的工具（空 = 不放行任何工具）；skill：是否在工作目录安装 SKILL.md
 CONDITIONS: dict[str, dict] = {
-    "B0": {"suffix": "", "tools": False},
-    "B1": {"suffix": B1_SUFFIX, "tools": False},
-    "S": {"suffix": "", "tools": True},
+    "B0": {"suffix": "", "tools": [], "skill": False},
+    "B1": {"suffix": B1_SUFFIX, "tools": [], "skill": False},
+    "S": {"suffix": "", "tools": CITEGUARD_TOOLS, "skill": True},
+    # 消融（第 8 步补充，见 docs/实验设计.md 变更记录 11）
+    "S-mark": {"suffix": SMARK_SUFFIX, "tools": [VERIFY_TOOL], "skill": False},
+    "S-noskill": {"suffix": "", "tools": [SEARCH_TOOL, VERIFY_TOOL], "skill": False},
 }
 
 Runner = Callable[[str, str, Path], dict]
@@ -76,11 +86,12 @@ def result_path(out_dir: Path, condition: str, slug: str, run: int) -> Path:
 
 
 def _default_runner(condition: str, prompt: str, workdir: Path) -> dict:
-    if not CONDITIONS[condition]["tools"]:
+    spec = CONDITIONS[condition]
+    if not spec["tools"]:
         return run_agent(prompt, workdir, stream=True)
     config = write_citeguard_mcp_config(workdir / "mcp.json", cache_dir=CACHE_DIR)
-    return run_agent(prompt, workdir, mcp_config=config, allowed_tools=CITEGUARD_TOOLS, skill_dir=SKILL_DIR,
-                     stream=True, timeout=1800)
+    return run_agent(prompt, workdir, mcp_config=config, allowed_tools=spec["tools"],
+                     skill_dir=SKILL_DIR if spec["skill"] else None, stream=True, timeout=1800)
 
 
 def run_condition(condition: str, topics: list[dict[str, str]], out_dir: Path, runner: Runner = _default_runner,
