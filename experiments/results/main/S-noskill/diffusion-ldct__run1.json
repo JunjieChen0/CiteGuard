@@ -1,0 +1,1454 @@
+{
+ "slug": "diffusion-ldct",
+ "topic": "扩散模型用于低剂量 CT 图像去噪",
+ "kind": "niche",
+ "condition": "S-noskill",
+ "run": 1,
+ "prompt": "用中文写一篇约 600 字的综述，主题是：扩散模型用于低剂量 CT 图像去噪。文末列出 10 条英文参考文献，每条包含全部作者、标题、会议/期刊、年份、卷期页码、DOI。",
+ "timestamp": "2026-10-31T11:47:55.898106+00:00",
+ "elapsed_s": 56,
+ "response": {
+  "duration_api_ms": 48652,
+  "stop_reason": "end_turn",
+  "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+  "total_cost_usd": 0.33643700000000004,
+  "usage": {
+   "input_tokens": 17652,
+   "cache_creation_input_tokens": 0,
+   "cache_read_input_tokens": 120704,
+   "output_tokens": 7513,
+   "output_tokens_details": {
+    "thinking_tokens": 0
+   },
+   "server_tool_use": {
+    "web_search_requests": 0,
+    "web_fetch_requests": 0
+   },
+   "service_tier": "standard",
+   "cache_creation": {
+    "ephemeral_1h_input_tokens": 0,
+    "ephemeral_5m_input_tokens": 0
+   },
+   "inference_geo": "",
+   "iterations": [],
+   "speed": "standard",
+   "fallback_credit": null
+  },
+  "modelUsage": {
+   "deepseek-flash": {
+    "inputTokens": 17652,
+    "outputTokens": 7513,
+    "cacheReadInputTokens": 120704,
+    "cacheCreationInputTokens": 0,
+    "webSearchRequests": 0,
+    "costUSD": 0.33643700000000004,
+    "contextWindow": 200000,
+    "maxOutputTokens": 32000,
+    "thinkingTokens": 0,
+    "cacheCreationEphemeral5mInputTokens": 0,
+    "cacheCreationEphemeral1hInputTokens": 0,
+    "canonicalModel": "deepseek-flash",
+    "provider": "firstParty",
+    "costBasis": "unknown"
+   }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+   "spawned": 0,
+   "requested": {
+    "background": 0,
+    "foreground": 0,
+    "unset": 0
+   },
+   "started_in_background": 0,
+   "max_depth": 0,
+   "spawned_by_subagents": 0,
+   "completed": 0,
+   "failed": 0,
+   "killed": {
+    "parent": 0,
+    "user": 0,
+    "system": 0
+   },
+   "refused": {
+    "depth_limit": 0,
+    "concurrency_limit": 0,
+    "budget": 0
+   },
+   "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 10,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "# 扩散模型在低剂量 CT 图像去噪中的研究进展\n\n低剂量 CT（LDCT）通过降低管电流减少辐射暴露，但光子计数不足会引入量子噪声与条状伪影。传统滤波易模糊边缘；基于卷积神经网络的去噪虽显著优于传统方法，却依赖成对数据、易产生过平滑，且跨剂量泛化有限[3]。\n\n扩散模型为此提供了生成式建模范式。去噪扩散概率模型（DDPM）通过马尔可夫链逐步加噪，并学习反向过程从噪声中恢复图像[1]；基于随机微分方程的分数匹配框架将前向与反向过程统一为连续时间扩散，支持概率流采样[2]。该类模型训练稳定、模式覆盖充分，其迭代去噪过程可自然作为图像先验嵌入逆问题求解。\n\n用于 LDCT 时，条件化是关键。条件 DDPM 以低剂量图像为条件引导反向采样，在超低剂量 CT 上兼顾噪声抑制与结构保持[5]；CoCoDiff 引入上下文条件，增强局部解剖结构的一致性[4]。为利用投影域信息，SADiff 将正弦图特征融入扩散过程，联合图像域与投影域约束以抑制条状伪影[7]；剂量感知扩散模型显式建模剂量水平，使单一模型可适应多剂量场景[8]。\n\n在效率与细节保真方面，冷扩散以确定性退化替代高斯加噪并结合边缘增强，在较少采样步数下改善图像锐度[6]；MoCoDiff 利用动量上下文聚合多步去噪特征，缓解迭代中的细节漂移[9]；采样扩散模型则通过跨采样率的统一策略，将扩散先验拓展至稀疏视角 CT 重建[10]。\n\n挑战仍然存在：生成式先验可能虚构不存在的结构，需引入数据一致性约束与不确定性估计；多步采样计算成本高，蒸馏与快速采样制约临床落地；评价多依赖 PSNR/SSIM，缺乏读者研究支持。未来应在真实临床数据上开展多中心验证，发展可控、可解释且高效的扩散框架，并建立兼顾噪声抑制、结构保真与诊断效能的评价体系。\n\n## 参考文献\n\n[1] Ho J, Jain A, Abbeel P. Denoising Diffusion Probabilistic Models. Advances in Neural Information Processing Systems, 2020, 33: 6840–6851. DOI: 10.48550/arXiv.2006.11239.\n\n[2] Song Y, Sohl-Dickstein J, Kingma D P, Kumar A, Ermon S, Poole B. Score-Based Generative Modeling through Stochastic Differential Equations. International Conference on Learning Representations (ICLR), 2021. DOI: 10.48550/arXiv.2011.13456.\n\n[3] Chen H, Zhang Y, Kalra M K, Lin F, Chen Y, Liao P, Zhou J, Wang G. Low-Dose CT With a Residual Encoder-Decoder Convolutional Neural Network. IEEE Transactions on Medical Imaging, 2017, 36(12): 2524–2535. DOI: 10.1109/TMI.2017.2715284.\n\n[4] Gao Q, Shan H. CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising. Developments in X-Ray Tomography XIV, 2022, 12242: 122420H. DOI: 10.1117/12.2634939.\n\n[5] Li Q, Li C, Yan C, Li X, Li H, Zhang T, Song H, Schaffert R, Yu W, Fan Y, Ye J, Chen H. Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic Model. 2022 International Conference on Cyber-Enabled Distributed Computing and Knowledge Discovery (CyberC), 2022: 198–205. DOI: 10.1109/CyberC55534.2022.00041.\n\n[6] Du Y, Liu Y, Wu H, Kang J, Gui Z, Zhang P, Ren Y. Combination of edge enhancement and cold diffusion model for low dose CT image denoising. Biomedical Engineering / Biomedizinische Technik, 2025, 70(2): 157–169. DOI: 10.1515/bmt-2024-0362.\n\n[7] Niknejad Mazandarani F, Babyn P, Alirezaie J. SADiff: A Sinogram-Aware Diffusion Model for Low-Dose CT Image Denoising. Journal of Imaging Informatics in Medicine, 2025, 38(6): 4255–4275. DOI: 10.1007/s10278-025-01469-8.\n\n[8] Kim S, Kim B, Baek J. Dose-aware denoising diffusion model for low-dose CT. Physics in Medicine & Biology, 2025, 70(14): 145019. DOI: 10.1088/1361-6560/ade8cc.\n\n[9] Zhao S, Jiang A, Ding J. MoCoDiff: Momentum context diffusion model for low-dose CT denoising. Digital Signal Processing, 2025, 156: 104868. DOI: 10.1016/j.dsp.2024.104868.\n\n[10] Yang L, Huang J, Yang G, Zhang D. CT-SDM: A Sampling Diffusion Model for Sparse-View CT Reconstruction Across Various Sampling Rates. IEEE Transactions on Medical Imaging, 2025, 44(6): 2581–2593. DOI: 10.1109/TMI.2025.3541491.",
+  "ttft_ms": 2052,
+  "type": "result",
+  "duration_ms": 54307,
+  "uuid": "4082bc1b-a9b6-4a88-9366-7991406257cb",
+  "ttft_stream_ms": 924,
+  "time_to_request_ms": 150,
+  "first_content_frame_ms": 924,
+  "time_to_request_from_spawn_ms": 1223684,
+  "warm_spare_claimed": false,
+  "flag_fetch_kick": "started_after_init_empty",
+  "time_origin_ms": 1793447219963.651,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+   "deepseek-flash": {
+    "inputTokens": 17652,
+    "outputTokens": 7513,
+    "cacheReadInputTokens": 120704,
+    "cacheCreationInputTokens": 0,
+    "webSearchRequests": 0,
+    "costUSD": 0.33643700000000004,
+    "contextWindow": 200000,
+    "maxOutputTokens": 32000,
+    "thinkingTokens": 0,
+    "cacheCreationEphemeral5mInputTokens": 0,
+    "cacheCreationEphemeral1hInputTokens": 0,
+    "canonicalModel": "deepseek-flash",
+    "provider": "firstParty",
+    "costBasis": "unknown"
+   }
+  },
+  "transcript": [
+   {
+    "type": "system",
+    "subtype": "init",
+    "cwd": "/tmp/citeguard-S-noskill-hmg96g3n",
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "tools": [
+     "Task",
+     "Bash",
+     "CronCreate",
+     "CronDelete",
+     "CronList",
+     "DesignSync",
+     "Edit",
+     "EnterWorktree",
+     "ExitWorktree",
+     "ListAgents",
+     "ListMcpResourcesTool",
+     "Monitor",
+     "NotebookEdit",
+     "Read",
+     "ReadMcpResourceDirTool",
+     "ReadMcpResourceTool",
+     "ReportFindings",
+     "ScheduleWakeup",
+     "SendMessage",
+     "Skill",
+     "TaskStop",
+     "ToolSearch",
+     "WebFetch",
+     "WebSearch",
+     "Workflow",
+     "Write",
+     "mcp__citeguard__search_papers",
+     "mcp__citeguard__verify_references"
+    ],
+    "mcp_servers": [
+     {
+      "name": "citeguard",
+      "status": "connected",
+      "source": "dynamic"
+     }
+    ],
+    "model": "deepseek-flash",
+    "permissionMode": "default",
+    "slash_commands": [
+     "deep-research",
+     "design",
+     "design-sync",
+     "dataviz",
+     "update-config",
+     "verify",
+     "debug",
+     "code-review",
+     "simplify",
+     "batch",
+     "fewer-permission-prompts",
+     "doctor",
+     "loop",
+     "claude-api",
+     "workflow-authoring",
+     "run",
+     "run-skill-generator",
+     "plugin-authoring",
+     "agents",
+     "auto-mode-setup",
+     "autocompact",
+     "clear",
+     "color",
+     "compact",
+     "config",
+     "output-style",
+     "context",
+     "effort",
+     "fast",
+     "focus",
+     "heapdump",
+     "init",
+     "mcp",
+     "model",
+     "__remote-workflow",
+     "workflow-launch-exec",
+     "reload-plugins",
+     "reload-skills",
+     "rename",
+     "security-review",
+     "usage",
+     "insights",
+     "recap",
+     "goal",
+     "design-consent",
+     "design-revoke",
+     "list-agents",
+     "team-onboarding"
+    ],
+    "terminal_slash_commands": [
+     "doctor",
+     "color",
+     "focus",
+     "reload-plugins"
+    ],
+    "apiKeySource": "none",
+    "claude_code_version": "2.1.316",
+    "output_style": "default",
+    "agents": [
+     "claude",
+     "Explore",
+     "general-purpose",
+     "Plan",
+     "statusline-setup"
+    ],
+    "skills": [
+     "deep-research",
+     "design",
+     "design-sync",
+     "dataviz",
+     "update-config",
+     "verify",
+     "debug",
+     "code-review",
+     "simplify",
+     "batch",
+     "fewer-permission-prompts",
+     "doctor",
+     "loop",
+     "claude-api",
+     "workflow-authoring",
+     "run",
+     "run-skill-generator",
+     "plugin-authoring"
+    ],
+    "plugins": [
+     {
+      "name": "cc-plugin-agents-md",
+      "path": "builtin",
+      "source": "cc-plugin-agents-md@builtin"
+     },
+     {
+      "name": "cc-plugin-telemetry",
+      "path": "builtin",
+      "source": "cc-plugin-telemetry@builtin"
+     },
+     {
+      "name": "cc-plugin-plugin-authoring",
+      "path": "builtin",
+      "source": "cc-plugin-plugin-authoring@builtin"
+     }
+    ],
+    "capabilities": [
+     "interrupt_receipt_v1",
+     "interrupt_cancel_queued_v1",
+     "interrupt_send_now_v1",
+     "interrupt_requeue_taken_v1",
+     "msg_lifecycle_v1",
+     "request_marker_lists_v1",
+     "ask_user_question_unanswered_v1",
+     "lifecycle_wakeup_source_v1",
+     "sdk_mcp_tools_list_changed",
+     "sdk_mcp_manifests",
+     "mcp_read_resource_v1",
+     "mcp_tool_ui_meta_v1",
+     "ui_surface_v1",
+     "mcp_call_result_not_for_model_v1"
+    ],
+    "analytics_disabled": false,
+    "product_feedback_disabled": false,
+    "uuid": "564f2a61-5235-4e46-99e4-53d74e852d4c",
+    "memory_paths": {
+     "auto": "/home/user/CiteGuard/.claude-runtime/projects/-tmp-citeguard-S-noskill-hmg96g3n/memory/"
+    },
+    "original_cwd": "/tmp/citeguard-S-noskill-hmg96g3n",
+    "additional_directories": [],
+    "messaging_socket_path": "/tmp/cc-socks/2107.sock",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "per_turn_effort_active": false,
+    "ultrathink_available": false,
+    "view_mode": "default"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "56729bc6-f57f-4d7d-80f7-8f69b538d5b2",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "The user wants a ~600 word Chinese review article on diffusion models for low-dose CT image denoising, with 10 English references each with full authors, title, venue, year, volume/pages, DOI.\n\nI have CiteGuard MCP tools. I must search for real papers and verify references. Let me use search_papers and verify_references.\n\nFirst load the tool schemas.",
+       "signature": "56729bc6-f57f-4d7d-80f7-8f69b538d5b2"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 11177,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "271d3303-2e5c-4a30-a750-a7c7d4cd836c",
+    "timestamp": "2026-10-31T11:47:03.389Z",
+    "thinking_duration_ms": 1127,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "56729bc6-f57f-4d7d-80f7-8f69b538d5b2",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_Pl3kXaW0RbDgcGJv6dFV7993",
+       "name": "ToolSearch",
+       "input": {
+        "query": "select:mcp__citeguard__search_papers,mcp__citeguard__verify_references",
+        "max_results": 2
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 11177,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "d05b221a-0d50-45ca-8c57-0275143d0e67",
+    "timestamp": "2026-10-31T11:47:03.545Z"
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "type": "tool_result",
+       "tool_use_id": "call_00_Pl3kXaW0RbDgcGJv6dFV7993",
+       "content": [
+        {
+         "type": "tool_reference",
+         "tool_name": "mcp__citeguard__search_papers"
+        },
+        {
+         "type": "tool_reference",
+         "tool_name": "mcp__citeguard__verify_references"
+        }
+       ]
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "fa5eedbe-d261-4366-a575-b5084a5948b7",
+    "timestamp": "2026-10-31T11:47:03.566Z",
+    "tool_use_result": {
+     "matches": [
+      "mcp__citeguard__search_papers",
+      "mcp__citeguard__verify_references"
+     ],
+     "query": "select:mcp__citeguard__search_papers,mcp__citeguard__verify_references",
+     "total_deferred_tools": 17
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_Pl3kXaW0RbDgcGJv6dFV7993",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "822d3f08-f86c-468f-a29a-a392d2b3c363",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Let me search for real papers on diffusion models for low-dose CT denoising.\n\nI know some real papers:\n1. \"Score-based generative models for PET image reconstruction\" — not CT.\n2. \"DDNM\" — not.\n3. \"Low-Dose CT Using Denoising Diffusion Probabilistic Model for 20× Speedup\" — actually there's \"Low-Dose CT Using Denoising Diffusion Probabilistic Model for 20× Speedup\" by Wenjun Xia et al.? Let me search.\n\nKnown works:\n- \"Diffusion Models for Medical Image Analysis: A Comprehensive Survey\" \n- \"Make-A-Scene\" no.\n- \"Score-based denoising for CT\" — \"Noise2Score\"?\n- \"Solving 3D Inverse Problems from Pre-trained 2D Diffusion Models\" no.\n- \"DOLCE\"?\n- \"Low-Dose CT Image Denoising Using a Diffusion Probabilistic Model\" ?\n- \"Patch-based denoising diffusion probabilistic model for limited-angle CT reconstruction\" (MICCAI 2022?) by Wang et al.\n- \"DuDoTrans\"?\n- \"Diffusion model based low-dose CT denoising\" ?\n- \"CT Reconstruction with Diffusion Models\" — \"The Swiss Army Knife of Deep Learning\" no.\n- \"Accelerated MR imaging with score-based generative models\" — Chung & Ye, no.\n- \"Improving Low-Dose CT Image Denoising using Diffusion Models\" ?\n- \"DDPM-based low-dose CT denoising with perceptual...\"?\n\nLet me just search with the tool rather than rely on memory.",
+       "signature": "822d3f08-f86c-468f-a29a-a392d2b3c363"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 465,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11264,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "ab49aef8-6392-42de-af40-4c453612257b",
+    "timestamp": "2026-10-31T11:47:07.501Z",
+    "thinking_duration_ms": 3313,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "822d3f08-f86c-468f-a29a-a392d2b3c363",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_JP8lGRHBK1Fcefj2CGJ38157",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "diffusion model low-dose CT image denoising",
+        "limit": 20
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 465,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11264,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "67ebea7b-74d2-42ac-a4f5-3602c2037b95",
+    "timestamp": "2026-10-31T11:47:07.625Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_JP8lGRHBK1Fcefj2CGJ38157",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_JP8lGRHBK1Fcefj2CGJ38157",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：diffusion model low-dose CT image denoising\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Qi Gao, Hongming Shan. CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising. Developments in X-Ray Tomography XIV, 2022, 16. DOI: 10.1117/12.2634939\\n2. Osman Assaf, Albert Güveniş. A NOVEL DEEP LEARNING MODEL, RDB CYCYLEGAN-CBAM FOR LOW-DOSE CT IMAGE DENOISING. openRxiv, 2026. DOI: 10.64898/2026.02.17.706311\\n3. Osman Assaf, Albert Guvenis. A Novel Deep Learning Model, RDB CycleGAN-CBAM for Low-Dose CT Image Denoising. Springer Science and Business Media LLC, 2026. DOI: 10.21203/rs.3.rs-8901000/v1\\n4. Yongli Liu, Zhenyu Chen, Liqin Huang, Shaohua Zheng. Low-Dose CT Image Denoising via Multi-Scale ViT and Diffusion Probabilistic Model. 2025 6th International Conference on Machine Learning and Computer Application (ICMLCA), 2025, 650-656. DOI: 10.1109/icmlca66850.2025.11336450\\n5. Yunjia Gui, Ke Lu, Chuang Jia, Jian Xue. HWDP-FDM: Hierarchical Wavelet-Guided Dual-Path Fusion Diffusion Model for Low-Dose CT Denoising. Elsevier BV, 2026. DOI: 10.2139/ssrn.6054937\\n6. Farzan Niknejad Mazandarani, Paul Babyn, Javad Alirezaie. SADiff: A Sinogram-Aware Diffusion Model for Low-Dose CT Image Denoising. Journal of Imaging Informatics in Medicine, 2025, 38(6): 4255-4275. DOI: 10.1007/s10278-025-01469-8\\n7. Fenghang Zhang, Guang Feng, Xizhan Gao, Wanying Wu, Sijie Niu. CoDiff-SaK: Controllable Diffusion Model with Segment Anything Knowledge for Low-dose CT Image Denoising. 2025 IEEE International Conference on Multimedia and Expo (ICME), 2025, 1-6. DOI: 10.1109/icme59968.2025.11209821\\n8. Seongjun Kim, Byeongjoon Kim, Jongduk Baek. Dose-aware denoising diffusion model for low-dose CT. Physics in Medicine & Biology, 2025, 70(14): 145019. DOI: 10.1088/1361-6560/ade8cc\\n9. Zhenhao Li, Yue Zou, Xiaojie Ying, Ziwei Li, Jiazhou Wang, Weigang Hu. 1977 Global and Local Feature Fusion Diffusion Model for Low-Dose CT Image Denoising. Radiotherapy and Oncology, 2025, 206: S2997-S2999. DOI: 10.1016/s0167-8140(25)00770-4\\n10. Shaoting Zhao, Ailian Jiang, Jianguo Ding. MoCoDiff: Momentum context diffusion model for low-dose CT denoising. Digital Signal Processing, 2025, 156: 104868. DOI: 10.1016/j.dsp.2024.104868\\n11. Lulu Wang, Lang Gu, Zhengtao Yu, Jinglong Du, Yingna Li. MSDiff: Dynamic dual-attention driven multi-stage diffusion for low-dose CT image denoising. Neurocomputing, 2026, 669: 132456. DOI: 10.1016/j.neucom.2025.132456\\n12. Usama Jameel, Nicola Belcari. Swin-DDPM: A Transformer-Enhanced Diffusion Model for Multi-Organ Low Dose CT Denoising. 2026 IEEE 23rd International Symposium on Biomedical Imaging (ISBI), 2026, 1-5. DOI: 10.1109/isbi61048.2026.11515699\\n13. Yinglin Du, Yi Liu, Han Wu, Jiaqi Kang, Zhiguo Gui, Pengcheng Zhang, Yali Ren. Combination of edge enhancement and cold diffusion model for low dose CT image denoising. Biomedical Engineering / Biomedizinische Technik, 2024, 70(2): 157-169. DOI: 10.1515/bmt-2024-0362\\n14. Harsha Koduri, Ming Ma. OTID: optimal transport-based low-dose CT image denoising. Medical Imaging 2025: Image Processing, 2025, 99. DOI: 10.1117/12.3047378\\n15. Qiwei Li, Chen Li, Chenggong Yan, Xiaomei Li, Haixia Li, Tianjing Zhang, Hui Song, Roman Schaffert, Weimin Yu, Yu Fan, Jianwei Ye, Hao Chen. Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic model. 2022 International Conference on Cyber-Enabled Distributed Computing and Knowledge Discovery (CyberC), 2022, 198-205. DOI: 10.1109/cyberc55534.2022.00041\\n16. Ju Zhang, Guangyu Liu, Jikang Chen, Yun Cheng. Multi-scale adaptive residual cold diffusion model for Low-Dose CT denoising. Expert Systems with Applications, 2025, 294: 128817. DOI: 10.1016/j.eswa.2025.128817\\n17. Sepehr Ataei. Cascaded Perceptual Networks for Low Dose CT Denoising. Ryerson University Library and Archives, 2023. DOI: 10.32920/23332967.v1\\n18. Sepehr Ataei. Cascaded Perceptual Networks for Low Dose CT Denoising. Ryerson University Library and Archives, 2023. DOI: 10.32920/23332967\\n19. Osman Assaf, Albert Güveniş. RDB CycleGAN-CBAM: an integrated deep learning model for low-dose ct image denoising. Medical & Biological Engineering & Computing, 2026. DOI: 10.1007/s11517-026-03689-8\\n20. Ju Zhang, Jikang Chen, Guangyu Liu, Yun Cheng, Qing Chen. Residual-guided multiscale diffusion model for low-dose CT denoising. Biomedical Signal Processing and Control, 2026, 121: 110305. DOI: 10.1016/j.bspc.2026.110305\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "52608112-0865-4578-b099-cfeaf595bb3c",
+    "timestamp": "2026-10-31T11:47:08.540Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：diffusion model low-dose CT image denoising\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Qi Gao, Hongming Shan. CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising. Developments in X-Ray Tomography XIV, 2022, 16. DOI: 10.1117/12.2634939\\n2. Osman Assaf, Albert Güveniş. A NOVEL DEEP LEARNING MODEL, RDB CYCYLEGAN-CBAM FOR LOW-DOSE CT IMAGE DENOISING. openRxiv, 2026. DOI: 10.64898/2026.02.17.706311\\n3. Osman Assaf, Albert Guvenis. A Novel Deep Learning Model, RDB CycleGAN-CBAM for Low-Dose CT Image Denoising. Springer Science and Business Media LLC, 2026. DOI: 10.21203/rs.3.rs-8901000/v1\\n4. Yongli Liu, Zhenyu Chen, Liqin Huang, Shaohua Zheng. Low-Dose CT Image Denoising via Multi-Scale ViT and Diffusion Probabilistic Model. 2025 6th International Conference on Machine Learning and Computer Application (ICMLCA), 2025, 650-656. DOI: 10.1109/icmlca66850.2025.11336450\\n5. Yunjia Gui, Ke Lu, Chuang Jia, Jian Xue. HWDP-FDM: Hierarchical Wavelet-Guided Dual-Path Fusion Diffusion Model for Low-Dose CT Denoising. Elsevier BV, 2026. DOI: 10.2139/ssrn.6054937\\n6. Farzan Niknejad Mazandarani, Paul Babyn, Javad Alirezaie. SADiff: A Sinogram-Aware Diffusion Model for Low-Dose CT Image Denoising. Journal of Imaging Informatics in Medicine, 2025, 38(6): 4255-4275. DOI: 10.1007/s10278-025-01469-8\\n7. Fenghang Zhang, Guang Feng, Xizhan Gao, Wanying Wu, Sijie Niu. CoDiff-SaK: Controllable Diffusion Model with Segment Anything Knowledge for Low-dose CT Image Denoising. 2025 IEEE International Conference on Multimedia and Expo (ICME), 2025, 1-6. DOI: 10.1109/icme59968.2025.11209821\\n8. Seongjun Kim, Byeongjoon Kim, Jongduk Baek. Dose-aware denoising diffusion model for low-dose CT. Physics in Medicine & Biology, 2025, 70(14): 145019. DOI: 10.1088/1361-6560/ade8cc\\n9. Zhenhao Li, Yue Zou, Xiaojie Ying, Ziwei Li, Jiazhou Wang, Weigang Hu. 1977 Global and Local Feature Fusion Diffusion Model for Low-Dose CT Image Denoising. Radiotherapy and Oncology, 2025, 206: S2997-S2999. DOI: 10.1016/s0167-8140(25)00770-4\\n10. Shaoting Zhao, Ailian Jiang, Jianguo Ding. MoCoDiff: Momentum context diffusion model for low-dose CT denoising. Digital Signal Processing, 2025, 156: 104868. DOI: 10.1016/j.dsp.2024.104868\\n11. Lulu Wang, Lang Gu, Zhengtao Yu, Jinglong Du, Yingna Li. MSDiff: Dynamic dual-attention driven multi-stage diffusion for low-dose CT image denoising. Neurocomputing, 2026, 669: 132456. DOI: 10.1016/j.neucom.2025.132456\\n12. Usama Jameel, Nicola Belcari. Swin-DDPM: A Transformer-Enhanced Diffusion Model for Multi-Organ Low Dose CT Denoising. 2026 IEEE 23rd International Symposium on Biomedical Imaging (ISBI), 2026, 1-5. DOI: 10.1109/isbi61048.2026.11515699\\n13. Yinglin Du, Yi Liu, Han Wu, Jiaqi Kang, Zhiguo Gui, Pengcheng Zhang, Yali Ren. Combination of edge enhancement and cold diffusion model for low dose CT image denoising. Biomedical Engineering / Biomedizinische Technik, 2024, 70(2): 157-169. DOI: 10.1515/bmt-2024-0362\\n14. Harsha Koduri, Ming Ma. OTID: optimal transport-based low-dose CT image denoising. Medical Imaging 2025: Image Processing, 2025, 99. DOI: 10.1117/12.3047378\\n15. Qiwei Li, Chen Li, Chenggong Yan, Xiaomei Li, Haixia Li, Tianjing Zhang, Hui Song, Roman Schaffert, Weimin Yu, Yu Fan, Jianwei Ye, Hao Chen. Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic model. 2022 International Conference on Cyber-Enabled Distributed Computing and Knowledge Discovery (CyberC), 2022, 198-205. DOI: 10.1109/cyberc55534.2022.00041\\n16. Ju Zhang, Guangyu Liu, Jikang Chen, Yun Cheng. Multi-scale adaptive residual cold diffusion model for Low-Dose CT denoising. Expert Systems with Applications, 2025, 294: 128817. DOI: 10.1016/j.eswa.2025.128817\\n17. Sepehr Ataei. Cascaded Perceptual Networks for Low Dose CT Denoising. Ryerson University Library and Archives, 2023. DOI: 10.32920/23332967.v1\\n18. Sepehr Ataei. Cascaded Perceptual Networks for Low Dose CT Denoising. Ryerson University Library and Archives, 2023. DOI: 10.32920/23332967\\n19. Osman Assaf, Albert Güveniş. RDB CycleGAN-CBAM: an integrated deep learning model for low-dose ct image denoising. Medical & Biological Engineering & Computing, 2026. DOI: 10.1007/s11517-026-03689-8\\n20. Ju Zhang, Jikang Chen, Guangyu Liu, Yun Cheng, Qing Chen. Residual-guided multiscale diffusion model for low-dose CT denoising. Biomedical Signal Processing and Control, 2026, 121: 110305. DOI: 10.1016/j.bspc.2026.110305\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：diffusion model low-dose CT image denoising\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Qi Gao, Hongming Shan. CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising. Developments in X-Ray Tomography XIV, 2022, 16. DOI: 10.1117/12.2634939\n2. Osman Assaf, Albert Güveniş. A NOVEL DEEP LEARNING MODEL, RDB CYCYLEGAN-CBAM FOR LOW-DOSE CT IMAGE DENOISING. openRxiv, 2026. DOI: 10.64898/2026.02.17.706311\n3. Osman Assaf, Albert Guvenis. A Novel Deep Learning Model, RDB CycleGAN-CBAM for Low-Dose CT Image Denoising. Springer Science and Business Media LLC, 2026. DOI: 10.21203/rs.3.rs-8901000/v1\n4. Yongli Liu, Zhenyu Chen, Liqin Huang, Shaohua Zheng. Low-Dose CT Image Denoising via Multi-Scale ViT and Diffusion Probabilistic Model. 2025 6th International Conference on Machine Learning and Computer Application (ICMLCA), 2025, 650-656. DOI: 10.1109/icmlca66850.2025.11336450\n5. Yunjia Gui, Ke Lu, Chuang Jia, Jian Xue. HWDP-FDM: Hierarchical Wavelet-Guided Dual-Path Fusion Diffusion Model for Low-Dose CT Denoising. Elsevier BV, 2026. DOI: 10.2139/ssrn.6054937\n6. Farzan Niknejad Mazandarani, Paul Babyn, Javad Alirezaie. SADiff: A Sinogram-Aware Diffusion Model for Low-Dose CT Image Denoising. Journal of Imaging Informatics in Medicine, 2025, 38(6): 4255-4275. DOI: 10.1007/s10278-025-01469-8\n7. Fenghang Zhang, Guang Feng, Xizhan Gao, Wanying Wu, Sijie Niu. CoDiff-SaK: Controllable Diffusion Model with Segment Anything Knowledge for Low-dose CT Image Denoising. 2025 IEEE International Conference on Multimedia and Expo (ICME), 2025, 1-6. DOI: 10.1109/icme59968.2025.11209821\n8. Seongjun Kim, Byeongjoon Kim, Jongduk Baek. Dose-aware denoising diffusion model for low-dose CT. Physics in Medicine & Biology, 2025, 70(14): 145019. DOI: 10.1088/1361-6560/ade8cc\n9. Zhenhao Li, Yue Zou, Xiaojie Ying, Ziwei Li, Jiazhou Wang, Weigang Hu. 1977 Global and Local Feature Fusion Diffusion Model for Low-Dose CT Image Denoising. Radiotherapy and Oncology, 2025, 206: S2997-S2999. DOI: 10.1016/s0167-8140(25)00770-4\n10. Shaoting Zhao, Ailian Jiang, Jianguo Ding. MoCoDiff: Momentum context diffusion model for low-dose CT denoising. Digital Signal Processing, 2025, 156: 104868. DOI: 10.1016/j.dsp.2024.104868\n11. Lulu Wang, Lang Gu, Zhengtao Yu, Jinglong Du, Yingna Li. MSDiff: Dynamic dual-attention driven multi-stage diffusion for low-dose CT image denoising. Neurocomputing, 2026, 669: 132456. DOI: 10.1016/j.neucom.2025.132456\n12. Usama Jameel, Nicola Belcari. Swin-DDPM: A Transformer-Enhanced Diffusion Model for Multi-Organ Low Dose CT Denoising. 2026 IEEE 23rd International Symposium on Biomedical Imaging (ISBI), 2026, 1-5. DOI: 10.1109/isbi61048.2026.11515699\n13. Yinglin Du, Yi Liu, Han Wu, Jiaqi Kang, Zhiguo Gui, Pengcheng Zhang, Yali Ren. Combination of edge enhancement and cold diffusion model for low dose CT image denoising. Biomedical Engineering / Biomedizinische Technik, 2024, 70(2): 157-169. DOI: 10.1515/bmt-2024-0362\n14. Harsha Koduri, Ming Ma. OTID: optimal transport-based low-dose CT image denoising. Medical Imaging 2025: Image Processing, 2025, 99. DOI: 10.1117/12.3047378\n15. Qiwei Li, Chen Li, Chenggong Yan, Xiaomei Li, Haixia Li, Tianjing Zhang, Hui Song, Roman Schaffert, Weimin Yu, Yu Fan, Jianwei Ye, Hao Chen. Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic model. 2022 International Conference on Cyber-Enabled Distributed Computing and Knowledge Discovery (CyberC), 2022, 198-205. DOI: 10.1109/cyberc55534.2022.00041\n16. Ju Zhang, Guangyu Liu, Jikang Chen, Yun Cheng. Multi-scale adaptive residual cold diffusion model for Low-Dose CT denoising. Expert Systems with Applications, 2025, 294: 128817. DOI: 10.1016/j.eswa.2025.128817\n17. Sepehr Ataei. Cascaded Perceptual Networks for Low Dose CT Denoising. Ryerson University Library and Archives, 2023. DOI: 10.32920/23332967.v1\n18. Sepehr Ataei. Cascaded Perceptual Networks for Low Dose CT Denoising. Ryerson University Library and Archives, 2023. DOI: 10.32920/23332967\n19. Osman Assaf, Albert Güveniş. RDB CycleGAN-CBAM: an integrated deep learning model for low-dose ct image denoising. Medical & Biological Engineering & Computing, 2026. DOI: 10.1007/s11517-026-03689-8\n20. Ju Zhang, Jikang Chen, Guangyu Liu, Yun Cheng, Qing Chen. Residual-guided multiscale diffusion model for low-dose CT denoising. Biomedical Signal Processing and Control, 2026, 121: 110305. DOI: 10.1016/j.bspc.2026.110305\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_JP8lGRHBK1Fcefj2CGJ38157",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "63d5d05b-d8b9-47e8-9516-7d568d4837bd",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Good. Now I need foundational references too: DDPM (Ho et al. 2020), score-based SDE (Song et al. 2021), and key LDCT papers. Let me search for those.\n\nKey foundational:\n- Ho, Jain, Abbeel. Denoising Diffusion Probabilistic Models. NeurIPS 2020. DOI? NeurIPS proceedings don't have DOI typically. Crossref might not have it. Better to use papers with DOI. But the requirement says DOI for each. NeurIPS papers often lack DOI. Hmm. Could still include if Crossref returns with DOI (arXiv DOI 10.48550/arXiv.2006.11239). That's a valid DOI.\n\n- Song et al. Score-Based Generative Modeling through Stochastic Differential Equations. ICLR 2021. arXiv DOI 10.48550/arXiv.2011.13456.\n\nLet me search for \"denoising diffusion probabilistic models\" and \"score-based generative modeling stochastic differential equations\", and key LDCT: \"low-dose CT denoising convolutional neural network\" (Chen et al. 2017), \"Wasserstein GAN low dose CT\" (Yang et al. 2018), \"Noise2Noise\", \"Red-CNN\". Also \"Patch-based denoising diffusion probabilistic model for limited-angle CT\" (MICCAI 2022).\n\nLet me search.",
+       "signature": "63d5d05b-d8b9-47e8-9516-7d568d4837bd"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1622,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 12032,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "f8e8976a-d87b-4929-a4c2-f98f890b1f82",
+    "timestamp": "2026-10-31T11:47:11.191Z",
+    "thinking_duration_ms": 2058,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "63d5d05b-d8b9-47e8-9516-7d568d4837bd",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_yrXH0jfh7pF8v3MWbzra8499",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "Denoising Diffusion Probabilistic Models Ho Jain Abbeel",
+        "limit": 5
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1622,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 12032,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "f71b7169-489b-459a-bfde-db51ba93009a",
+    "timestamp": "2026-10-31T11:47:11.367Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_yrXH0jfh7pF8v3MWbzra8499",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_yrXH0jfh7pF8v3MWbzra8499",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Denoising Diffusion Probabilistic Models Ho Jain Abbeel\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Yawen Zhang. Discriminator-Augmented Denoising Diffusion Probabilistic Models for Seismic Data. Copernicus GmbH, 2026. DOI: 10.5194/egusphere-egu26-10528\\n2. Esteban Hernandez Capel, Jonathan Dumas. Denoising Diffusion Probabilistic Models for Probabilistic Energy Forecasting. 2023 IEEE Belgrade PowerTech, 2023, 1-6. DOI: 10.1109/powertech55446.2023.10202713\\n3. Zichen Liu, Wei Zhang, Christof Schütte, Tiejun Li. Riemannian Denoising Diffusion Probabilistic Models. Elsevier BV, 2025. DOI: 10.2139/ssrn.5358689\\n4. Francesco  Pio Ramunno. Modelling Solar Images from Sdo/Aia with Denoising Diffusion Probabilistic Models. Elsevier BV, 2023. DOI: 10.2139/ssrn.4504193\\n5. Himangi Ahuja, Ruchi Vyas, Mayank Patel. Image Generation Framework Based on Denoising Diffusion Probabilistic Models. Elsevier BV, 2026. DOI: 10.2139/ssrn.7345758\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "24a94208-6b4a-428a-978f-2442be8899e1",
+    "timestamp": "2026-10-31T11:47:11.387Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Denoising Diffusion Probabilistic Models Ho Jain Abbeel\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Yawen Zhang. Discriminator-Augmented Denoising Diffusion Probabilistic Models for Seismic Data. Copernicus GmbH, 2026. DOI: 10.5194/egusphere-egu26-10528\\n2. Esteban Hernandez Capel, Jonathan Dumas. Denoising Diffusion Probabilistic Models for Probabilistic Energy Forecasting. 2023 IEEE Belgrade PowerTech, 2023, 1-6. DOI: 10.1109/powertech55446.2023.10202713\\n3. Zichen Liu, Wei Zhang, Christof Schütte, Tiejun Li. Riemannian Denoising Diffusion Probabilistic Models. Elsevier BV, 2025. DOI: 10.2139/ssrn.5358689\\n4. Francesco  Pio Ramunno. Modelling Solar Images from Sdo/Aia with Denoising Diffusion Probabilistic Models. Elsevier BV, 2023. DOI: 10.2139/ssrn.4504193\\n5. Himangi Ahuja, Ruchi Vyas, Mayank Patel. Image Generation Framework Based on Denoising Diffusion Probabilistic Models. Elsevier BV, 2026. DOI: 10.2139/ssrn.7345758\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Denoising Diffusion Probabilistic Models Ho Jain Abbeel\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Yawen Zhang. Discriminator-Augmented Denoising Diffusion Probabilistic Models for Seismic Data. Copernicus GmbH, 2026. DOI: 10.5194/egusphere-egu26-10528\n2. Esteban Hernandez Capel, Jonathan Dumas. Denoising Diffusion Probabilistic Models for Probabilistic Energy Forecasting. 2023 IEEE Belgrade PowerTech, 2023, 1-6. DOI: 10.1109/powertech55446.2023.10202713\n3. Zichen Liu, Wei Zhang, Christof Schütte, Tiejun Li. Riemannian Denoising Diffusion Probabilistic Models. Elsevier BV, 2025. DOI: 10.2139/ssrn.5358689\n4. Francesco  Pio Ramunno. Modelling Solar Images from Sdo/Aia with Denoising Diffusion Probabilistic Models. Elsevier BV, 2023. DOI: 10.2139/ssrn.4504193\n5. Himangi Ahuja, Ruchi Vyas, Mayank Patel. Image Generation Framework Based on Denoising Diffusion Probabilistic Models. Elsevier BV, 2026. DOI: 10.2139/ssrn.7345758\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_yrXH0jfh7pF8v3MWbzra8499",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "6f206edc-debb-4a50-8a2e-62f11ad866f4",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Crossref search isn't finding the original. Let me try the arXiv DOI directly by verifying. Actually I can verify with DOI 10.48550/arXiv.2006.11239 in the verify tool later.\n\nLet me search more targeted foundational and LDCT classics.",
+       "signature": "6f206edc-debb-4a50-8a2e-62f11ad866f4"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 411,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 13952,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "1f6ecb02-10e7-4641-8622-e07082e27357",
+    "timestamp": "2026-10-31T11:47:12.794Z",
+    "thinking_duration_ms": 812,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "6f206edc-debb-4a50-8a2e-62f11ad866f4",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_IDd83r6JbvQF2ncN83vu3369",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "score-based generative modeling stochastic differential equations Song Ermon",
+        "limit": 5
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 411,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 13952,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "3592e865-66c5-4fbe-887b-957c4ff1773c",
+    "timestamp": "2026-10-31T11:47:12.992Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_IDd83r6JbvQF2ncN83vu3369",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_IDd83r6JbvQF2ncN83vu3369",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：score-based generative modeling stochastic differential equations Song Ermon\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Muhammad  Aslani Mughanloo, Marcel  A. J. van Gerven, Ahmed Elgazzar. Generative Modeling of Clinical Time Series via Latent Stochastic Differential Equations. Elsevier BV, 2025. DOI: 10.2139/ssrn.5875021\\n2. Sungbin Lim, Eun Bi Yoon, Taehyun Byun, Taewon Kang, Seungwoo Kim, Kyungjae Lee, Sungjoon Choi. Score-based Generative Modeling through Stochastic Evolution Equations in Hilbert Spaces. Advances in Neural Information Processing Systems 36, 2023, 37799-37812. DOI: 10.52202/075280-1645\\n3. Wenpin Tang, Hanyang Zhao. Score-based diffusion models via stochastic differential equations. Statistics Surveys, 2025, 19(none): 28-64. DOI: 10.1214/25-ss152\\n4. Michael E. Vinyard, Anders W. Rasmussen, Ruitong Li, Luca Pinello, Gad Getz. Abstract 5371: Modeling single-cell dynamics using stochastic generative models based on neural differential equations. Cancer Research, 2023, 83(7_Supplement): 5371-5371. DOI: 10.1158/1538-7445.am2023-5371\\n5. Stéphane Crépey. Backward Stochastic Differential Equations. Springer Finance, 2013, 323-358. DOI: 10.1007/978-3-642-37113-4_12\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "7da9001e-08bd-4554-ac0e-29b2f6968298",
+    "timestamp": "2026-10-31T11:47:13.554Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：score-based generative modeling stochastic differential equations Song Ermon\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Muhammad  Aslani Mughanloo, Marcel  A. J. van Gerven, Ahmed Elgazzar. Generative Modeling of Clinical Time Series via Latent Stochastic Differential Equations. Elsevier BV, 2025. DOI: 10.2139/ssrn.5875021\\n2. Sungbin Lim, Eun Bi Yoon, Taehyun Byun, Taewon Kang, Seungwoo Kim, Kyungjae Lee, Sungjoon Choi. Score-based Generative Modeling through Stochastic Evolution Equations in Hilbert Spaces. Advances in Neural Information Processing Systems 36, 2023, 37799-37812. DOI: 10.52202/075280-1645\\n3. Wenpin Tang, Hanyang Zhao. Score-based diffusion models via stochastic differential equations. Statistics Surveys, 2025, 19(none): 28-64. DOI: 10.1214/25-ss152\\n4. Michael E. Vinyard, Anders W. Rasmussen, Ruitong Li, Luca Pinello, Gad Getz. Abstract 5371: Modeling single-cell dynamics using stochastic generative models based on neural differential equations. Cancer Research, 2023, 83(7_Supplement): 5371-5371. DOI: 10.1158/1538-7445.am2023-5371\\n5. Stéphane Crépey. Backward Stochastic Differential Equations. Springer Finance, 2013, 323-358. DOI: 10.1007/978-3-642-37113-4_12\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：score-based generative modeling stochastic differential equations Song Ermon\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Muhammad  Aslani Mughanloo, Marcel  A. J. van Gerven, Ahmed Elgazzar. Generative Modeling of Clinical Time Series via Latent Stochastic Differential Equations. Elsevier BV, 2025. DOI: 10.2139/ssrn.5875021\n2. Sungbin Lim, Eun Bi Yoon, Taehyun Byun, Taewon Kang, Seungwoo Kim, Kyungjae Lee, Sungjoon Choi. Score-based Generative Modeling through Stochastic Evolution Equations in Hilbert Spaces. Advances in Neural Information Processing Systems 36, 2023, 37799-37812. DOI: 10.52202/075280-1645\n3. Wenpin Tang, Hanyang Zhao. Score-based diffusion models via stochastic differential equations. Statistics Surveys, 2025, 19(none): 28-64. DOI: 10.1214/25-ss152\n4. Michael E. Vinyard, Anders W. Rasmussen, Ruitong Li, Luca Pinello, Gad Getz. Abstract 5371: Modeling single-cell dynamics using stochastic generative models based on neural differential equations. Cancer Research, 2023, 83(7_Supplement): 5371-5371. DOI: 10.1158/1538-7445.am2023-5371\n5. Stéphane Crépey. Backward Stochastic Differential Equations. Springer Finance, 2013, 323-358. DOI: 10.1007/978-3-642-37113-4_12\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_IDd83r6JbvQF2ncN83vu3369",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "4d8c9a5d-1d38-42a3-b221-bf863aee88c6",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Crossref search isn't great for these. Maybe I should use known DOIs and verify. Let's search for LDCT classic papers which have proper journal DOIs.",
+       "signature": "4d8c9a5d-1d38-42a3-b221-bf863aee88c6"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 430,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 14464,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "6c86994e-235e-40f1-8298-f03bfe76a71b",
+    "timestamp": "2026-10-31T11:47:14.744Z",
+    "thinking_duration_ms": 619,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "4d8c9a5d-1d38-42a3-b221-bf863aee88c6",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_IgFkoS81E74u2KrjdSPX6444",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "low-dose CT denoising convolutional neural network Chen 2017",
+        "limit": 8
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 430,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 14464,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "491e00c6-b6c6-4bc1-9671-d51a5b4854f8",
+    "timestamp": "2026-10-31T11:47:14.933Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_IgFkoS81E74u2KrjdSPX6444",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_IgFkoS81E74u2KrjdSPX6444",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：low-dose CT denoising convolutional neural network Chen 2017\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jack Lin. Low-Dose CT Denoising Algorithm Based on Fully Convolutional Neural Network. MDPI AG, 2025. DOI: 10.20944/preprints202507.2148.v1\\n2. Hu Chen, Yi Zhang, Weihua Zhang, Peixi Liao, Ke Li, Jiliu Zhou, Ge Wang. Low-dose CT denoising with convolutional neural network. 2017 IEEE 14th International Symposium on Biomedical Imaging (ISBI 2017), 2017, 143-146. DOI: 10.1109/isbi.2017.7950488\\n3. Jongduk Baek, Hyunjung Shim, Byeongjoon Kim. A deeper convolutional neural network for denoising low-dose CT images. Medical Imaging 2018: Physics of Medical Imaging, 2018, 133. DOI: 10.1117/12.2286720\\n4. Alexander A. Zamyatin, Leiming Yu, David Rozas. 3D residual convolutional neural network for low dose CT denoising. Medical Imaging 2022: Physics of Medical Imaging, 2022, 165. DOI: 10.1117/12.2611575\\n5. Nimu Yuan, Jian Zhou, Kuang Gong, Jinyi Qi. Low-dose CT count-domain denoising via convolutional neural network with filter loss. Medical Imaging 2019: Physics of Medical Imaging, 2019, 26. DOI: 10.1117/12.2513479\\n6. Miao Chen, Yi-Fei Pu, Yu-Cai Bai. Low-dose CT image denoising using residual convolutional network with fractional TV loss. Neurocomputing, 2021, 452: 510-520. DOI: 10.1016/j.neucom.2020.10.004\\n7. Minah Han, Hyunjung Shim, Jongduk Baek. Low‐dose CT denoising via convolutional neural network with an observer loss function. Medical Physics, 2021, 48(10): 5727-5742. DOI: 10.1002/mp.15161\\n8. Mattias P. Heinrich, Maik Stille, Thorsten M. Buzug. Residual U-Net Convolutional Neural Network Architecture for Low-Dose CT Denoising. Current Directions in Biomedical Engineering, 2018, 4(1): 297-300. DOI: 10.1515/cdbme-2018-0072\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "64b5cc5a-bc12-40c9-a528-32525f06e590",
+    "timestamp": "2026-10-31T11:47:15.273Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：low-dose CT denoising convolutional neural network Chen 2017\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jack Lin. Low-Dose CT Denoising Algorithm Based on Fully Convolutional Neural Network. MDPI AG, 2025. DOI: 10.20944/preprints202507.2148.v1\\n2. Hu Chen, Yi Zhang, Weihua Zhang, Peixi Liao, Ke Li, Jiliu Zhou, Ge Wang. Low-dose CT denoising with convolutional neural network. 2017 IEEE 14th International Symposium on Biomedical Imaging (ISBI 2017), 2017, 143-146. DOI: 10.1109/isbi.2017.7950488\\n3. Jongduk Baek, Hyunjung Shim, Byeongjoon Kim. A deeper convolutional neural network for denoising low-dose CT images. Medical Imaging 2018: Physics of Medical Imaging, 2018, 133. DOI: 10.1117/12.2286720\\n4. Alexander A. Zamyatin, Leiming Yu, David Rozas. 3D residual convolutional neural network for low dose CT denoising. Medical Imaging 2022: Physics of Medical Imaging, 2022, 165. DOI: 10.1117/12.2611575\\n5. Nimu Yuan, Jian Zhou, Kuang Gong, Jinyi Qi. Low-dose CT count-domain denoising via convolutional neural network with filter loss. Medical Imaging 2019: Physics of Medical Imaging, 2019, 26. DOI: 10.1117/12.2513479\\n6. Miao Chen, Yi-Fei Pu, Yu-Cai Bai. Low-dose CT image denoising using residual convolutional network with fractional TV loss. Neurocomputing, 2021, 452: 510-520. DOI: 10.1016/j.neucom.2020.10.004\\n7. Minah Han, Hyunjung Shim, Jongduk Baek. Low‐dose CT denoising via convolutional neural network with an observer loss function. Medical Physics, 2021, 48(10): 5727-5742. DOI: 10.1002/mp.15161\\n8. Mattias P. Heinrich, Maik Stille, Thorsten M. Buzug. Residual U-Net Convolutional Neural Network Architecture for Low-Dose CT Denoising. Current Directions in Biomedical Engineering, 2018, 4(1): 297-300. DOI: 10.1515/cdbme-2018-0072\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：low-dose CT denoising convolutional neural network Chen 2017\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Jack Lin. Low-Dose CT Denoising Algorithm Based on Fully Convolutional Neural Network. MDPI AG, 2025. DOI: 10.20944/preprints202507.2148.v1\n2. Hu Chen, Yi Zhang, Weihua Zhang, Peixi Liao, Ke Li, Jiliu Zhou, Ge Wang. Low-dose CT denoising with convolutional neural network. 2017 IEEE 14th International Symposium on Biomedical Imaging (ISBI 2017), 2017, 143-146. DOI: 10.1109/isbi.2017.7950488\n3. Jongduk Baek, Hyunjung Shim, Byeongjoon Kim. A deeper convolutional neural network for denoising low-dose CT images. Medical Imaging 2018: Physics of Medical Imaging, 2018, 133. DOI: 10.1117/12.2286720\n4. Alexander A. Zamyatin, Leiming Yu, David Rozas. 3D residual convolutional neural network for low dose CT denoising. Medical Imaging 2022: Physics of Medical Imaging, 2022, 165. DOI: 10.1117/12.2611575\n5. Nimu Yuan, Jian Zhou, Kuang Gong, Jinyi Qi. Low-dose CT count-domain denoising via convolutional neural network with filter loss. Medical Imaging 2019: Physics of Medical Imaging, 2019, 26. DOI: 10.1117/12.2513479\n6. Miao Chen, Yi-Fei Pu, Yu-Cai Bai. Low-dose CT image denoising using residual convolutional network with fractional TV loss. Neurocomputing, 2021, 452: 510-520. DOI: 10.1016/j.neucom.2020.10.004\n7. Minah Han, Hyunjung Shim, Jongduk Baek. Low‐dose CT denoising via convolutional neural network with an observer loss function. Medical Physics, 2021, 48(10): 5727-5742. DOI: 10.1002/mp.15161\n8. Mattias P. Heinrich, Maik Stille, Thorsten M. Buzug. Residual U-Net Convolutional Neural Network Architecture for Low-Dose CT Denoising. Current Directions in Biomedical Engineering, 2018, 4(1): 297-300. DOI: 10.1515/cdbme-2018-0072\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_IgFkoS81E74u2KrjdSPX6444",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "3608bef6-fa8e-442b-9a54-4f72bdae164e",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Good. Now key diffusion LDCT works. I have CoCoDiff (Gao & Shan 2022), SADiff (2025), Dose-aware DDPM (PMB 2025), MoCoDiff (DSP 2025), MSDiff (Neurocomputing 2026), cold diffusion edge enhancement (2024).\n\nI want some stronger, highly relevant works:\n- \"Patch-based Denoising Diffusion Probabilistic Model for Limited-angle CT Reconstruction\" — Wang, Liu, et al. MICCAI 2022? Let me search.\n- \"Diffusion model for low-dose CT denoising\" — \"DDPN\"?\n- \"Low-dose CT denoising using a diffusion model with...\".\n- \"Sinogram-domain diffusion\".\n\nLet me also search \"conditional diffusion model CT reconstruction\" and \"diffusion model sparse-view CT\".\n\nAlso foundation: DDPM and score SDE. Let me verify known DOIs directly through verify_references with the list. But first, let me assemble candidates and use search more.\n\nSearch for \"patch-based denoising diffusion probabilistic model limited-angle CT reconstruction\".",
+       "signature": "3608bef6-fa8e-442b-9a54-4f72bdae164e"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 641,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 14976,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "be435731-3163-4b73-99ec-79a886b6befa",
+    "timestamp": "2026-10-31T11:47:17.774Z",
+    "thinking_duration_ms": 1920,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "3608bef6-fa8e-442b-9a54-4f72bdae164e",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_cWcAeTBlBhJflu7CiIjC0037",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "patch-based denoising diffusion probabilistic model limited-angle CT reconstruction",
+        "limit": 8
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 641,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 14976,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "7f5a5538-de18-4767-ad46-2a5a5a16c286",
+    "timestamp": "2026-10-31T11:47:17.921Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_cWcAeTBlBhJflu7CiIjC0037",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_cWcAeTBlBhJflu7CiIjC0037",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：patch-based denoising diffusion probabilistic model limited-angle CT reconstruction\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jiaming Liu, Rushil Anirudh, Jayaraman J. Thiagarajan, Stewart He, K. Aditya Mohan, Ulugbek S. Kamilov, Hyojin Kim. DOLCE: A Model-Based Probabilistic Diffusion Framework for Limited-Angle CT Reconstruction. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 10464-10474. DOI: 10.1109/iccv51070.2023.00963\\n2. Shujie Jin, Ran Zhang, Zilin Jiang, Danyang Li, Ke Li, Guang-Hong Chen. Sinogram completion using a denoising diffusion probabilistic model for limited-angle reconstruction. Medical Imaging 2025: Physics of Medical Imaging, 2025, 29. DOI: 10.1117/12.3048835\\n3. Mengting Huang, Thanh Nguyen-Duc, Martin Soellradl, Daniel F. Schmidt, Roland Bammer. PADMr: Patch-Based Denoising Diffusion Probabilistic Model for Magnetic Resonance Imaging Reconstruction. 2024 IEEE International Symposium on Biomedical Imaging (ISBI), 2024, 1-5. DOI: 10.1109/isbi56570.2024.10635278\\n4. Jiaqi Guo, Santiago López-Tapia. Diffusion-Based Limited-Angle CT Reconstruction Under Noisy Conditions. 2025 IEEE International Conference on Image Processing Workshops (ICIPW), 2025, 511-516. DOI: 10.1109/icipw68931.2025.11386431\\n5. Mengting Huang, Thanh Nguyen-Duc, Martin Soellradl, Daniel Schmidt, Roland Bammer. Patch-based Conditioned Denoising Diffusion Probabilistic (PC-DDPM) for Magnetic Resonance Imaging Reconstruction. ISMRM Annual Meeting. DOI: 10.58530/2024/1747\\n6. Jiaqi Guo, Santiago López-Tapia, Aggelos K. Katsaggelos. Advancing Limited-Angle CT Reconstruction through Diffusion-Based Sinogram Completion. 2025 IEEE International Conference on Image Processing (ICIP), 2025, 2211-2216. DOI: 10.1109/icip55913.2025.11084640\\n7. Haipeng Qin, Xinwei Chen, Gengxin Ning, Weimin Huang. A Denoising Diffusion Probabilistic Model-Based Reconstruction System for Underwater Ship Radiated Noise Signal. OCEANS 2026 Sanya, 2026, 1-4. DOI: 10.1109/oceans66983.2026.11616951\\n8. Junbo Peng, Chih-Wei Chang, Richard L. J. Qiu, Tonghe Wang, Justin Roper, Beth Ghavidel, Xiangyang Tang, Xiaofeng Yang. Projection-consistent diffusion model-based image reconstruction for limited-angle dual-energy cone-beam CT. Medical Imaging 2025: Imaging Informatics, 2025, 29. DOI: 10.1117/12.3048841\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "817086c9-73ec-4503-ad27-800a94eef3c6",
+    "timestamp": "2026-10-31T11:47:18.252Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：patch-based denoising diffusion probabilistic model limited-angle CT reconstruction\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jiaming Liu, Rushil Anirudh, Jayaraman J. Thiagarajan, Stewart He, K. Aditya Mohan, Ulugbek S. Kamilov, Hyojin Kim. DOLCE: A Model-Based Probabilistic Diffusion Framework for Limited-Angle CT Reconstruction. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 10464-10474. DOI: 10.1109/iccv51070.2023.00963\\n2. Shujie Jin, Ran Zhang, Zilin Jiang, Danyang Li, Ke Li, Guang-Hong Chen. Sinogram completion using a denoising diffusion probabilistic model for limited-angle reconstruction. Medical Imaging 2025: Physics of Medical Imaging, 2025, 29. DOI: 10.1117/12.3048835\\n3. Mengting Huang, Thanh Nguyen-Duc, Martin Soellradl, Daniel F. Schmidt, Roland Bammer. PADMr: Patch-Based Denoising Diffusion Probabilistic Model for Magnetic Resonance Imaging Reconstruction. 2024 IEEE International Symposium on Biomedical Imaging (ISBI), 2024, 1-5. DOI: 10.1109/isbi56570.2024.10635278\\n4. Jiaqi Guo, Santiago López-Tapia. Diffusion-Based Limited-Angle CT Reconstruction Under Noisy Conditions. 2025 IEEE International Conference on Image Processing Workshops (ICIPW), 2025, 511-516. DOI: 10.1109/icipw68931.2025.11386431\\n5. Mengting Huang, Thanh Nguyen-Duc, Martin Soellradl, Daniel Schmidt, Roland Bammer. Patch-based Conditioned Denoising Diffusion Probabilistic (PC-DDPM) for Magnetic Resonance Imaging Reconstruction. ISMRM Annual Meeting. DOI: 10.58530/2024/1747\\n6. Jiaqi Guo, Santiago López-Tapia, Aggelos K. Katsaggelos. Advancing Limited-Angle CT Reconstruction through Diffusion-Based Sinogram Completion. 2025 IEEE International Conference on Image Processing (ICIP), 2025, 2211-2216. DOI: 10.1109/icip55913.2025.11084640\\n7. Haipeng Qin, Xinwei Chen, Gengxin Ning, Weimin Huang. A Denoising Diffusion Probabilistic Model-Based Reconstruction System for Underwater Ship Radiated Noise Signal. OCEANS 2026 Sanya, 2026, 1-4. DOI: 10.1109/oceans66983.2026.11616951\\n8. Junbo Peng, Chih-Wei Chang, Richard L. J. Qiu, Tonghe Wang, Justin Roper, Beth Ghavidel, Xiangyang Tang, Xiaofeng Yang. Projection-consistent diffusion model-based image reconstruction for limited-angle dual-energy cone-beam CT. Medical Imaging 2025: Imaging Informatics, 2025, 29. DOI: 10.1117/12.3048841\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：patch-based denoising diffusion probabilistic model limited-angle CT reconstruction\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Jiaming Liu, Rushil Anirudh, Jayaraman J. Thiagarajan, Stewart He, K. Aditya Mohan, Ulugbek S. Kamilov, Hyojin Kim. DOLCE: A Model-Based Probabilistic Diffusion Framework for Limited-Angle CT Reconstruction. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 10464-10474. DOI: 10.1109/iccv51070.2023.00963\n2. Shujie Jin, Ran Zhang, Zilin Jiang, Danyang Li, Ke Li, Guang-Hong Chen. Sinogram completion using a denoising diffusion probabilistic model for limited-angle reconstruction. Medical Imaging 2025: Physics of Medical Imaging, 2025, 29. DOI: 10.1117/12.3048835\n3. Mengting Huang, Thanh Nguyen-Duc, Martin Soellradl, Daniel F. Schmidt, Roland Bammer. PADMr: Patch-Based Denoising Diffusion Probabilistic Model for Magnetic Resonance Imaging Reconstruction. 2024 IEEE International Symposium on Biomedical Imaging (ISBI), 2024, 1-5. DOI: 10.1109/isbi56570.2024.10635278\n4. Jiaqi Guo, Santiago López-Tapia. Diffusion-Based Limited-Angle CT Reconstruction Under Noisy Conditions. 2025 IEEE International Conference on Image Processing Workshops (ICIPW), 2025, 511-516. DOI: 10.1109/icipw68931.2025.11386431\n5. Mengting Huang, Thanh Nguyen-Duc, Martin Soellradl, Daniel Schmidt, Roland Bammer. Patch-based Conditioned Denoising Diffusion Probabilistic (PC-DDPM) for Magnetic Resonance Imaging Reconstruction. ISMRM Annual Meeting. DOI: 10.58530/2024/1747\n6. Jiaqi Guo, Santiago López-Tapia, Aggelos K. Katsaggelos. Advancing Limited-Angle CT Reconstruction through Diffusion-Based Sinogram Completion. 2025 IEEE International Conference on Image Processing (ICIP), 2025, 2211-2216. DOI: 10.1109/icip55913.2025.11084640\n7. Haipeng Qin, Xinwei Chen, Gengxin Ning, Weimin Huang. A Denoising Diffusion Probabilistic Model-Based Reconstruction System for Underwater Ship Radiated Noise Signal. OCEANS 2026 Sanya, 2026, 1-4. DOI: 10.1109/oceans66983.2026.11616951\n8. Junbo Peng, Chih-Wei Chang, Richard L. J. Qiu, Tonghe Wang, Justin Roper, Beth Ghavidel, Xiangyang Tang, Xiaofeng Yang. Projection-consistent diffusion model-based image reconstruction for limited-angle dual-energy cone-beam CT. Medical Imaging 2025: Imaging Informatics, 2025, 29. DOI: 10.1117/12.3048841\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_cWcAeTBlBhJflu7CiIjC0037",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "5c2da6d5-92ef-4cfd-821b-7ab4e347db68",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Now search for \"low-dose CT diffusion model sinogram\" or \"diffusion probabilistic model CT denoising MICCAI\". Also \"DDPN low-dose CT\"? Let's search a few queries in parallel.",
+       "signature": "5c2da6d5-92ef-4cfd-821b-7ab4e347db68"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 781,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 15872,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "817ea3f9-c3af-4a53-8c5c-0f15060abf44",
+    "timestamp": "2026-10-31T11:47:19.516Z",
+    "thinking_duration_ms": 670,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "5c2da6d5-92ef-4cfd-821b-7ab4e347db68",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_kIuRMtLOoh0Q8eWfTDQW8352",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "conditional diffusion probabilistic model CT image denoising medical"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 781,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 15872,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "a7157f87-0902-45e7-a36d-86079aa97177",
+    "timestamp": "2026-10-31T11:47:19.736Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_kIuRMtLOoh0Q8eWfTDQW8352",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "5c2da6d5-92ef-4cfd-821b-7ab4e347db68",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_01_WSutDUdNu6BWaUVap7u12986",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "diffusion model sparse-view CT reconstruction score-based"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 781,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 15872,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "8c4f6e7c-6435-4ed5-9f7b-b152691c874c",
+    "timestamp": "2026-10-31T11:47:19.948Z",
+    "tool_use_meta": [
+     {
+      "id": "call_01_WSutDUdNu6BWaUVap7u12986",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_kIuRMtLOoh0Q8eWfTDQW8352",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：conditional diffusion probabilistic model CT image denoising medical\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Junbo Peng, Richard L. J. Qiu, Jacob F. Wynne, Chih‐Wei Chang, Shaoyan Pan, Tonghe Wang, Justin Roper, Tian Liu, Pretesh R. Patel, David S. Yu, Xiaofeng Yang. CBCT‐Based synthetic CT image generation using conditional denoising diffusion probabilistic model. Medical Physics, 2023, 51(3): 1847-1859. DOI: 10.1002/mp.16704\\n2. Sizhuo Liu, Shen Zhao, Michael Salerno. Conditional Denoising Diffusion Probabilistic Model (DDPM) for Cardiac Perfusion Image Reconstruction. ISMRM Annual Meeting. DOI: 10.58530/2024/1743\\n3. Yuan Gao, Huiqiao Xie, Chihwei Chang, Richard Qiu, Tonghe Wang, Justin Roper, Beth Ghavidel, Jun Zhou, Xiaofeng Yang. CT-based liver synthetic contrast-enhanced CT generation using conditional denoising diffusion probabilistic model. Medical Imaging 2025: Clinical and Biomedical Imaging, 2025, 72. DOI: 10.1117/12.3047724\\n4. Qi Gao, Hongming Shan. CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising. Developments in X-Ray Tomography XIV, 2022, 16. DOI: 10.1117/12.2634939\\n5. Qiwei Li, Chen Li, Chenggong Yan, Xiaomei Li, Haixia Li, Tianjing Zhang, Hui Song, Roman Schaffert, Weimin Yu, Yu Fan, Jianwei Ye, Hao Chen. Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic model. 2022 International Conference on Cyber-Enabled Distributed Computing and Knowledge Discovery (CyberC), 2022, 198-205. DOI: 10.1109/cyberc55534.2022.00041\\n6. Kuang Gong. MR guided PET image denoising based on denoising diffusion probabilistic model and data consistency constraint. Medical Imaging 2023: Physics of Medical Imaging, 2023, 55. DOI: 10.1117/12.2653704\\n7. omar sallam, Mirjam Fürth. Conditional diffusion denoising probabilistic model for super-resolution of atmospheric boundary layer large eddy simulation. Elsevier BV, 2026. DOI: 10.2139/ssrn.7030619\\n8. Yuan Gao, Huiqiao Xie, Chih-Wei Chang, Richard L. J. Qiu, Tonghe Wang, Justin Roper, Beth Ghavidel, Jun Zhou, Xiaofeng Yang. CT-based synthetic contrast-enhanced virtual monoenergetic images generation using conditional denoising diffusion probabilistic model. Medical Imaging 2025: Imaging Informatics, 2025, 49. DOI: 10.1117/12.3048623\\n9. Saritha A N, Sarvesh Rastogi, Shreya Bharamanna Patil, Basavaraj Talawar, Shreya Soni, Setu Mishra. Medical Image Generation using Denoising Diffusion Probabilistic Model. Springer Science and Business Media LLC, 2026. DOI: 10.21203/rs.3.rs-8212171/v1\\n10. Reza Kalantar, Gigin Lin, Jessica M Winfield, Christina Messiou, Dow-Mu Koh, Matthew D Blackledge. MED-INPAINT: Medical Image Synthesis Using Multi-Level Conditional Inpainting with a Denoising Diffusion Probabilistic Model and Adaptive Contrast Priors. 2023 IEEE International Conference on Medical Artificial Intelligence (MedAI), 2023, 403-413. DOI: 10.1109/medai59581.2023.00061\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "4dbaf9f0-00ce-4215-b541-9d65bddb5ea8",
+    "timestamp": "2026-10-31T11:47:20.238Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：conditional diffusion probabilistic model CT image denoising medical\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Junbo Peng, Richard L. J. Qiu, Jacob F. Wynne, Chih‐Wei Chang, Shaoyan Pan, Tonghe Wang, Justin Roper, Tian Liu, Pretesh R. Patel, David S. Yu, Xiaofeng Yang. CBCT‐Based synthetic CT image generation using conditional denoising diffusion probabilistic model. Medical Physics, 2023, 51(3): 1847-1859. DOI: 10.1002/mp.16704\\n2. Sizhuo Liu, Shen Zhao, Michael Salerno. Conditional Denoising Diffusion Probabilistic Model (DDPM) for Cardiac Perfusion Image Reconstruction. ISMRM Annual Meeting. DOI: 10.58530/2024/1743\\n3. Yuan Gao, Huiqiao Xie, Chihwei Chang, Richard Qiu, Tonghe Wang, Justin Roper, Beth Ghavidel, Jun Zhou, Xiaofeng Yang. CT-based liver synthetic contrast-enhanced CT generation using conditional denoising diffusion probabilistic model. Medical Imaging 2025: Clinical and Biomedical Imaging, 2025, 72. DOI: 10.1117/12.3047724\\n4. Qi Gao, Hongming Shan. CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising. Developments in X-Ray Tomography XIV, 2022, 16. DOI: 10.1117/12.2634939\\n5. Qiwei Li, Chen Li, Chenggong Yan, Xiaomei Li, Haixia Li, Tianjing Zhang, Hui Song, Roman Schaffert, Weimin Yu, Yu Fan, Jianwei Ye, Hao Chen. Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic model. 2022 International Conference on Cyber-Enabled Distributed Computing and Knowledge Discovery (CyberC), 2022, 198-205. DOI: 10.1109/cyberc55534.2022.00041\\n6. Kuang Gong. MR guided PET image denoising based on denoising diffusion probabilistic model and data consistency constraint. Medical Imaging 2023: Physics of Medical Imaging, 2023, 55. DOI: 10.1117/12.2653704\\n7. omar sallam, Mirjam Fürth. Conditional diffusion denoising probabilistic model for super-resolution of atmospheric boundary layer large eddy simulation. Elsevier BV, 2026. DOI: 10.2139/ssrn.7030619\\n8. Yuan Gao, Huiqiao Xie, Chih-Wei Chang, Richard L. J. Qiu, Tonghe Wang, Justin Roper, Beth Ghavidel, Jun Zhou, Xiaofeng Yang. CT-based synthetic contrast-enhanced virtual monoenergetic images generation using conditional denoising diffusion probabilistic model. Medical Imaging 2025: Imaging Informatics, 2025, 49. DOI: 10.1117/12.3048623\\n9. Saritha A N, Sarvesh Rastogi, Shreya Bharamanna Patil, Basavaraj Talawar, Shreya Soni, Setu Mishra. Medical Image Generation using Denoising Diffusion Probabilistic Model. Springer Science and Business Media LLC, 2026. DOI: 10.21203/rs.3.rs-8212171/v1\\n10. Reza Kalantar, Gigin Lin, Jessica M Winfield, Christina Messiou, Dow-Mu Koh, Matthew D Blackledge. MED-INPAINT: Medical Image Synthesis Using Multi-Level Conditional Inpainting with a Denoising Diffusion Probabilistic Model and Adaptive Contrast Priors. 2023 IEEE International Conference on Medical Artificial Intelligence (MedAI), 2023, 403-413. DOI: 10.1109/medai59581.2023.00061\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：conditional diffusion probabilistic model CT image denoising medical\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Junbo Peng, Richard L. J. Qiu, Jacob F. Wynne, Chih‐Wei Chang, Shaoyan Pan, Tonghe Wang, Justin Roper, Tian Liu, Pretesh R. Patel, David S. Yu, Xiaofeng Yang. CBCT‐Based synthetic CT image generation using conditional denoising diffusion probabilistic model. Medical Physics, 2023, 51(3): 1847-1859. DOI: 10.1002/mp.16704\n2. Sizhuo Liu, Shen Zhao, Michael Salerno. Conditional Denoising Diffusion Probabilistic Model (DDPM) for Cardiac Perfusion Image Reconstruction. ISMRM Annual Meeting. DOI: 10.58530/2024/1743\n3. Yuan Gao, Huiqiao Xie, Chihwei Chang, Richard Qiu, Tonghe Wang, Justin Roper, Beth Ghavidel, Jun Zhou, Xiaofeng Yang. CT-based liver synthetic contrast-enhanced CT generation using conditional denoising diffusion probabilistic model. Medical Imaging 2025: Clinical and Biomedical Imaging, 2025, 72. DOI: 10.1117/12.3047724\n4. Qi Gao, Hongming Shan. CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising. Developments in X-Ray Tomography XIV, 2022, 16. DOI: 10.1117/12.2634939\n5. Qiwei Li, Chen Li, Chenggong Yan, Xiaomei Li, Haixia Li, Tianjing Zhang, Hui Song, Roman Schaffert, Weimin Yu, Yu Fan, Jianwei Ye, Hao Chen. Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic model. 2022 International Conference on Cyber-Enabled Distributed Computing and Knowledge Discovery (CyberC), 2022, 198-205. DOI: 10.1109/cyberc55534.2022.00041\n6. Kuang Gong. MR guided PET image denoising based on denoising diffusion probabilistic model and data consistency constraint. Medical Imaging 2023: Physics of Medical Imaging, 2023, 55. DOI: 10.1117/12.2653704\n7. omar sallam, Mirjam Fürth. Conditional diffusion denoising probabilistic model for super-resolution of atmospheric boundary layer large eddy simulation. Elsevier BV, 2026. DOI: 10.2139/ssrn.7030619\n8. Yuan Gao, Huiqiao Xie, Chih-Wei Chang, Richard L. J. Qiu, Tonghe Wang, Justin Roper, Beth Ghavidel, Jun Zhou, Xiaofeng Yang. CT-based synthetic contrast-enhanced virtual monoenergetic images generation using conditional denoising diffusion probabilistic model. Medical Imaging 2025: Imaging Informatics, 2025, 49. DOI: 10.1117/12.3048623\n9. Saritha A N, Sarvesh Rastogi, Shreya Bharamanna Patil, Basavaraj Talawar, Shreya Soni, Setu Mishra. Medical Image Generation using Denoising Diffusion Probabilistic Model. Springer Science and Business Media LLC, 2026. DOI: 10.21203/rs.3.rs-8212171/v1\n10. Reza Kalantar, Gigin Lin, Jessica M Winfield, Christina Messiou, Dow-Mu Koh, Matthew D Blackledge. MED-INPAINT: Medical Image Synthesis Using Multi-Level Conditional Inpainting with a Denoising Diffusion Probabilistic Model and Adaptive Contrast Priors. 2023 IEEE International Conference on Medical Artificial Intelligence (MedAI), 2023, 403-413. DOI: 10.1109/medai59581.2023.00061\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_kIuRMtLOoh0Q8eWfTDQW8352",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_01_WSutDUdNu6BWaUVap7u12986",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：diffusion model sparse-view CT reconstruction score-based\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Chun Yang, Dian Sheng, Bo Yang, Wenfeng Zheng, Chao Liu. A Dual-domain Diffusion Model for Sparse-view CT Reconstruction. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.23726703\\n2. Chun Yang, Dian Sheng, Bo Yang, Wenfeng Zheng, Chao Liu. A Dual-Domain Diffusion Model for Sparse-View CT Reconstruction. IEEE Signal Processing Letters, 2024, 31: 1279-1283. DOI: 10.1109/lsp.2024.3392690\\n3. Chun Yang, Dian Sheng, Bo Yang, Wenfeng Zheng, Lirong Yin, Chao Liu. A Dual-domain Diffusion Model for Sparse-view CT Reconstruction. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.23726703.v1\\n4. Chun Yang, Dian Sheng, Bo Yang, Wenfeng Zheng, Lirong Yin, Chao Liu. A Dual-domain Diffusion Model for Sparse-view CT Reconstruction. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.23726703.v2\\n5. Chenchun Zhou, Yubao Sun, Jing Liang, Jia Liu, Qingshan Liu. Sparse-view CT image reconstruction using conditional embedding fusion diffusion model. Neurocomputing, 2026, 659: 131748. DOI: 10.1016/j.neucom.2025.131748\\n6. Liutao Yang, Jiahao Huang, Guang Yang, Daoqiang Zhang. CT-SDM: A Sampling Diffusion Model for Sparse-View CT Reconstruction Across Various Sampling Rates. IEEE Transactions on Medical Imaging, 2025, 44(6): 2581-2593. DOI: 10.1109/tmi.2025.3541491\\n7. Jia Wu, Pingting Lu, Jing Huang, Biao Qu, Zhangyong Li, Lisha Zhong. Residual Diffusion with Adaptive Data Consistency for Sparse-View CT Reconstruction. Springer Science and Business Media LLC, 2026. DOI: 10.21203/rs.3.rs-10136180/v1\\n8. Jielin Bai, Yitong Liu, Hongwen Yang. Sparse-View CT Reconstruction Based on a Hybrid Domain Model with Multi-Level Wavelet Transform. Sensors, 2022, 22(9): 3228. DOI: 10.3390/s22093228\\n9. Jie Guo, Yizhong Wang, Shaoyu Wang, Zhizhong Zheng, Lei Li, Ailong Cai, Bin Yan. Sparse-view spectral CT reconstruction via a coupled subspace representation and score-based generative model. Quantitative Imaging in Medicine and Surgery, 2025, 15(6): 5474-5495. DOI: 10.21037/qims-24-2226\\n10. JiaFei Xu, ZHENHUA WU, Lixia Yang. Singular Value Decomposition-Based Adaptive Sampling Approximate Message Passing Net for Sparse-View Ct Reconstruction. Elsevier BV, 2023. DOI: 10.2139/ssrn.4539303\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "03c77e97-aa12-41f2-a21f-0a9fa5001a47",
+    "timestamp": "2026-10-31T11:47:21.354Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：diffusion model sparse-view CT reconstruction score-based\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Chun Yang, Dian Sheng, Bo Yang, Wenfeng Zheng, Chao Liu. A Dual-domain Diffusion Model for Sparse-view CT Reconstruction. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.23726703\\n2. Chun Yang, Dian Sheng, Bo Yang, Wenfeng Zheng, Chao Liu. A Dual-Domain Diffusion Model for Sparse-View CT Reconstruction. IEEE Signal Processing Letters, 2024, 31: 1279-1283. DOI: 10.1109/lsp.2024.3392690\\n3. Chun Yang, Dian Sheng, Bo Yang, Wenfeng Zheng, Lirong Yin, Chao Liu. A Dual-domain Diffusion Model for Sparse-view CT Reconstruction. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.23726703.v1\\n4. Chun Yang, Dian Sheng, Bo Yang, Wenfeng Zheng, Lirong Yin, Chao Liu. A Dual-domain Diffusion Model for Sparse-view CT Reconstruction. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.23726703.v2\\n5. Chenchun Zhou, Yubao Sun, Jing Liang, Jia Liu, Qingshan Liu. Sparse-view CT image reconstruction using conditional embedding fusion diffusion model. Neurocomputing, 2026, 659: 131748. DOI: 10.1016/j.neucom.2025.131748\\n6. Liutao Yang, Jiahao Huang, Guang Yang, Daoqiang Zhang. CT-SDM: A Sampling Diffusion Model for Sparse-View CT Reconstruction Across Various Sampling Rates. IEEE Transactions on Medical Imaging, 2025, 44(6): 2581-2593. DOI: 10.1109/tmi.2025.3541491\\n7. Jia Wu, Pingting Lu, Jing Huang, Biao Qu, Zhangyong Li, Lisha Zhong. Residual Diffusion with Adaptive Data Consistency for Sparse-View CT Reconstruction. Springer Science and Business Media LLC, 2026. DOI: 10.21203/rs.3.rs-10136180/v1\\n8. Jielin Bai, Yitong Liu, Hongwen Yang. Sparse-View CT Reconstruction Based on a Hybrid Domain Model with Multi-Level Wavelet Transform. Sensors, 2022, 22(9): 3228. DOI: 10.3390/s22093228\\n9. Jie Guo, Yizhong Wang, Shaoyu Wang, Zhizhong Zheng, Lei Li, Ailong Cai, Bin Yan. Sparse-view spectral CT reconstruction via a coupled subspace representation and score-based generative model. Quantitative Imaging in Medicine and Surgery, 2025, 15(6): 5474-5495. DOI: 10.21037/qims-24-2226\\n10. JiaFei Xu, ZHENHUA WU, Lixia Yang. Singular Value Decomposition-Based Adaptive Sampling Approximate Message Passing Net for Sparse-View Ct Reconstruction. Elsevier BV, 2023. DOI: 10.2139/ssrn.4539303\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：diffusion model sparse-view CT reconstruction score-based\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Chun Yang, Dian Sheng, Bo Yang, Wenfeng Zheng, Chao Liu. A Dual-domain Diffusion Model for Sparse-view CT Reconstruction. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.23726703\n2. Chun Yang, Dian Sheng, Bo Yang, Wenfeng Zheng, Chao Liu. A Dual-Domain Diffusion Model for Sparse-View CT Reconstruction. IEEE Signal Processing Letters, 2024, 31: 1279-1283. DOI: 10.1109/lsp.2024.3392690\n3. Chun Yang, Dian Sheng, Bo Yang, Wenfeng Zheng, Lirong Yin, Chao Liu. A Dual-domain Diffusion Model for Sparse-view CT Reconstruction. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.23726703.v1\n4. Chun Yang, Dian Sheng, Bo Yang, Wenfeng Zheng, Lirong Yin, Chao Liu. A Dual-domain Diffusion Model for Sparse-view CT Reconstruction. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.23726703.v2\n5. Chenchun Zhou, Yubao Sun, Jing Liang, Jia Liu, Qingshan Liu. Sparse-view CT image reconstruction using conditional embedding fusion diffusion model. Neurocomputing, 2026, 659: 131748. DOI: 10.1016/j.neucom.2025.131748\n6. Liutao Yang, Jiahao Huang, Guang Yang, Daoqiang Zhang. CT-SDM: A Sampling Diffusion Model for Sparse-View CT Reconstruction Across Various Sampling Rates. IEEE Transactions on Medical Imaging, 2025, 44(6): 2581-2593. DOI: 10.1109/tmi.2025.3541491\n7. Jia Wu, Pingting Lu, Jing Huang, Biao Qu, Zhangyong Li, Lisha Zhong. Residual Diffusion with Adaptive Data Consistency for Sparse-View CT Reconstruction. Springer Science and Business Media LLC, 2026. DOI: 10.21203/rs.3.rs-10136180/v1\n8. Jielin Bai, Yitong Liu, Hongwen Yang. Sparse-View CT Reconstruction Based on a Hybrid Domain Model with Multi-Level Wavelet Transform. Sensors, 2022, 22(9): 3228. DOI: 10.3390/s22093228\n9. Jie Guo, Yizhong Wang, Shaoyu Wang, Zhizhong Zheng, Lei Li, Ailong Cai, Bin Yan. Sparse-view spectral CT reconstruction via a coupled subspace representation and score-based generative model. Quantitative Imaging in Medicine and Surgery, 2025, 15(6): 5474-5495. DOI: 10.21037/qims-24-2226\n10. JiaFei Xu, ZHENHUA WU, Lixia Yang. Singular Value Decomposition-Based Adaptive Sampling Approximate Message Passing Net for Sparse-View Ct Reconstruction. Elsevier BV, 2023. DOI: 10.2139/ssrn.4539303\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_01_WSutDUdNu6BWaUVap7u12986",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "13742e84-5044-4a78-b109-bbb384d9aabd",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "I have plenty. Now let me think about the reference list. Requirements: 10 English references, each with ALL authors, title, venue, year, volume(issue): pages, DOI.\n\nNeed to be careful with \"all authors\" — Crossref metadata sometimes truncated. Verify tool will check.\n\nCandidate list (10):\n1. Ho J, Jain A, Abbeel P. Denoising Diffusion Probabilistic Models. NeurIPS 2020. DOI 10.48550/arXiv.2006.11239 — but venue NeurIPS, no volume/pages. Hmm. Requirement says volume/pages. Could use Advances in Neural Information Processing Systems 33: 6840-6851. Crossref record? Let me verify.\n\n2. Song Y, Sohl-Dickstein J, Kingma DP, Kumar A, Ermon S, Poole B. Score-Based Generative Modeling through Stochastic Differential Equations. ICLR 2021. arXiv DOI. Venue/pages problematic.\n\nMaybe instead use journal papers to satisfy volume/pages. Alternatives:\n- Dhariwal P, Nichol A. Diffusion Models Beat GANs on Image Synthesis. NeurIPS 2021 — same issue.\n\nSince requirement includes volume/issue/pages, better to choose journal articles mostly. But foundational DDPM is useful. I can cite the NeurIPS proceedings version with pages (NeurIPS 33: 6840–6851) and DOI 10.48550/arXiv.2006.11239. Let's verify.\n\n3. Chen H, Zhang Y, Kalra MK, Lin F, Chen Y, Liao P, Zhou J, Wang G. Low-Dose CT With a Residual Encoder-Decoder Convolutional Neural Network. IEEE TMI 2017;36(12):2524-2535. DOI 10.1109/TMI.2017.2715284. (This is the Red-CNN paper — full authors: Hu Chen, Yi Zhang, Mannudeep K. Kalra, Feng Lin, Yang Chen, Peixi Liao, Jiliu Zhou, Ge Wang.) Good.\n\n4. Gao Q, Shan H. CoCoDiff... Proc. SPIE 12242, Developments in X-Ray Tomography XIV, 122420H? It's 2022, \"16\" in the result probably article number. Crossref said \"2022, 16\". Hmm — pages field might be \"16\". Let me verify.\n\nBetter pick journal papers:\n- Niknejad Mazandarani F, Babyn P, Alirezaie J. SADiff. J Imaging Inform Med 2025;38(6):4255-4275. DOI 10.1007/s10278-025-01469-8. Good.\n- Kim S, Kim B, Baek J. Dose-aware denoising diffusion model for low-dose CT. Phys Med Biol 2025;70(14):145019. DOI 10.1088/1361-6560/ade8cc. Good.\n- Zhao S, Jiang A, Ding J. MoCoDiff. Digital Signal Processing 2025;156:104868. DOI 10.1016/j.dsp.2024.104868. Good.\n- Wang L, Gu L, Yu Z, Du J, Li Y. MSDiff. Neurocomputing 2026;669:132456. DOI 10.1016/j.neucom.2025.132456. Good.\n- Du Y, Liu Y, Wu H, Kang J, Gui Z, Zhang P, Ren Y. Combination of edge enhancement and cold diffusion model for low dose CT image denoising. Biomed Eng/Biomed Tech 2024;70(2):157-169. DOI 10.1515/bmt-2024-0362. Note year listed 2024 but volume 70(2) 2025? Crossref says 2024, 70(2):157-169. Hmm, the journal issue may be 2025. Verify will tell.\n\n- Yang L, Huang J, Yang G, Zhang D. CT-SDM. IEEE TMI 2025;44(6):2581-2593. DOI 10.1109/TMI.2025.3541491. Good — sparse-view, relevant to reconstruction.\n- Liu J, Anirudh R, Thiagarajan JJ, He S, Mohan KA, Kamilov US, Kim H. DOLCE. ICCV 2023:10464-10474. DOI 10.1109/ICCV51070.2023.00963. Good.\n- Li Q, Li C, Yan C, Li X, Li H, Zhang T, Song H, Schaffert R, Yu W, Fan Y, Ye J, Chen H. Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic model. CyberC 2022:198-205. DOI 10.1109/CyberC55534.2022.00041. Good.\n\nPlus foundational: DDPM and maybe Song SDE. Need 10 total.\n\nPossible 10:\n1. Ho et al. DDPM (NeurIPS 2020)\n2. Song et al. Score SDE (ICLR 2021) — maybe skip if metadata problematic\n3. Chen et al. Red-CNN IEEE TMI 2017\n4. Gao & Shan CoCoDiff SPIE 2022\n5. Li et al. CyberC 2022\n6. Du et al. cold diffusion 2024/2025\n7. Niknejad Mazandarani et al. SADiff 2025\n8. Kim et al. dose-aware 2025\n9. Zhao et al. MoCoDiff 2025\n10. Yang et al. CT-SDM 2025\nMaybe also DOLCE or MSDiff.\n\nThe review should discuss: background LDCT noise, why diffusion models (generative, posterior sampling, score), DDPM/SDE foundations, conditional diffusion for LDCT (CoCoDiff, cDDPM), sinogram/dual-domain (SADiff), dose-aware conditioning, efficiency (cold diffusion, distillation/fast sampling), evaluation, challenges (hallucination, data consistency, clinical validation).\n\nI must ensure the reference content matches claims. I should be careful not to overstate specifics I don't know. I can describe generally based on titles.\n\nLet me now verify a draft reference list with the verify tool. Include all 10 with full metadata. Let me first verify the foundational ones' metadata via search or verify.\n\nLet me draft:\n\n[1] Ho J, Jain A, Abbeel P. Denoising Diffusion Probabilistic Models. Advances in Neural Information Processing Systems, 2020, 33: 6840–6851. DOI: 10.48550/arXiv.2006.11239.\n[2] Song Y, Sohl-Dickstein J, Kingma DP, Kumar A, Ermon S, Poole B. Score-Based Generative Modeling through Stochastic Differential Equations. International Conference on Learning Representations (ICLR), 2021. DOI: 10.48550/arXiv.2011.13456. — no volume/pages. Maybe replace with a journal paper on score-based diffusion. Alternatively use \"Song Y, Ermon S. Generative Modeling by Estimating Gradients of the Data Distribution. NeurIPS 2019, 32: 11918–11930.\" DOI maybe 10.48550/arXiv.1907.05600. Still no formal DOI from Crossref.\n\nGiven requirement of volume/pages, I'll avoid conference papers without pages except where pages exist (NeurIPS has pages in the proceedings volume). Actually NeurIPS proceedings volume 33 exists and page numbers are standard. But Crossref DOI is arXiv. It's acceptable.\n\nHmm, but the user asked \"会议/期刊、年份、卷期页码、DOI\" — for conferences, volume/pages may not apply; I'll give what exists.\n\nLet me verify the whole list now and see reports. I'll include 10 candidates.\n\nDraft list:\n[1] Ho, Jain, Abbeel — DDPM, NeurIPS 33:6840-6851, DOI 10.48550/arXiv.2006.11239\n[2] Song et al. — Score SDE, ICLR 2021, DOI 10.48550/arXiv.2011.13456\n[3] Chen H, Zhang Y, Kalra MK, Lin F, Chen Y, Liao P, Zhou J, Wang G. Low-Dose CT With a Residual Encoder-Decoder Convolutional Neural Network. IEEE Transactions on Medical Imaging, 2017, 36(12): 2524-2535. DOI 10.1109/TMI.2017.2715284\n[4] Gao Q, Shan H. CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising. Developments in X-Ray Tomography XIV (Proc. SPIE 12242), 2022, 122420H? Crossref says page 16. Let me put \"2022, 12242: 122420H\" maybe wrong. Better verify.\n[5] Li Q, et al. CyberC 2022: 198-205. DOI 10.1109/CyberC55534.2022.00041\n[6] Du Y, et al. Biomed Tech 2025, 70(2):157-169. DOI 10.1515/bmt-2024-0362\n[7] SADiff J Imaging Inform Med 2025, 38(6):4255-4275\n[8] Kim S, Kim B, Baek J. PMB 2025, 70(14):145019\n[9] Zhao S, Jiang A, Ding J. DSP 2025, 156:104868\n[10] Yang L, Huang J, Yang G, Zhang D. IEEE TMI 2025, 44(6):2581-2593\n\nThat's 10. But maybe replace Song SDE with MSDiff to keep all with solid volume/pages? Foundational SDE citation is valuable though. Let's see verify results.\n\nLet me call verify_references with this list.",
+       "signature": "13742e84-5044-4a78-b109-bbb384d9aabd"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1707,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16768,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "471e0dcd-2c80-4ffd-88b2-0938bdc6010e",
+    "timestamp": "2026-10-31T11:47:33.656Z",
+    "thinking_duration_ms": 11722,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "13742e84-5044-4a78-b109-bbb384d9aabd",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_1dSvvt9TGNbtkg7fZzC77726",
+       "name": "mcp__citeguard__verify_references",
+       "input": {
+        "text": "[1] Ho J, Jain A, Abbeel P. Denoising Diffusion Probabilistic Models. Advances in Neural Information Processing Systems, 2020, 33: 6840-6851. DOI: 10.48550/arXiv.2006.11239\n[2] Song Y, Sohl-Dickstein J, Kingma DP, Kumar A, Ermon S, Poole B. Score-Based Generative Modeling through Stochastic Differential Equations. International Conference on Learning Representations (ICLR), 2021. DOI: 10.48550/arXiv.2011.13456\n[3] Chen H, Zhang Y, Kalra MK, Lin F, Chen Y, Liao P, Zhou J, Wang G. Low-Dose CT With a Residual Encoder-Decoder Convolutional Neural Network. IEEE Transactions on Medical Imaging, 2017, 36(12): 2524-2535. DOI: 10.1109/TMI.2017.2715284\n[4] Gao Q, Shan H. CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising. Developments in X-Ray Tomography XIV, 2022, 12242: 122420H. DOI: 10.1117/12.2634939\n[5] Li Q, Li C, Yan C, Li X, Li H, Zhang T, Song H, Schaffert R, Yu W, Fan Y, Ye J, Chen H. Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic model. 2022 International Conference on Cyber-Enabled Distributed Computing and Knowledge Discovery (CyberC), 2022: 198-205. DOI: 10.1109/CyberC55534.2022.00041\n[6] Du Y, Liu Y, Wu H, Kang J, Gui Z, Zhang P, Ren Y. Combination of edge enhancement and cold diffusion model for low dose CT image denoising. Biomedical Engineering / Biomedizinische Technik, 2025, 70(2): 157-169. DOI: 10.1515/bmt-2024-0362\n[7] Niknejad Mazandarani F, Babyn P, Alirezaie J. SADiff: A Sinogram-Aware Diffusion Model for Low-Dose CT Image Denoising. Journal of Imaging Informatics in Medicine, 2025, 38(6): 4255-4275. DOI: 10.1007/s10278-025-01469-8\n[8] Kim S, Kim B, Baek J. Dose-aware denoising diffusion model for low-dose CT. Physics in Medicine & Biology, 2025, 70(14): 145019. DOI: 10.1088/1361-6560/ade8cc\n[9] Zhao S, Jiang A, Ding J. MoCoDiff: Momentum context diffusion model for low-dose CT denoising. Digital Signal Processing, 2025, 156: 104868. DOI: 10.1016/j.dsp.2024.104868\n[10] Yang L, Huang J, Yang G, Zhang D. CT-SDM: A Sampling Diffusion Model for Sparse-View CT Reconstruction Across Various Sampling Rates. IEEE Transactions on Medical Imaging, 2025, 44(6): 2581-2593. DOI: 10.1109/TMI.2025.3541491"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1707,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16768,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "fe16c4b7-e5c7-4de0-b8a8-cc616387effe",
+    "timestamp": "2026-10-31T11:47:36.276Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_1dSvvt9TGNbtkg7fZzC77726",
+      "display_name": "Verify References",
+      "server_display_name": "citeguard",
+      "tool_name": "verify_references"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_1dSvvt9TGNbtkg7fZzC77726",
+       "type": "tool_result",
+       "content": "{\"result\":\"## CiteGuard 核查报告\\n\\n共 10 条：✅ 10　⚠️ 0　❌ 0　❓ 0\\n\\n### [1] ✅ VERIFIED　《Denoising Diffusion Probabilistic Models》\\n\\n\\n### [2] ✅ VERIFIED　《Score-Based Generative Modeling through Stochastic Differential Equations》\\n\\n\\n### [3] ✅ VERIFIED　《Low-Dose CT With a Residual Encoder-Decoder Convolutional Neural Network》\\n\\n\\n### [4] ✅ VERIFIED　《CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising》\\n\\n\\n### [5] ✅ VERIFIED　《Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic model》\\n\\n\\n### [6] ✅ VERIFIED　《Combination of edge enhancement and cold diffusion model for low dose CT image denoising》\\n\\n\\n### [7] ✅ VERIFIED　《SADiff: A Sinogram-Aware Diffusion Model for Low-Dose CT Image Denoising》\\n\\n\\n### [8] ✅ VERIFIED　《Dose-aware denoising diffusion model for low-dose CT》\\n\\n\\n### [9] ✅ VERIFIED　《MoCoDiff: Momentum context diffusion model for low-dose CT denoising》\\n\\n\\n### [10] ✅ VERIFIED　《CT-SDM: A Sampling Diffusion Model for Sparse-View CT Reconstruction Across Various Sampling Rates》\\n\\n\\n全部通过核查（❓ 条目除外），可以输出终稿。\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "148764de-5ea5-437f-8127-3ba11667b97c",
+    "timestamp": "2026-10-31T11:47:38.196Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## CiteGuard 核查报告\\n\\n共 10 条：✅ 10　⚠️ 0　❌ 0　❓ 0\\n\\n### [1] ✅ VERIFIED　《Denoising Diffusion Probabilistic Models》\\n\\n\\n### [2] ✅ VERIFIED　《Score-Based Generative Modeling through Stochastic Differential Equations》\\n\\n\\n### [3] ✅ VERIFIED　《Low-Dose CT With a Residual Encoder-Decoder Convolutional Neural Network》\\n\\n\\n### [4] ✅ VERIFIED　《CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising》\\n\\n\\n### [5] ✅ VERIFIED　《Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic model》\\n\\n\\n### [6] ✅ VERIFIED　《Combination of edge enhancement and cold diffusion model for low dose CT image denoising》\\n\\n\\n### [7] ✅ VERIFIED　《SADiff: A Sinogram-Aware Diffusion Model for Low-Dose CT Image Denoising》\\n\\n\\n### [8] ✅ VERIFIED　《Dose-aware denoising diffusion model for low-dose CT》\\n\\n\\n### [9] ✅ VERIFIED　《MoCoDiff: Momentum context diffusion model for low-dose CT denoising》\\n\\n\\n### [10] ✅ VERIFIED　《CT-SDM: A Sampling Diffusion Model for Sparse-View CT Reconstruction Across Various Sampling Rates》\\n\\n\\n全部通过核查（❓ 条目除外），可以输出终稿。\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## CiteGuard 核查报告\n\n共 10 条：✅ 10　⚠️ 0　❌ 0　❓ 0\n\n### [1] ✅ VERIFIED　《Denoising Diffusion Probabilistic Models》\n\n\n### [2] ✅ VERIFIED　《Score-Based Generative Modeling through Stochastic Differential Equations》\n\n\n### [3] ✅ VERIFIED　《Low-Dose CT With a Residual Encoder-Decoder Convolutional Neural Network》\n\n\n### [4] ✅ VERIFIED　《CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising》\n\n\n### [5] ✅ VERIFIED　《Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic model》\n\n\n### [6] ✅ VERIFIED　《Combination of edge enhancement and cold diffusion model for low dose CT image denoising》\n\n\n### [7] ✅ VERIFIED　《SADiff: A Sinogram-Aware Diffusion Model for Low-Dose CT Image Denoising》\n\n\n### [8] ✅ VERIFIED　《Dose-aware denoising diffusion model for low-dose CT》\n\n\n### [9] ✅ VERIFIED　《MoCoDiff: Momentum context diffusion model for low-dose CT denoising》\n\n\n### [10] ✅ VERIFIED　《CT-SDM: A Sampling Diffusion Model for Sparse-View CT Reconstruction Across Various Sampling Rates》\n\n\n全部通过核查（❓ 条目除外），可以输出终稿。\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_1dSvvt9TGNbtkg7fZzC77726",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "7b8687ae-ceaf-4a05-8e7c-11f0b3cf17ee",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "All 10 verified. Now write the ~600 Chinese character review. Note \"约600字\" — about 600 Chinese characters/words. I'll aim ~650-700 characters (Chinese \"字\" means characters). Around 600-700 is fine.\n\nStructure:\n- 引言/背景: LDCT 噪声、传统与CNN局限\n- 扩散模型原理: 前向加噪/反向去噪, DDPM, score SDE\n- 条件扩散用于LDCT: cDDPM, CoCoDiff\n- 数据域扩展: 正弦图感知 SADiff, 剂量感知\n- 效率与保真: cold diffusion/边缘增强, 动量上下文 MoCoDiff\n- 评估与挑战: 幻觉、数据一致性、泛化、临床验证\n- 结论\n\nNeed citations mapped correctly. Let me ensure claims align:\n[1] DDPM foundation.\n[2] Score SDE.\n[3] Red-CNN baseline: residual encoder-decoder CNN for LDCT.\n[4] CoCoDiff: contextual conditional diffusion for LDCT denoising.\n[5] Conditional DDPM for ultra-low dose CT denoising.\n[6] Edge enhancement + cold diffusion for LDCT.\n[7] SADiff: sinogram-aware diffusion.\n[8] Dose-aware DDPM.\n[9] MoCoDiff: momentum context diffusion.\n[10] CT-SDM: sampling diffusion model for sparse-view CT reconstruction across sampling rates — reconstruction, can mention as extending to sparse-view/inverse problems.\n\nWord count ~600. Let me write.\n\nDraft:\n\n## 扩散模型在低剂量 CT 图像去噪中的研究进展\n\n低剂量 CT（LDCT）通过降低管电流或管电压减少辐射暴露，但光子计数不足会引入量子噪声、电子噪声与条状伪影，显著降低图像质量并影响诊断。传统滤波方法易模糊边缘，基于卷积神经网络（CNN）的监督去噪（如残差编码器—解码器网络）虽显著优于传统方法，却依赖成对数据、易过平滑，且在分布外剂量下泛化有限[3]。\n\n扩散模型为上述问题提供了新的生成式建模范式。以去噪扩散概率模型（DDPM）为代表的方法通过前向马尔可夫链逐步向图像注入高斯噪声，再学习反向过程从纯噪声中逐步恢复干净图像[1]；基于随机微分方程（SDE）的分数匹配框架则将前向与反向过程统一为连续时间扩散，并可用概率流ODE实现确定性采样[2]。相比GAN与CNN，扩散模型训练更稳定、模式覆盖更完整，且其迭代去噪过程天然适合作为图像先验嵌入逆问题求解。\n\n将扩散模型用于LDCT去噪的关键在于条件化。条件DDPM以低剂量图像或噪声水平为条件引导反向采样，已在超低剂量CT上显示出优于基线网络的噪声抑制与结构保持能力[5]；CoCoDiff进一步引入上下文条件，在去噪的同时增强局部解剖结构的一致性[4]。为利用投影域信息，SADiff将正弦图特征融入扩散过程，实现图像域与投影域联合约束，有助于抑制条状伪影[7]；剂量感知扩散模型则显式建模不同剂量水平，使单一模型可适应多剂量场景[8]。\n\n在效率与细节保真方面，冷扩散（cold diffusion）以确定性退化替代高斯加噪，并结合边缘增强模块，在较少采样步数下改善锐度[6]；MoCoDiff利用动量上下文聚合多步去噪特征，缓解迭代过程中的细节漂移[9]。此外，采样扩散模型通过跨采样率的统一采样策略，将扩散先验拓展至稀疏视角CT重建等更广泛的逆问题[10]。\n\n尽管进展显著，扩散模型在LDCT中仍面临挑战：生成式先验可能产生看似合理却不存在的结构（幻觉），需引入数据一致性约束与不确定性估计；多步采样带来较高计算成本，蒸馏与快速采样仍是临床落地的瓶颈；此外，现有评价多依赖PSNR/SSIM等指标，缺乏与大读者研究的关联验证。未来工作应在真实临床数据上开展多中心验证，发展可控、可解释且高效的扩散框架，并建立兼顾噪声抑制、结构保真与诊断效能的评价体系。\n\nReferences.\n\nLet me count characters roughly. The body is likely ~750 Chinese characters. \"约600字\" — I should trim to ~600-650. Let me count more carefully later.\n\nLet me estimate: paragraph 1 ~160 chars, p2 ~190, p3 ~200, p4 ~150, p5 ~180. Total ~880. Too long. Need ~600. Trim.\n\nAim ~620 characters. Let me rewrite tighter.\n\nP1 (~110):\n低剂量CT（LDCT）通过降低管电流减少辐射，但光子不足带来量子噪声与条状伪影。传统滤波易模糊边缘，卷积神经网络去噪虽有效，却依赖成对数据且易过平滑[3]。\n\nP2 (~140):\n扩散模型提供了生成式新范式。去噪扩散概率模型（DDPM）以马尔可夫链逐步加噪并学习反向去噪[1]；基于随机微分方程的分数匹配框架将前向与反向过程统一为连续时间扩散，支持概率流采样[2]。其训练稳定、模式覆盖充分，迭代过程可自然作为图像先验嵌入逆问题。\n\nP3 (~150):\n用于LDCT时，条件化是关键。条件DDPM以低剂量图像为条件引导反向采样，在超低剂量CT上兼顾噪声抑制与结构保持[5]；CoCoDiff引入上下文条件增强解剖一致性[4]。SADiff将正弦图特征融入扩散过程，联合图像域与投影域约束以抑制条状伪影[7]；剂量感知模型显式建模剂量水平，使单一模型适应多剂量场景[8]。\n\nP4 (~110):\n效率与细节方面，冷扩散以确定性退化替代高斯加噪并结合边缘增强，在较少步数下改善锐度[6]；MoCoDiff用动量上下文聚合多步特征，缓解细节漂移[9]；采样扩散模型则将先验拓展至稀疏视角CT重建[10]。\n\nP5 (~140):\n挑战仍存：生成先验可能虚构结构，需数据一致性约束与不确定性估计；多步采样计算昂贵，蒸馏与快速采样制约临床落地；评价多依赖PSNR/SSIM，缺乏读者研究支持。未来需多中心临床验证，并构建兼顾噪声抑制、结构保真与诊断效能的评价体系。\n\nTotal roughly 650. Good enough \"约600字\".\n\nI'll add a title and references. References formatting with all authors, title, venue, year, volume(issue): pages, DOI.\n\nFor [1] NeurIPS: \"Advances in Neural Information Processing Systems, 2020, 33: 6840-6851.\" Fine.\nFor [2] ICLR: no volume/pages — \"International Conference on Learning Representations (ICLR), 2021.\" That's acceptable since conference. Maybe add arXiv. DOI given.\n\nFor [4] CoCoDiff: I used 12242: 122420H. Verify passed. But Crossref said \"2022, 16\" — maybe article 16 within Proc SPIE 12242. The actual SPIE paper number: Proceedings Volume 12242, Developments in X-Ray Tomography XIV; 122420H. I believe that's plausible. But verify passed with that exact metadata, meaning it checked out. Good.\n\nWait — verify passing might only check title/DOI, not pages. It says metadata correct. Trust it.\n\nFor [6] year: Crossref listed 2024 but volume 70(2) 157-169; verify passed with 2025. Hmm, it passed both? I wrote 2025. The journal Biomedizinische Technik volume 70 issue 2 is 2025 (published online 2024). Verify accepted. Fine.\n\nLet me write final answer in Chinese. Include a note that references verified? Not necessary, but nice. Keep concise.\n\nAlso need to ensure in-text citation numbers match. Yes.\n\nLet me produce output.",
+       "signature": "7b8687ae-ceaf-4a05-8e7c-11f0b3cf17ee"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 418,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 21376,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "4373b9ad-9d0a-4930-a387-646b62b59bc8",
+    "timestamp": "2026-10-31T11:47:50.753Z",
+    "thinking_duration_ms": 11939,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "7b8687ae-ceaf-4a05-8e7c-11f0b3cf17ee",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "text",
+       "text": "# 扩散模型在低剂量 CT 图像去噪中的研究进展\n\n低剂量 CT（LDCT）通过降低管电流减少辐射暴露，但光子计数不足会引入量子噪声与条状伪影。传统滤波易模糊边缘；基于卷积神经网络的去噪虽显著优于传统方法，却依赖成对数据、易产生过平滑，且跨剂量泛化有限[3]。\n\n扩散模型为此提供了生成式建模范式。去噪扩散概率模型（DDPM）通过马尔可夫链逐步加噪，并学习反向过程从噪声中恢复图像[1]；基于随机微分方程的分数匹配框架将前向与反向过程统一为连续时间扩散，支持概率流采样[2]。该类模型训练稳定、模式覆盖充分，其迭代去噪过程可自然作为图像先验嵌入逆问题求解。\n\n用于 LDCT 时，条件化是关键。条件 DDPM 以低剂量图像为条件引导反向采样，在超低剂量 CT 上兼顾噪声抑制与结构保持[5]；CoCoDiff 引入上下文条件，增强局部解剖结构的一致性[4]。为利用投影域信息，SADiff 将正弦图特征融入扩散过程，联合图像域与投影域约束以抑制条状伪影[7]；剂量感知扩散模型显式建模剂量水平，使单一模型可适应多剂量场景[8]。\n\n在效率与细节保真方面，冷扩散以确定性退化替代高斯加噪并结合边缘增强，在较少采样步数下改善图像锐度[6]；MoCoDiff 利用动量上下文聚合多步去噪特征，缓解迭代中的细节漂移[9]；采样扩散模型则通过跨采样率的统一策略，将扩散先验拓展至稀疏视角 CT 重建[10]。\n\n挑战仍然存在：生成式先验可能虚构不存在的结构，需引入数据一致性约束与不确定性估计；多步采样计算成本高，蒸馏与快速采样制约临床落地；评价多依赖 PSNR/SSIM，缺乏读者研究支持。未来应在真实临床数据上开展多中心验证，发展可控、可解释且高效的扩散框架，并建立兼顾噪声抑制、结构保真与诊断效能的评价体系。\n\n## 参考文献\n\n[1] Ho J, Jain A, Abbeel P. Denoising Diffusion Probabilistic Models. Advances in Neural Information Processing Systems, 2020, 33: 6840–6851. DOI: 10.48550/arXiv.2006.11239.\n\n[2] Song Y, Sohl-Dickstein J, Kingma D P, Kumar A, Ermon S, Poole B. Score-Based Generative Modeling through Stochastic Differential Equations. International Conference on Learning Representations (ICLR), 2021. DOI: 10.48550/arXiv.2011.13456.\n\n[3] Chen H, Zhang Y, Kalra M K, Lin F, Chen Y, Liao P, Zhou J, Wang G. Low-Dose CT With a Residual Encoder-Decoder Convolutional Neural Network. IEEE Transactions on Medical Imaging, 2017, 36(12): 2524–2535. DOI: 10.1109/TMI.2017.2715284.\n\n[4] Gao Q, Shan H. CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising. Developments in X-Ray Tomography XIV, 2022, 12242: 122420H. DOI: 10.1117/12.2634939.\n\n[5] Li Q, Li C, Yan C, Li X, Li H, Zhang T, Song H, Schaffert R, Yu W, Fan Y, Ye J, Chen H. Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic Model. 2022 International Conference on Cyber-Enabled Distributed Computing and Knowledge Discovery (CyberC), 2022: 198–205. DOI: 10.1109/CyberC55534.2022.00041.\n\n[6] Du Y, Liu Y, Wu H, Kang J, Gui Z, Zhang P, Ren Y. Combination of edge enhancement and cold diffusion model for low dose CT image denoising. Biomedical Engineering / Biomedizinische Technik, 2025, 70(2): 157–169. DOI: 10.1515/bmt-2024-0362.\n\n[7] Niknejad Mazandarani F, Babyn P, Alirezaie J. SADiff: A Sinogram-Aware Diffusion Model for Low-Dose CT Image Denoising. Journal of Imaging Informatics in Medicine, 2025, 38(6): 4255–4275. DOI: 10.1007/s10278-025-01469-8.\n\n[8] Kim S, Kim B, Baek J. Dose-aware denoising diffusion model for low-dose CT. Physics in Medicine & Biology, 2025, 70(14): 145019. DOI: 10.1088/1361-6560/ade8cc.\n\n[9] Zhao S, Jiang A, Ding J. MoCoDiff: Momentum context diffusion model for low-dose CT denoising. Digital Signal Processing, 2025, 156: 104868. DOI: 10.1016/j.dsp.2024.104868.\n\n[10] Yang L, Huang J, Yang G, Zhang D. CT-SDM: A Sampling Diffusion Model for Sparse-View CT Reconstruction Across Various Sampling Rates. IEEE Transactions on Medical Imaging, 2025, 44(6): 2581–2593. DOI: 10.1109/TMI.2025.3541491."
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 418,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 21376,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "uuid": "0c5da2c4-1071-42fa-a823-103151cb3355",
+    "timestamp": "2026-10-31T11:47:55.630Z"
+   },
+   {
+    "duration_api_ms": 48652,
+    "stop_reason": "end_turn",
+    "session_id": "367e4e97-bc34-4ffc-8df6-98d4fbc42dd4",
+    "total_cost_usd": 0.33643700000000004,
+    "usage": {
+     "input_tokens": 17652,
+     "cache_creation_input_tokens": 0,
+     "cache_read_input_tokens": 120704,
+     "output_tokens": 7513,
+     "output_tokens_details": {
+      "thinking_tokens": 0
+     },
+     "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+     },
+     "service_tier": "standard",
+     "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+     },
+     "inference_geo": "",
+     "iterations": [],
+     "speed": "standard",
+     "fallback_credit": null
+    },
+    "modelUsage": {
+     "deepseek-flash": {
+      "inputTokens": 17652,
+      "outputTokens": 7513,
+      "cacheReadInputTokens": 120704,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.33643700000000004,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "deepseek-flash",
+      "provider": "firstParty",
+      "costBasis": "unknown"
+     }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+     "spawned": 0,
+     "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+     },
+     "started_in_background": 0,
+     "max_depth": 0,
+     "spawned_by_subagents": 0,
+     "completed": 0,
+     "failed": 0,
+     "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+     },
+     "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+     },
+     "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 10,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "# 扩散模型在低剂量 CT 图像去噪中的研究进展\n\n低剂量 CT（LDCT）通过降低管电流减少辐射暴露，但光子计数不足会引入量子噪声与条状伪影。传统滤波易模糊边缘；基于卷积神经网络的去噪虽显著优于传统方法，却依赖成对数据、易产生过平滑，且跨剂量泛化有限[3]。\n\n扩散模型为此提供了生成式建模范式。去噪扩散概率模型（DDPM）通过马尔可夫链逐步加噪，并学习反向过程从噪声中恢复图像[1]；基于随机微分方程的分数匹配框架将前向与反向过程统一为连续时间扩散，支持概率流采样[2]。该类模型训练稳定、模式覆盖充分，其迭代去噪过程可自然作为图像先验嵌入逆问题求解。\n\n用于 LDCT 时，条件化是关键。条件 DDPM 以低剂量图像为条件引导反向采样，在超低剂量 CT 上兼顾噪声抑制与结构保持[5]；CoCoDiff 引入上下文条件，增强局部解剖结构的一致性[4]。为利用投影域信息，SADiff 将正弦图特征融入扩散过程，联合图像域与投影域约束以抑制条状伪影[7]；剂量感知扩散模型显式建模剂量水平，使单一模型可适应多剂量场景[8]。\n\n在效率与细节保真方面，冷扩散以确定性退化替代高斯加噪并结合边缘增强，在较少采样步数下改善图像锐度[6]；MoCoDiff 利用动量上下文聚合多步去噪特征，缓解迭代中的细节漂移[9]；采样扩散模型则通过跨采样率的统一策略，将扩散先验拓展至稀疏视角 CT 重建[10]。\n\n挑战仍然存在：生成式先验可能虚构不存在的结构，需引入数据一致性约束与不确定性估计；多步采样计算成本高，蒸馏与快速采样制约临床落地；评价多依赖 PSNR/SSIM，缺乏读者研究支持。未来应在真实临床数据上开展多中心验证，发展可控、可解释且高效的扩散框架，并建立兼顾噪声抑制、结构保真与诊断效能的评价体系。\n\n## 参考文献\n\n[1] Ho J, Jain A, Abbeel P. Denoising Diffusion Probabilistic Models. Advances in Neural Information Processing Systems, 2020, 33: 6840–6851. DOI: 10.48550/arXiv.2006.11239.\n\n[2] Song Y, Sohl-Dickstein J, Kingma D P, Kumar A, Ermon S, Poole B. Score-Based Generative Modeling through Stochastic Differential Equations. International Conference on Learning Representations (ICLR), 2021. DOI: 10.48550/arXiv.2011.13456.\n\n[3] Chen H, Zhang Y, Kalra M K, Lin F, Chen Y, Liao P, Zhou J, Wang G. Low-Dose CT With a Residual Encoder-Decoder Convolutional Neural Network. IEEE Transactions on Medical Imaging, 2017, 36(12): 2524–2535. DOI: 10.1109/TMI.2017.2715284.\n\n[4] Gao Q, Shan H. CoCoDiff: a contextual conditional diffusion model for low-dose CT image denoising. Developments in X-Ray Tomography XIV, 2022, 12242: 122420H. DOI: 10.1117/12.2634939.\n\n[5] Li Q, Li C, Yan C, Li X, Li H, Zhang T, Song H, Schaffert R, Yu W, Fan Y, Ye J, Chen H. Ultra-low Dose CT Image Denoising based on Conditional Denoising Diffusion Probabilistic Model. 2022 International Conference on Cyber-Enabled Distributed Computing and Knowledge Discovery (CyberC), 2022: 198–205. DOI: 10.1109/CyberC55534.2022.00041.\n\n[6] Du Y, Liu Y, Wu H, Kang J, Gui Z, Zhang P, Ren Y. Combination of edge enhancement and cold diffusion model for low dose CT image denoising. Biomedical Engineering / Biomedizinische Technik, 2025, 70(2): 157–169. DOI: 10.1515/bmt-2024-0362.\n\n[7] Niknejad Mazandarani F, Babyn P, Alirezaie J. SADiff: A Sinogram-Aware Diffusion Model for Low-Dose CT Image Denoising. Journal of Imaging Informatics in Medicine, 2025, 38(6): 4255–4275. DOI: 10.1007/s10278-025-01469-8.\n\n[8] Kim S, Kim B, Baek J. Dose-aware denoising diffusion model for low-dose CT. Physics in Medicine & Biology, 2025, 70(14): 145019. DOI: 10.1088/1361-6560/ade8cc.\n\n[9] Zhao S, Jiang A, Ding J. MoCoDiff: Momentum context diffusion model for low-dose CT denoising. Digital Signal Processing, 2025, 156: 104868. DOI: 10.1016/j.dsp.2024.104868.\n\n[10] Yang L, Huang J, Yang G, Zhang D. CT-SDM: A Sampling Diffusion Model for Sparse-View CT Reconstruction Across Various Sampling Rates. IEEE Transactions on Medical Imaging, 2025, 44(6): 2581–2593. DOI: 10.1109/TMI.2025.3541491.",
+    "ttft_ms": 2052,
+    "type": "result",
+    "duration_ms": 54307,
+    "uuid": "4082bc1b-a9b6-4a88-9366-7991406257cb",
+    "ttft_stream_ms": 924,
+    "time_to_request_ms": 150,
+    "first_content_frame_ms": 924,
+    "time_to_request_from_spawn_ms": 1223684,
+    "warm_spare_claimed": false,
+    "flag_fetch_kick": "started_after_init_empty",
+    "time_origin_ms": 1793447219963.651,
+    "queued_turn_count": 0,
+    "result_index": 0,
+    "model_usage_since_last_result": {
+     "deepseek-flash": {
+      "inputTokens": 17652,
+      "outputTokens": 7513,
+      "cacheReadInputTokens": 120704,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.33643700000000004,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "deepseek-flash",
+      "provider": "firstParty",
+      "costBasis": "unknown"
+     }
+    }
+   }
+  ]
+ },
+ "error": null
+}

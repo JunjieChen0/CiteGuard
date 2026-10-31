@@ -1,0 +1,1763 @@
+{
+ "slug": "kd-edge-detection",
+ "topic": "知识蒸馏用于边缘设备上的目标检测",
+ "kind": "niche",
+ "condition": "S-noskill",
+ "run": 1,
+ "prompt": "用中文写一篇约 600 字的综述，主题是：知识蒸馏用于边缘设备上的目标检测。文末列出 10 条英文参考文献，每条包含全部作者、标题、会议/期刊、年份、卷期页码、DOI。",
+ "timestamp": "2026-10-31T11:54:38.809512+00:00",
+ "elapsed_s": 60,
+ "response": {
+  "duration_api_ms": 43848,
+  "stop_reason": "end_turn",
+  "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+  "total_cost_usd": 0.33669099999999996,
+  "usage": {
+   "input_tokens": 21907,
+   "cache_creation_input_tokens": 0,
+   "cache_read_input_tokens": 86912,
+   "output_tokens": 7348,
+   "output_tokens_details": {
+    "thinking_tokens": 0
+   },
+   "server_tool_use": {
+    "web_search_requests": 0,
+    "web_fetch_requests": 0
+   },
+   "service_tier": "standard",
+   "cache_creation": {
+    "ephemeral_1h_input_tokens": 0,
+    "ephemeral_5m_input_tokens": 0
+   },
+   "inference_geo": "",
+   "iterations": [],
+   "speed": "standard",
+   "fallback_credit": null
+  },
+  "modelUsage": {
+   "deepseek-flash": {
+    "inputTokens": 21907,
+    "outputTokens": 7348,
+    "cacheReadInputTokens": 86912,
+    "cacheCreationInputTokens": 0,
+    "webSearchRequests": 0,
+    "costUSD": 0.33669099999999996,
+    "contextWindow": 200000,
+    "maxOutputTokens": 32000,
+    "thinkingTokens": 0,
+    "cacheCreationEphemeral5mInputTokens": 0,
+    "cacheCreationEphemeral1hInputTokens": 0,
+    "canonicalModel": "deepseek-flash",
+    "provider": "firstParty",
+    "costBasis": "unknown"
+   }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+   "spawned": 0,
+   "requested": {
+    "background": 0,
+    "foreground": 0,
+    "unset": 0
+   },
+   "started_in_background": 0,
+   "max_depth": 0,
+   "spawned_by_subagents": 0,
+   "completed": 0,
+   "failed": 0,
+   "killed": {
+    "parent": 0,
+    "user": 0,
+    "system": 0
+   },
+   "refused": {
+    "depth_limit": 0,
+    "concurrency_limit": 0,
+    "budget": 0
+   },
+   "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 15,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "# 面向边缘设备目标检测的知识蒸馏综述\n\n随着智能监控、无人机和移动机器人的普及，在算力、功耗与存储受限的边缘设备上部署目标检测模型已成为迫切需求。为了保证检测精度，精度较高的检测器通常参数量大、推理延迟高，难以直接部署；而仅把模型压缩成轻量模型，又会导致明显的精度损失。知识蒸馏通过让轻量学生模型模仿教师模型的输出或中间表示，为平衡精度与效率提供了一条可行途径[1]。\n\n按照迁移的知识形式，检测蒸馏可分为响应型、特征型和关系型三类。响应型蒸馏对齐教师模型的分类软标签和边界框回归输出；特征型蒸馏约束学生模型与教师模型在骨干网络或颈部网络（neck）上的特征图，例如细粒度特征模仿方法通过注意力掩码聚焦前景区域，从而缓解检测中背景占主导的问题[2,3]。关系型方法进一步建模样本或区域之间的结构关系，对教师模型与学生模型之间的容量差距更稳健[1]。\n\n检测任务的特殊性在于前景与背景极不均衡，且目标尺度跨度大。因此，特征金字塔网络提供的多尺度表示常被用作蒸馏的中间桥梁[4]；MobileNetV2 等轻量骨干网络[5]与 YOLO 等单阶段检测器[6]则是最常见的学生模型。针对边缘场景，已有研究将蒸馏用于超轻量道路目标检测[7]、红外图像中 YOLOv8 的轻量化[8]，以及边缘计算下的实时开关检测[9]，在保持实时性的同时缩小了与教师模型的差距。在三维检测领域，也出现了系统性的蒸馏框架[10]。\n\n当前仍存在教师模型与学生模型容量失配、边缘无标注数据利用不足、跨传感器异构知识迁移困难等问题。未来可探索多教师协同、自蒸馏与部署感知的联合优化，将蒸馏与剪枝、量化结合，并在真实的边缘硬件上建立兼顾精度、延迟与能耗的评测基准。\n\n## 参考文献\n\n[1] Jianping Gou, Baosheng Yu, Stephen J. Maybank, Dacheng Tao. Knowledge Distillation: A Survey. International Journal of Computer Vision, 2021, 129(6): 1789–1819. DOI: 10.1007/s11263-021-01453-z.\n\n[2] Quanquan Li, Shengying Jin, Junjie Yan. Mimicking Very Efficient Network for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 7341–7349. DOI: 10.1109/cvpr.2017.776.\n\n[3] Tao Wang, Li Yuan, Xiaopeng Zhang, Jiashi Feng. Distilling Object Detectors with Fine-Grained Feature Imitation. 2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2019, 4928–4937. DOI: 10.1109/cvpr.2019.00507.\n\n[4] Tsung-Yi Lin, Piotr Dollár, Ross Girshick, Kaiming He, Bharath Hariharan, Serge Belongie. Feature Pyramid Networks for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 936–944. DOI: 10.1109/cvpr.2017.106.\n\n[5] Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen. MobileNetV2: Inverted Residuals and Linear Bottlenecks. 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2018, 4510–4520. DOI: 10.1109/cvpr.2018.00474.\n\n[6] Joseph Redmon, Santosh Divvala, Ross Girshick, Ali Farhadi. You Only Look Once: Unified, Real-Time Object Detection. 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2016, 779–788. DOI: 10.1109/cvpr.2016.91.\n\n[7] Duan-Yu Chen, Yi-Wen Hsu. Knowledge Distillation Boosted Ultra-light Weight Road Object Detection on Edge Device. 2023 IEEE 6th International Conference on Knowledge Innovation and Invention (ICKII), 2023, 456–460. DOI: 10.1109/ickii58656.2023.10332715.\n\n[8] Xiancheng Cao, Yueli Hu, Haikun Zhang. LKD-YOLOv8: A Lightweight Knowledge Distillation-Based Method for Infrared Object Detection. Sensors, 2025, 25(13): 4054. DOI: 10.3390/s25134054.\n\n[9] Bingchan Li, Chunguo Li. Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing. 2024 Twelfth International Conference on Advanced Cloud and Big Data (CBD), 2024, 102–105. DOI: 10.1109/cbd65573.2024.00028.\n\n[10] Jihan Yang, Shaoshuai Shi, Runyu Ding, Zhe Wang, Xiaojuan Qi. Towards Efficient 3D Object Detection with Knowledge Distillation. Advances in Neural Information Processing Systems 35, 2022, 21300–21313. DOI: 10.52202/068431-1548.\n\n以上 10 条参考文献均已通过 CiteGuard 核查，其作者、标题、会议或期刊、年份、卷期页码与 DOI 均真实且一致。",
+  "ttft_ms": 2581,
+  "type": "result",
+  "duration_ms": 57999,
+  "uuid": "726a8fa9-6e05-4e11-a5a1-1d4e71e1aac0",
+  "ttft_stream_ms": 1256,
+  "time_to_request_ms": 189,
+  "first_content_frame_ms": 1256,
+  "time_to_request_from_spawn_ms": 1622905,
+  "warm_spare_claimed": false,
+  "flag_fetch_kick": "started_after_init_empty",
+  "time_origin_ms": 1793447618905.6445,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+   "deepseek-flash": {
+    "inputTokens": 21907,
+    "outputTokens": 7348,
+    "cacheReadInputTokens": 86912,
+    "cacheCreationInputTokens": 0,
+    "webSearchRequests": 0,
+    "costUSD": 0.33669099999999996,
+    "contextWindow": 200000,
+    "maxOutputTokens": 32000,
+    "thinkingTokens": 0,
+    "cacheCreationEphemeral5mInputTokens": 0,
+    "cacheCreationEphemeral1hInputTokens": 0,
+    "canonicalModel": "deepseek-flash",
+    "provider": "firstParty",
+    "costBasis": "unknown"
+   }
+  },
+  "transcript": [
+   {
+    "type": "system",
+    "subtype": "init",
+    "cwd": "/tmp/citeguard-S-noskill-b_toyx2e",
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "tools": [
+     "Task",
+     "Bash",
+     "CronCreate",
+     "CronDelete",
+     "CronList",
+     "DesignSync",
+     "Edit",
+     "EnterWorktree",
+     "ExitWorktree",
+     "ListAgents",
+     "ListMcpResourcesTool",
+     "Monitor",
+     "NotebookEdit",
+     "Read",
+     "ReadMcpResourceDirTool",
+     "ReadMcpResourceTool",
+     "ReportFindings",
+     "ScheduleWakeup",
+     "SendMessage",
+     "Skill",
+     "TaskStop",
+     "ToolSearch",
+     "WebFetch",
+     "WebSearch",
+     "Workflow",
+     "Write",
+     "mcp__citeguard__search_papers",
+     "mcp__citeguard__verify_references"
+    ],
+    "mcp_servers": [
+     {
+      "name": "citeguard",
+      "status": "connected",
+      "source": "dynamic"
+     }
+    ],
+    "model": "deepseek-flash",
+    "permissionMode": "default",
+    "slash_commands": [
+     "deep-research",
+     "design",
+     "design-sync",
+     "dataviz",
+     "update-config",
+     "verify",
+     "debug",
+     "code-review",
+     "simplify",
+     "batch",
+     "fewer-permission-prompts",
+     "doctor",
+     "loop",
+     "claude-api",
+     "workflow-authoring",
+     "run",
+     "run-skill-generator",
+     "plugin-authoring",
+     "agents",
+     "auto-mode-setup",
+     "autocompact",
+     "clear",
+     "color",
+     "compact",
+     "config",
+     "output-style",
+     "context",
+     "effort",
+     "fast",
+     "focus",
+     "heapdump",
+     "init",
+     "mcp",
+     "model",
+     "__remote-workflow",
+     "workflow-launch-exec",
+     "reload-plugins",
+     "reload-skills",
+     "rename",
+     "security-review",
+     "usage",
+     "insights",
+     "recap",
+     "goal",
+     "design-consent",
+     "design-revoke",
+     "list-agents",
+     "team-onboarding"
+    ],
+    "terminal_slash_commands": [
+     "doctor",
+     "color",
+     "focus",
+     "reload-plugins"
+    ],
+    "apiKeySource": "none",
+    "claude_code_version": "2.1.316",
+    "output_style": "default",
+    "agents": [
+     "claude",
+     "Explore",
+     "general-purpose",
+     "Plan",
+     "statusline-setup"
+    ],
+    "skills": [
+     "deep-research",
+     "design",
+     "design-sync",
+     "dataviz",
+     "update-config",
+     "verify",
+     "debug",
+     "code-review",
+     "simplify",
+     "batch",
+     "fewer-permission-prompts",
+     "doctor",
+     "loop",
+     "claude-api",
+     "workflow-authoring",
+     "run",
+     "run-skill-generator",
+     "plugin-authoring"
+    ],
+    "plugins": [
+     {
+      "name": "cc-plugin-agents-md",
+      "path": "builtin",
+      "source": "cc-plugin-agents-md@builtin"
+     },
+     {
+      "name": "cc-plugin-telemetry",
+      "path": "builtin",
+      "source": "cc-plugin-telemetry@builtin"
+     },
+     {
+      "name": "cc-plugin-plugin-authoring",
+      "path": "builtin",
+      "source": "cc-plugin-plugin-authoring@builtin"
+     }
+    ],
+    "capabilities": [
+     "interrupt_receipt_v1",
+     "interrupt_cancel_queued_v1",
+     "interrupt_send_now_v1",
+     "interrupt_requeue_taken_v1",
+     "msg_lifecycle_v1",
+     "request_marker_lists_v1",
+     "ask_user_question_unanswered_v1",
+     "lifecycle_wakeup_source_v1",
+     "sdk_mcp_tools_list_changed",
+     "sdk_mcp_manifests",
+     "mcp_read_resource_v1",
+     "mcp_tool_ui_meta_v1",
+     "ui_surface_v1",
+     "mcp_call_result_not_for_model_v1"
+    ],
+    "analytics_disabled": false,
+    "product_feedback_disabled": false,
+    "uuid": "294e158c-284b-4a86-b8a0-316a8ad5dc66",
+    "memory_paths": {
+     "auto": "/home/user/CiteGuard/.claude-runtime/projects/-tmp-citeguard-S-noskill-b-toyx2e/memory/"
+    },
+    "original_cwd": "/tmp/citeguard-S-noskill-b_toyx2e",
+    "additional_directories": [],
+    "messaging_socket_path": "/tmp/cc-socks/2664.sock",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "per_turn_effort_active": false,
+    "ultrathink_available": false,
+    "view_mode": "default"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "cdd7d216-2e77-4ef3-9988-12226eab5f5f",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "The user wants a ~600 character (Chinese: 字, ~600 Chinese characters) review article in Chinese on \"knowledge distillation for object detection on edge devices\", with 10 English references at the end, each containing all authors, title, conference/journal, year, volume/issue/pages, DOI.\n\nThe CiteGuard MCP server instructions say: when writing text with references, use verify_references before outputting, and search_papers to find real papers, don't write bibliographies from memory.\n\nSo I should use mcp__citeguard__search_papers and mcp__citeguard__verify_references. Need to load schemas via ToolSearch.\n\nLet me fetch the tool schemas first.",
+       "signature": "cdd7d216-2e77-4ef3-9988-12226eab5f5f"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 11175,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "c30d6f90-86ee-40be-80e7-f7e0b69f6197",
+    "timestamp": "2026-10-31T11:53:43.100Z",
+    "thinking_duration_ms": 1324,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "cdd7d216-2e77-4ef3-9988-12226eab5f5f",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_xV8mvmn9IPPN3In9HE0N1837",
+       "name": "ToolSearch",
+       "input": {
+        "query": "select:mcp__citeguard__search_papers,mcp__citeguard__verify_references",
+        "max_results": 5
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 11175,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "715ec2ae-ead9-4a23-ab5a-97c3df301881",
+    "timestamp": "2026-10-31T11:53:43.224Z"
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "type": "tool_result",
+       "tool_use_id": "call_00_xV8mvmn9IPPN3In9HE0N1837",
+       "content": [
+        {
+         "type": "tool_reference",
+         "tool_name": "mcp__citeguard__search_papers"
+        },
+        {
+         "type": "tool_reference",
+         "tool_name": "mcp__citeguard__verify_references"
+        }
+       ]
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "4eeb88a4-31a6-4385-88b1-c0a11760c88c",
+    "timestamp": "2026-10-31T11:53:43.244Z",
+    "tool_use_result": {
+     "matches": [
+      "mcp__citeguard__search_papers",
+      "mcp__citeguard__verify_references"
+     ],
+     "query": "select:mcp__citeguard__search_papers,mcp__citeguard__verify_references",
+     "total_deferred_tools": 17
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_xV8mvmn9IPPN3In9HE0N1837",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "cd2854a9-e7a2-432c-838a-be706ff30bf3",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Let me search for real papers on knowledge distillation for object detection, edge devices, etc. I'll run several searches in parallel.",
+       "signature": "cd2854a9-e7a2-432c-838a-be706ff30bf3"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 399,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11392,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "2607880b-9b60-4857-8b73-ba72fc097a54",
+    "timestamp": "2026-10-31T11:53:44.587Z",
+    "thinking_duration_ms": 686,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "cd2854a9-e7a2-432c-838a-be706ff30bf3",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_YfN0KJG3xCR318Bq7WcU8556",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "knowledge distillation object detection",
+        "limit": 20
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 399,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11392,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "2db38539-d12d-4e84-b7e2-f24895719c2a",
+    "timestamp": "2026-10-31T11:53:44.745Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_YfN0KJG3xCR318Bq7WcU8556",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_YfN0KJG3xCR318Bq7WcU8556",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：knowledge distillation object detection\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Fengshuo Zhang. Multiscale Attention Knowledge Distillation for Object Detection. 2025 International Joint Conference on Neural Networks (IJCNN), 2025, 1-7. DOI: 10.1109/ijcnn64981.2025.11227248\\n2. Murat Aydogmus, Isin Erer. Cross-Modality Object-Level Knowledge Distillation for Enhanced Underwater Sonar Object Detection. IEEE Access, 2026, 14: 27339-27353. DOI: 10.1109/access.2026.3666096\\n3. Menghao Yang, Yafei Qi, Zhaoning Zhang, Yaping Liu, Bing Xiong. Modal Mimicking Knowledge Distillation for Monocular 3d Object Detection. Elsevier BV, 2025. DOI: 10.2139/ssrn.5219975\\n4. Yang Li, Shanshan Zhang, Yunan Liu, Jian Yang. Reliable Hybrid Knowledge Distillation for Multi-Source Domain Adaptive Object Detection. Elsevier BV, 2023. DOI: 10.2139/ssrn.4677379\\n5. Jinzhou Xie, Hongmin Zhao. Forest Fire Object Detection Analysis Based on Knowledge Distillation. Fire, 2023, 6(12): 446. DOI: 10.3390/fire6120446\\n6. Zhen Guo, Pengzhou Zhang, Peng Liang. Shared Knowledge Distillation Network for Object Detection. Electronics, 2024, 13(8): 1595. DOI: 10.3390/electronics13081595\\n7. Guangyu Ren, Yinxiao Yu, Hengyan Liu, Tania Stathaki. Dynamic Knowledge Distillation with Noise Elimination for Rgb-D Salient Object Detection. Elsevier BV, 2022. DOI: 10.2139/ssrn.4125204\\n8. João Correia, Plinio Moreno. Enhancing Efficiency in 3D Object Detection with Knowledge Distillation. 2024 7th Iberian Robotics Conference (ROBOT), 2024, 1-7. DOI: 10.1109/robot61475.2024.10796955\\n9. Yi Zhang, Junzong Long, Chunrui Li. Knowledge distillation for object detection with diffusion model. Neurocomputing, 2025, 636: 130019. DOI: 10.1016/j.neucom.2025.130019\\n10. Tingsong Ma, Wenhong Tian, Yuanlun Xie. Multi-level knowledge distillation for low-resolution object detection and facial expression recognition. Knowledge-Based Systems, 2022, 240: 108136. DOI: 10.1016/j.knosys.2022.108136\\n11. Zhourui Zhang, Jun Li, Zhijian Wu, Jifeng Shen, Jianhua Xu. Dfmsd: Dual Feature Masking Stage-Wise Knowledge Distillation for Object Detection. Elsevier BV, 2024. DOI: 10.2139/ssrn.5002082\\n12. Zhourui Zhang, Jun Li, Zhijian Wu, Jifeng Shen, Jianhua Xu. Dfmsd: Dual Feature Masking Stage-Wise Knowledge Distillation for Object Detection. Elsevier BV, 2024. DOI: 10.2139/ssrn.4925466\\n13. Yang Li, Shanshan Zhang, Yunan Liu, Jian Yang. Reliable hybrid knowledge distillation for multi-source domain adaptive object detection. Knowledge-Based Systems, 2024, 297: 111956. DOI: 10.1016/j.knosys.2024.111956\\n14. Zhen Guo, Pengzhou Zhang, Peng Liang. Instance mask alignment for object detection knowledge distillation. Scientific Reports, 2025, 15(1). DOI: 10.1038/s41598-025-03100-w\\n15. Xiaorui Peng, Yu Meng, Chao Zheng, Meijun Wang. MonoAFKD: Align and frequency cross knowledge distillation for monocular 3D object detection. Knowledge-Based Systems, 2025, 326: 114043. DOI: 10.1016/j.knosys.2025.114043\\n16. Bhuvana J, T. Mirnalinee, Harini Mohan, Olirva M. Anomalymhkd: A Multi-Mode Hybrid Knowledge Distillation Approach for Self-Supervised Anomalous Object Detection. Elsevier BV, 2025. DOI: 10.2139/ssrn.5222759\\n17. Syed Murtaza Hussain Abidi, Md Masuduzzaman, Syed Muhammad Raza, Soo Young Shin. CrossFusionKD: A Cross-Modal Knowledge Distillation Framework for UxV Object Detection. Institute of Electrical and Electronics Engineers (IEEE), 2025. DOI: 10.36227/techrxiv.176341538.86857924/v1\\n18. Shibo Yang, Xiaoyu Zhang, Panlong Tan, Yiwen Liu. A novel knowledge distillation framework to optimize DETR for sonar image object detection. Knowledge-Based Systems, 2026, 339: 115627. DOI: 10.1016/j.knosys.2026.115627\\n19. Chao Li, Rugui Liu, Zhe Quan, Pengpeng Hu, Jun Sun. Foreground separation knowledge distillation for object detection. PeerJ Computer Science, 2024, 10: e2485. DOI: 10.7717/peerj-cs.2485\\n20. Yixiong Yan. Temporal Knowledge Distillation for Sparse Stream DETR 3D Object Detection. SAE Technical Paper Series, 2026, 1. DOI: 10.4271/2026-01-0023\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "a4618bdf-8d5c-46ce-8d39-acba6faa6f42",
+    "timestamp": "2026-10-31T11:53:44.791Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：knowledge distillation object detection\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Fengshuo Zhang. Multiscale Attention Knowledge Distillation for Object Detection. 2025 International Joint Conference on Neural Networks (IJCNN), 2025, 1-7. DOI: 10.1109/ijcnn64981.2025.11227248\\n2. Murat Aydogmus, Isin Erer. Cross-Modality Object-Level Knowledge Distillation for Enhanced Underwater Sonar Object Detection. IEEE Access, 2026, 14: 27339-27353. DOI: 10.1109/access.2026.3666096\\n3. Menghao Yang, Yafei Qi, Zhaoning Zhang, Yaping Liu, Bing Xiong. Modal Mimicking Knowledge Distillation for Monocular 3d Object Detection. Elsevier BV, 2025. DOI: 10.2139/ssrn.5219975\\n4. Yang Li, Shanshan Zhang, Yunan Liu, Jian Yang. Reliable Hybrid Knowledge Distillation for Multi-Source Domain Adaptive Object Detection. Elsevier BV, 2023. DOI: 10.2139/ssrn.4677379\\n5. Jinzhou Xie, Hongmin Zhao. Forest Fire Object Detection Analysis Based on Knowledge Distillation. Fire, 2023, 6(12): 446. DOI: 10.3390/fire6120446\\n6. Zhen Guo, Pengzhou Zhang, Peng Liang. Shared Knowledge Distillation Network for Object Detection. Electronics, 2024, 13(8): 1595. DOI: 10.3390/electronics13081595\\n7. Guangyu Ren, Yinxiao Yu, Hengyan Liu, Tania Stathaki. Dynamic Knowledge Distillation with Noise Elimination for Rgb-D Salient Object Detection. Elsevier BV, 2022. DOI: 10.2139/ssrn.4125204\\n8. João Correia, Plinio Moreno. Enhancing Efficiency in 3D Object Detection with Knowledge Distillation. 2024 7th Iberian Robotics Conference (ROBOT), 2024, 1-7. DOI: 10.1109/robot61475.2024.10796955\\n9. Yi Zhang, Junzong Long, Chunrui Li. Knowledge distillation for object detection with diffusion model. Neurocomputing, 2025, 636: 130019. DOI: 10.1016/j.neucom.2025.130019\\n10. Tingsong Ma, Wenhong Tian, Yuanlun Xie. Multi-level knowledge distillation for low-resolution object detection and facial expression recognition. Knowledge-Based Systems, 2022, 240: 108136. DOI: 10.1016/j.knosys.2022.108136\\n11. Zhourui Zhang, Jun Li, Zhijian Wu, Jifeng Shen, Jianhua Xu. Dfmsd: Dual Feature Masking Stage-Wise Knowledge Distillation for Object Detection. Elsevier BV, 2024. DOI: 10.2139/ssrn.5002082\\n12. Zhourui Zhang, Jun Li, Zhijian Wu, Jifeng Shen, Jianhua Xu. Dfmsd: Dual Feature Masking Stage-Wise Knowledge Distillation for Object Detection. Elsevier BV, 2024. DOI: 10.2139/ssrn.4925466\\n13. Yang Li, Shanshan Zhang, Yunan Liu, Jian Yang. Reliable hybrid knowledge distillation for multi-source domain adaptive object detection. Knowledge-Based Systems, 2024, 297: 111956. DOI: 10.1016/j.knosys.2024.111956\\n14. Zhen Guo, Pengzhou Zhang, Peng Liang. Instance mask alignment for object detection knowledge distillation. Scientific Reports, 2025, 15(1). DOI: 10.1038/s41598-025-03100-w\\n15. Xiaorui Peng, Yu Meng, Chao Zheng, Meijun Wang. MonoAFKD: Align and frequency cross knowledge distillation for monocular 3D object detection. Knowledge-Based Systems, 2025, 326: 114043. DOI: 10.1016/j.knosys.2025.114043\\n16. Bhuvana J, T. Mirnalinee, Harini Mohan, Olirva M. Anomalymhkd: A Multi-Mode Hybrid Knowledge Distillation Approach for Self-Supervised Anomalous Object Detection. Elsevier BV, 2025. DOI: 10.2139/ssrn.5222759\\n17. Syed Murtaza Hussain Abidi, Md Masuduzzaman, Syed Muhammad Raza, Soo Young Shin. CrossFusionKD: A Cross-Modal Knowledge Distillation Framework for UxV Object Detection. Institute of Electrical and Electronics Engineers (IEEE), 2025. DOI: 10.36227/techrxiv.176341538.86857924/v1\\n18. Shibo Yang, Xiaoyu Zhang, Panlong Tan, Yiwen Liu. A novel knowledge distillation framework to optimize DETR for sonar image object detection. Knowledge-Based Systems, 2026, 339: 115627. DOI: 10.1016/j.knosys.2026.115627\\n19. Chao Li, Rugui Liu, Zhe Quan, Pengpeng Hu, Jun Sun. Foreground separation knowledge distillation for object detection. PeerJ Computer Science, 2024, 10: e2485. DOI: 10.7717/peerj-cs.2485\\n20. Yixiong Yan. Temporal Knowledge Distillation for Sparse Stream DETR 3D Object Detection. SAE Technical Paper Series, 2026, 1. DOI: 10.4271/2026-01-0023\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：knowledge distillation object detection\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Fengshuo Zhang. Multiscale Attention Knowledge Distillation for Object Detection. 2025 International Joint Conference on Neural Networks (IJCNN), 2025, 1-7. DOI: 10.1109/ijcnn64981.2025.11227248\n2. Murat Aydogmus, Isin Erer. Cross-Modality Object-Level Knowledge Distillation for Enhanced Underwater Sonar Object Detection. IEEE Access, 2026, 14: 27339-27353. DOI: 10.1109/access.2026.3666096\n3. Menghao Yang, Yafei Qi, Zhaoning Zhang, Yaping Liu, Bing Xiong. Modal Mimicking Knowledge Distillation for Monocular 3d Object Detection. Elsevier BV, 2025. DOI: 10.2139/ssrn.5219975\n4. Yang Li, Shanshan Zhang, Yunan Liu, Jian Yang. Reliable Hybrid Knowledge Distillation for Multi-Source Domain Adaptive Object Detection. Elsevier BV, 2023. DOI: 10.2139/ssrn.4677379\n5. Jinzhou Xie, Hongmin Zhao. Forest Fire Object Detection Analysis Based on Knowledge Distillation. Fire, 2023, 6(12): 446. DOI: 10.3390/fire6120446\n6. Zhen Guo, Pengzhou Zhang, Peng Liang. Shared Knowledge Distillation Network for Object Detection. Electronics, 2024, 13(8): 1595. DOI: 10.3390/electronics13081595\n7. Guangyu Ren, Yinxiao Yu, Hengyan Liu, Tania Stathaki. Dynamic Knowledge Distillation with Noise Elimination for Rgb-D Salient Object Detection. Elsevier BV, 2022. DOI: 10.2139/ssrn.4125204\n8. João Correia, Plinio Moreno. Enhancing Efficiency in 3D Object Detection with Knowledge Distillation. 2024 7th Iberian Robotics Conference (ROBOT), 2024, 1-7. DOI: 10.1109/robot61475.2024.10796955\n9. Yi Zhang, Junzong Long, Chunrui Li. Knowledge distillation for object detection with diffusion model. Neurocomputing, 2025, 636: 130019. DOI: 10.1016/j.neucom.2025.130019\n10. Tingsong Ma, Wenhong Tian, Yuanlun Xie. Multi-level knowledge distillation for low-resolution object detection and facial expression recognition. Knowledge-Based Systems, 2022, 240: 108136. DOI: 10.1016/j.knosys.2022.108136\n11. Zhourui Zhang, Jun Li, Zhijian Wu, Jifeng Shen, Jianhua Xu. Dfmsd: Dual Feature Masking Stage-Wise Knowledge Distillation for Object Detection. Elsevier BV, 2024. DOI: 10.2139/ssrn.5002082\n12. Zhourui Zhang, Jun Li, Zhijian Wu, Jifeng Shen, Jianhua Xu. Dfmsd: Dual Feature Masking Stage-Wise Knowledge Distillation for Object Detection. Elsevier BV, 2024. DOI: 10.2139/ssrn.4925466\n13. Yang Li, Shanshan Zhang, Yunan Liu, Jian Yang. Reliable hybrid knowledge distillation for multi-source domain adaptive object detection. Knowledge-Based Systems, 2024, 297: 111956. DOI: 10.1016/j.knosys.2024.111956\n14. Zhen Guo, Pengzhou Zhang, Peng Liang. Instance mask alignment for object detection knowledge distillation. Scientific Reports, 2025, 15(1). DOI: 10.1038/s41598-025-03100-w\n15. Xiaorui Peng, Yu Meng, Chao Zheng, Meijun Wang. MonoAFKD: Align and frequency cross knowledge distillation for monocular 3D object detection. Knowledge-Based Systems, 2025, 326: 114043. DOI: 10.1016/j.knosys.2025.114043\n16. Bhuvana J, T. Mirnalinee, Harini Mohan, Olirva M. Anomalymhkd: A Multi-Mode Hybrid Knowledge Distillation Approach for Self-Supervised Anomalous Object Detection. Elsevier BV, 2025. DOI: 10.2139/ssrn.5222759\n17. Syed Murtaza Hussain Abidi, Md Masuduzzaman, Syed Muhammad Raza, Soo Young Shin. CrossFusionKD: A Cross-Modal Knowledge Distillation Framework for UxV Object Detection. Institute of Electrical and Electronics Engineers (IEEE), 2025. DOI: 10.36227/techrxiv.176341538.86857924/v1\n18. Shibo Yang, Xiaoyu Zhang, Panlong Tan, Yiwen Liu. A novel knowledge distillation framework to optimize DETR for sonar image object detection. Knowledge-Based Systems, 2026, 339: 115627. DOI: 10.1016/j.knosys.2026.115627\n19. Chao Li, Rugui Liu, Zhe Quan, Pengpeng Hu, Jun Sun. Foreground separation knowledge distillation for object detection. PeerJ Computer Science, 2024, 10: e2485. DOI: 10.7717/peerj-cs.2485\n20. Yixiong Yan. Temporal Knowledge Distillation for Sparse Stream DETR 3D Object Detection. SAE Technical Paper Series, 2026, 1. DOI: 10.4271/2026-01-0023\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_YfN0KJG3xCR318Bq7WcU8556",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "cd2854a9-e7a2-432c-838a-be706ff30bf3",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_01_XGM66IcQ07rZNwU53nbS5339",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "knowledge distillation object detection edge device lightweight",
+        "limit": 15
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 399,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11392,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "efba1adf-d9aa-494a-b1b9-e016dc45673b",
+    "timestamp": "2026-10-31T11:53:44.931Z",
+    "tool_use_meta": [
+     {
+      "id": "call_01_XGM66IcQ07rZNwU53nbS5339",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "cd2854a9-e7a2-432c-838a-be706ff30bf3",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_02_zMAOmzllcr3mk2PD15Ya9181",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "distilling object detectors fine-grained feature imitation",
+        "limit": 10
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 399,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11392,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "1b4089c4-7c3a-4355-b732-243b1720774f",
+    "timestamp": "2026-10-31T11:53:45.133Z",
+    "tool_use_meta": [
+     {
+      "id": "call_02_zMAOmzllcr3mk2PD15Ya9181",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_01_XGM66IcQ07rZNwU53nbS5339",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：knowledge distillation object detection edge device lightweight\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Duan-Yu Chen, Yi-Wen Hsu. Knowledge Distillation Boosted Ultra-light Weight Road Object Detection on Edge Device. 2023 IEEE 6th International Conference on Knowledge Innovation and Invention (ICKII), 2023, 456-460. DOI: 10.1109/ickii58656.2023.10332715\\n2. Xiancheng Cao, Yueli Hu, Haikun Zhang. LKD-YOLOv8: A Lightweight Knowledge Distillation-Based Method for Infrared Object Detection. Sensors, 2025, 25(13): 4054. DOI: 10.3390/s25134054\\n3. Yi Zhang. Enhancing Lightweight Models for Edge-Device Mineral Classification through Multi-Strategy Knowledge Distillation. 2026 9th International Conference on Computer Information Science and Application Technology (CISAT), 2026, 302-307. DOI: 10.1109/cisat71030.2026.11682442\\n4. Jin Zhang, Yanjiao Shi, Jinyu Yang, Qianqian Guo. KD-SCFNet: Towards more accurate and lightweight salient object detection via knowledge distillation. Neurocomputing, 2024, 572: 127206. DOI: 10.1016/j.neucom.2023.127206\\n5. Ahmed Hamdi, Hassan Noura, Ali Chehab. Efficient and Lightweight Object Detection via Multi-Round Response-Based Knowledge Distillation. 2026 International Wireless Communications and Mobile Computing (IWCMC), 2026, 1-7. DOI: 10.1109/iwcmc69287.2026.11579867\\n6. Andres J. Aparcana-Tasayco, Byung Hyun Jo, Sekione Reward Jeremiah, Jong Hyuk Park. Knowledge distillation-enhanced lightweight CBiGRU for intrusion detection in edge-IoMT environments. Knowledge-Based Systems, 2026, 352: 116940. DOI: 10.1016/j.knosys.2026.116940\\n7. Richa Sharma, Ashutosh Gupta, Prasun Chakrabarti, Arvind Sharma. KD-Hybriddet: Multi-Level Hybrid Knowledge Distillation for Lightweight Object Detection. 2026 International Conference on Computing, Intelligence, and Applications (CIACON), 2026, 1-6. DOI: 10.1109/ciacon70148.2026.11689018\\n8. Xueyi Wang, Wenjia Xu, Guangzuo Li, Yirong Wu. Spectral-Spatial Distillation for Lightweight SAR Object Detection. Elsevier BV, 2026. DOI: 10.2139/ssrn.6447300\\n9. Quang Nhut Pham, Duy Khanh Ninh. Lightweight fall detection on edge devices via knowledge distillation. The University of Danang - Journal of Science and Technology, 2025, 74-78. DOI: 10.31130/ud-jst.2025.23(9d).568e\\n10. Xiangping Wu, Bingxuan Zhang, Wangjun Wan. A Lightweight RGB-D Object Detection Model with Multi-teacher Adaptive Knowledge Distillation. International Journal of Automotive Technology, 2026. DOI: 10.1007/s12239-026-00448-4\\n11. Chinmay Parab. Lightweight AI Models for Real-Time Object Detection on Edge Devices. Elsevier BV, 2025. DOI: 10.2139/ssrn.5424294\\n12. Mohammad Rasras, Iuliana Marin. Hybrid Knowledge Distillation for Edge-Efficient Video Action Recognition: Improving Lightweight 3D CNNs via Joint Distillation. Computers, 2026, 15(6): 371. DOI: 10.3390/computers15060371\\n13. KANTA TAMURA, YUKI TODO. Dual-Head Self-Distillation via an Auxiliary Lightweight PAN for YOLO-based Object Detection. Elsevier BV, 2026. DOI: 10.2139/ssrn.6183545\\n14. Bingchan Li, Chunguo Li. Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing. 2024 Twelfth International Conference on Advanced Cloud and Big Data (CBD), 2024, 102-105. DOI: 10.1109/cbd65573.2024.00028\\n15. Bingchan Li, Chunguo Li. Switch object detection based on knowledge distillation for real time edge computing. Complex & Intelligent Systems, 2026, 12(6). DOI: 10.1007/s40747-026-02302-7\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "b9f26933-602d-47f7-afff-3e040d45c47b",
+    "timestamp": "2026-10-31T11:53:45.810Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：knowledge distillation object detection edge device lightweight\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Duan-Yu Chen, Yi-Wen Hsu. Knowledge Distillation Boosted Ultra-light Weight Road Object Detection on Edge Device. 2023 IEEE 6th International Conference on Knowledge Innovation and Invention (ICKII), 2023, 456-460. DOI: 10.1109/ickii58656.2023.10332715\\n2. Xiancheng Cao, Yueli Hu, Haikun Zhang. LKD-YOLOv8: A Lightweight Knowledge Distillation-Based Method for Infrared Object Detection. Sensors, 2025, 25(13): 4054. DOI: 10.3390/s25134054\\n3. Yi Zhang. Enhancing Lightweight Models for Edge-Device Mineral Classification through Multi-Strategy Knowledge Distillation. 2026 9th International Conference on Computer Information Science and Application Technology (CISAT), 2026, 302-307. DOI: 10.1109/cisat71030.2026.11682442\\n4. Jin Zhang, Yanjiao Shi, Jinyu Yang, Qianqian Guo. KD-SCFNet: Towards more accurate and lightweight salient object detection via knowledge distillation. Neurocomputing, 2024, 572: 127206. DOI: 10.1016/j.neucom.2023.127206\\n5. Ahmed Hamdi, Hassan Noura, Ali Chehab. Efficient and Lightweight Object Detection via Multi-Round Response-Based Knowledge Distillation. 2026 International Wireless Communications and Mobile Computing (IWCMC), 2026, 1-7. DOI: 10.1109/iwcmc69287.2026.11579867\\n6. Andres J. Aparcana-Tasayco, Byung Hyun Jo, Sekione Reward Jeremiah, Jong Hyuk Park. Knowledge distillation-enhanced lightweight CBiGRU for intrusion detection in edge-IoMT environments. Knowledge-Based Systems, 2026, 352: 116940. DOI: 10.1016/j.knosys.2026.116940\\n7. Richa Sharma, Ashutosh Gupta, Prasun Chakrabarti, Arvind Sharma. KD-Hybriddet: Multi-Level Hybrid Knowledge Distillation for Lightweight Object Detection. 2026 International Conference on Computing, Intelligence, and Applications (CIACON), 2026, 1-6. DOI: 10.1109/ciacon70148.2026.11689018\\n8. Xueyi Wang, Wenjia Xu, Guangzuo Li, Yirong Wu. Spectral-Spatial Distillation for Lightweight SAR Object Detection. Elsevier BV, 2026. DOI: 10.2139/ssrn.6447300\\n9. Quang Nhut Pham, Duy Khanh Ninh. Lightweight fall detection on edge devices via knowledge distillation. The University of Danang - Journal of Science and Technology, 2025, 74-78. DOI: 10.31130/ud-jst.2025.23(9d).568e\\n10. Xiangping Wu, Bingxuan Zhang, Wangjun Wan. A Lightweight RGB-D Object Detection Model with Multi-teacher Adaptive Knowledge Distillation. International Journal of Automotive Technology, 2026. DOI: 10.1007/s12239-026-00448-4\\n11. Chinmay Parab. Lightweight AI Models for Real-Time Object Detection on Edge Devices. Elsevier BV, 2025. DOI: 10.2139/ssrn.5424294\\n12. Mohammad Rasras, Iuliana Marin. Hybrid Knowledge Distillation for Edge-Efficient Video Action Recognition: Improving Lightweight 3D CNNs via Joint Distillation. Computers, 2026, 15(6): 371. DOI: 10.3390/computers15060371\\n13. KANTA TAMURA, YUKI TODO. Dual-Head Self-Distillation via an Auxiliary Lightweight PAN for YOLO-based Object Detection. Elsevier BV, 2026. DOI: 10.2139/ssrn.6183545\\n14. Bingchan Li, Chunguo Li. Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing. 2024 Twelfth International Conference on Advanced Cloud and Big Data (CBD), 2024, 102-105. DOI: 10.1109/cbd65573.2024.00028\\n15. Bingchan Li, Chunguo Li. Switch object detection based on knowledge distillation for real time edge computing. Complex & Intelligent Systems, 2026, 12(6). DOI: 10.1007/s40747-026-02302-7\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：knowledge distillation object detection edge device lightweight\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Duan-Yu Chen, Yi-Wen Hsu. Knowledge Distillation Boosted Ultra-light Weight Road Object Detection on Edge Device. 2023 IEEE 6th International Conference on Knowledge Innovation and Invention (ICKII), 2023, 456-460. DOI: 10.1109/ickii58656.2023.10332715\n2. Xiancheng Cao, Yueli Hu, Haikun Zhang. LKD-YOLOv8: A Lightweight Knowledge Distillation-Based Method for Infrared Object Detection. Sensors, 2025, 25(13): 4054. DOI: 10.3390/s25134054\n3. Yi Zhang. Enhancing Lightweight Models for Edge-Device Mineral Classification through Multi-Strategy Knowledge Distillation. 2026 9th International Conference on Computer Information Science and Application Technology (CISAT), 2026, 302-307. DOI: 10.1109/cisat71030.2026.11682442\n4. Jin Zhang, Yanjiao Shi, Jinyu Yang, Qianqian Guo. KD-SCFNet: Towards more accurate and lightweight salient object detection via knowledge distillation. Neurocomputing, 2024, 572: 127206. DOI: 10.1016/j.neucom.2023.127206\n5. Ahmed Hamdi, Hassan Noura, Ali Chehab. Efficient and Lightweight Object Detection via Multi-Round Response-Based Knowledge Distillation. 2026 International Wireless Communications and Mobile Computing (IWCMC), 2026, 1-7. DOI: 10.1109/iwcmc69287.2026.11579867\n6. Andres J. Aparcana-Tasayco, Byung Hyun Jo, Sekione Reward Jeremiah, Jong Hyuk Park. Knowledge distillation-enhanced lightweight CBiGRU for intrusion detection in edge-IoMT environments. Knowledge-Based Systems, 2026, 352: 116940. DOI: 10.1016/j.knosys.2026.116940\n7. Richa Sharma, Ashutosh Gupta, Prasun Chakrabarti, Arvind Sharma. KD-Hybriddet: Multi-Level Hybrid Knowledge Distillation for Lightweight Object Detection. 2026 International Conference on Computing, Intelligence, and Applications (CIACON), 2026, 1-6. DOI: 10.1109/ciacon70148.2026.11689018\n8. Xueyi Wang, Wenjia Xu, Guangzuo Li, Yirong Wu. Spectral-Spatial Distillation for Lightweight SAR Object Detection. Elsevier BV, 2026. DOI: 10.2139/ssrn.6447300\n9. Quang Nhut Pham, Duy Khanh Ninh. Lightweight fall detection on edge devices via knowledge distillation. The University of Danang - Journal of Science and Technology, 2025, 74-78. DOI: 10.31130/ud-jst.2025.23(9d).568e\n10. Xiangping Wu, Bingxuan Zhang, Wangjun Wan. A Lightweight RGB-D Object Detection Model with Multi-teacher Adaptive Knowledge Distillation. International Journal of Automotive Technology, 2026. DOI: 10.1007/s12239-026-00448-4\n11. Chinmay Parab. Lightweight AI Models for Real-Time Object Detection on Edge Devices. Elsevier BV, 2025. DOI: 10.2139/ssrn.5424294\n12. Mohammad Rasras, Iuliana Marin. Hybrid Knowledge Distillation for Edge-Efficient Video Action Recognition: Improving Lightweight 3D CNNs via Joint Distillation. Computers, 2026, 15(6): 371. DOI: 10.3390/computers15060371\n13. KANTA TAMURA, YUKI TODO. Dual-Head Self-Distillation via an Auxiliary Lightweight PAN for YOLO-based Object Detection. Elsevier BV, 2026. DOI: 10.2139/ssrn.6183545\n14. Bingchan Li, Chunguo Li. Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing. 2024 Twelfth International Conference on Advanced Cloud and Big Data (CBD), 2024, 102-105. DOI: 10.1109/cbd65573.2024.00028\n15. Bingchan Li, Chunguo Li. Switch object detection based on knowledge distillation for real time edge computing. Complex & Intelligent Systems, 2026, 12(6). DOI: 10.1007/s40747-026-02302-7\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_01_XGM66IcQ07rZNwU53nbS5339",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_02_zMAOmzllcr3mk2PD15Ya9181",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：distilling object detectors fine-grained feature imitation\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Tao Wang, Li Yuan, Xiaopeng Zhang, Jiashi Feng. Distilling Object Detectors With Fine-Grained Feature Imitation. 2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2019, 4928-4937. DOI: 10.1109/cvpr.2019.00507\\n2. Xin Lu, Yichao Cao, Shikun Chen, Weixuan Li, Xin Zhou, Xiaobo Lu. Distilling Object Detectors with Efficient Logit Mimicking and Mask-Guided Feature Imitation. Elsevier BV, 2023. DOI: 10.2139/ssrn.4577880\\n3. Xin Lu, Yichao Cao, Shikun Chen, Weixuan Li, Xin Zhou, Xiaobo Lu. Distilling object detectors with efficient logit mimicking and mask-guided feature imitation. Expert Systems with Applications, 2024, 245: 123079. DOI: 10.1016/j.eswa.2023.123079\\n4. Wenzhong Shen, JinPeng Chen, Jie Shao. FOF: A Fine-Grained Object Detection and Feature Extraction end-to-end Network. Research Square Platform LLC, 2023. DOI: 10.21203/rs.3.rs-2967577/v1\\n5. Rahul Dalal. FINE-GRAINED OBJECT DETECTION. San Jose State University Library. DOI: 10.31979/etd.f9gs-dd3b\\n6. Lorenzo Bianchi, Fabio Carrara, Nicola Messina, Claudio Gennaro, Fabrizio Falchi. The Devil is in the Fine-Grained Details: Evaluating open-Vocabulary Object Detectors for Fine-Grained Understanding. 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2024, 22520-22529. DOI: 10.1109/cvpr52733.2024.02125\\n7. Weilong Guo, Xuan Li, Shengyang Li. Rotation-Lossless Non-Local Attention and Fine-Grained Feature Enhancement Based Fine-Grained Oriented Object Detection in Remote Sensing Images. 2023 5th International Conference on Control and Robotics (ICCR), 2023, 277-286. DOI: 10.1109/iccr60000.2023.10444857\\n8. Feiyue Zhao, Jianwei Zhang, Guoqing Zhang. FFEDet: Fine-Grained Feature Enhancement for Small Object Detection. Remote Sensing, 2024, 16(11): 2003. DOI: 10.3390/rs16112003\\n9. Yulong Xia, Jianwei Zhang. Ora-Trans: Object Region Attention Transformer Based on Key Tokens Selector with Structure Feature Modeling for Fine-Grained Visual Classification. Elsevier BV, 2024. DOI: 10.2139/ssrn.4687385\\n10. Yulong Xia, Jianwei Zhang. Ora-Trans: Object Region Attention Transformer Based on Key Tokens Selector with Structure Feature Modeling for Fine-Grained Visual Classification. Elsevier BV, 2024. DOI: 10.2139/ssrn.4691226\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "68e15d05-e56c-4813-bdaa-220d3d34562c",
+    "timestamp": "2026-10-31T11:53:46.522Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：distilling object detectors fine-grained feature imitation\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Tao Wang, Li Yuan, Xiaopeng Zhang, Jiashi Feng. Distilling Object Detectors With Fine-Grained Feature Imitation. 2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2019, 4928-4937. DOI: 10.1109/cvpr.2019.00507\\n2. Xin Lu, Yichao Cao, Shikun Chen, Weixuan Li, Xin Zhou, Xiaobo Lu. Distilling Object Detectors with Efficient Logit Mimicking and Mask-Guided Feature Imitation. Elsevier BV, 2023. DOI: 10.2139/ssrn.4577880\\n3. Xin Lu, Yichao Cao, Shikun Chen, Weixuan Li, Xin Zhou, Xiaobo Lu. Distilling object detectors with efficient logit mimicking and mask-guided feature imitation. Expert Systems with Applications, 2024, 245: 123079. DOI: 10.1016/j.eswa.2023.123079\\n4. Wenzhong Shen, JinPeng Chen, Jie Shao. FOF: A Fine-Grained Object Detection and Feature Extraction end-to-end Network. Research Square Platform LLC, 2023. DOI: 10.21203/rs.3.rs-2967577/v1\\n5. Rahul Dalal. FINE-GRAINED OBJECT DETECTION. San Jose State University Library. DOI: 10.31979/etd.f9gs-dd3b\\n6. Lorenzo Bianchi, Fabio Carrara, Nicola Messina, Claudio Gennaro, Fabrizio Falchi. The Devil is in the Fine-Grained Details: Evaluating open-Vocabulary Object Detectors for Fine-Grained Understanding. 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2024, 22520-22529. DOI: 10.1109/cvpr52733.2024.02125\\n7. Weilong Guo, Xuan Li, Shengyang Li. Rotation-Lossless Non-Local Attention and Fine-Grained Feature Enhancement Based Fine-Grained Oriented Object Detection in Remote Sensing Images. 2023 5th International Conference on Control and Robotics (ICCR), 2023, 277-286. DOI: 10.1109/iccr60000.2023.10444857\\n8. Feiyue Zhao, Jianwei Zhang, Guoqing Zhang. FFEDet: Fine-Grained Feature Enhancement for Small Object Detection. Remote Sensing, 2024, 16(11): 2003. DOI: 10.3390/rs16112003\\n9. Yulong Xia, Jianwei Zhang. Ora-Trans: Object Region Attention Transformer Based on Key Tokens Selector with Structure Feature Modeling for Fine-Grained Visual Classification. Elsevier BV, 2024. DOI: 10.2139/ssrn.4687385\\n10. Yulong Xia, Jianwei Zhang. Ora-Trans: Object Region Attention Transformer Based on Key Tokens Selector with Structure Feature Modeling for Fine-Grained Visual Classification. Elsevier BV, 2024. DOI: 10.2139/ssrn.4691226\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：distilling object detectors fine-grained feature imitation\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Tao Wang, Li Yuan, Xiaopeng Zhang, Jiashi Feng. Distilling Object Detectors With Fine-Grained Feature Imitation. 2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2019, 4928-4937. DOI: 10.1109/cvpr.2019.00507\n2. Xin Lu, Yichao Cao, Shikun Chen, Weixuan Li, Xin Zhou, Xiaobo Lu. Distilling Object Detectors with Efficient Logit Mimicking and Mask-Guided Feature Imitation. Elsevier BV, 2023. DOI: 10.2139/ssrn.4577880\n3. Xin Lu, Yichao Cao, Shikun Chen, Weixuan Li, Xin Zhou, Xiaobo Lu. Distilling object detectors with efficient logit mimicking and mask-guided feature imitation. Expert Systems with Applications, 2024, 245: 123079. DOI: 10.1016/j.eswa.2023.123079\n4. Wenzhong Shen, JinPeng Chen, Jie Shao. FOF: A Fine-Grained Object Detection and Feature Extraction end-to-end Network. Research Square Platform LLC, 2023. DOI: 10.21203/rs.3.rs-2967577/v1\n5. Rahul Dalal. FINE-GRAINED OBJECT DETECTION. San Jose State University Library. DOI: 10.31979/etd.f9gs-dd3b\n6. Lorenzo Bianchi, Fabio Carrara, Nicola Messina, Claudio Gennaro, Fabrizio Falchi. The Devil is in the Fine-Grained Details: Evaluating open-Vocabulary Object Detectors for Fine-Grained Understanding. 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2024, 22520-22529. DOI: 10.1109/cvpr52733.2024.02125\n7. Weilong Guo, Xuan Li, Shengyang Li. Rotation-Lossless Non-Local Attention and Fine-Grained Feature Enhancement Based Fine-Grained Oriented Object Detection in Remote Sensing Images. 2023 5th International Conference on Control and Robotics (ICCR), 2023, 277-286. DOI: 10.1109/iccr60000.2023.10444857\n8. Feiyue Zhao, Jianwei Zhang, Guoqing Zhang. FFEDet: Fine-Grained Feature Enhancement for Small Object Detection. Remote Sensing, 2024, 16(11): 2003. DOI: 10.3390/rs16112003\n9. Yulong Xia, Jianwei Zhang. Ora-Trans: Object Region Attention Transformer Based on Key Tokens Selector with Structure Feature Modeling for Fine-Grained Visual Classification. Elsevier BV, 2024. DOI: 10.2139/ssrn.4687385\n10. Yulong Xia, Jianwei Zhang. Ora-Trans: Object Region Attention Transformer Based on Key Tokens Selector with Structure Feature Modeling for Fine-Grained Visual Classification. Elsevier BV, 2024. DOI: 10.2139/ssrn.4691226\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_02_zMAOmzllcr3mk2PD15Ya9181",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "667679d0-fe25-4948-95b8-1dc8100107e6",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Good. Now let me search for more foundational papers: Hinton distillation, FitNets, YOLO, MobileNet, FPN, GAN-based distillation for detection, etc. To make 10 references relevant to the topic: knowledge distillation for object detection on edge devices. I should include canonical works:\n\n1. Hinton et al., Distilling the Knowledge in a Neural Network (arXiv) — but needs journal/conference/volume/pages/DOI. arXiv has DOI 10.48550/arXiv.1503.02531. Requirement: conference/journal, year, vol/issue/pages, DOI. Could use arXiv preprint — maybe acceptable but \"会议/期刊\" needs one. Better to use peer-reviewed papers where possible. But canonical Hinton is arXiv only. Alternatively use \"Distilling the Knowledge in a Neural Network\" arXiv 2015, DOI. Hmm, requirement says each entry contains 会议/期刊, 年份, 卷期页码, DOI. For arXiv, pages not applicable. Let me prefer journal/conference papers.\n\nCanonical ones:\n- Hinton, Vinyals, Dean. Distilling the knowledge in a neural network. arXiv:1503.02531, 2015.\n- Romero et al. FitNets (ICLR 2015, arXiv).\n- Chen et al. \"Learning Efficient Object Detection Models with Knowledge Distillation\" NeurIPS 2017 — great canonical. DOI? NeurIPS proceedings don't have DOI typically, but Crossref might. Let me search.\n- Wang et al. Fine-grained feature imitation CVPR 2019 (found, DOI 10.1109/cvpr.2019.00507).\n- Li et al. \"Mimicking very efficient network for object detection\" CVPR 2017.\n- Zhang & Ma? \"Improving object detection with knowledge distillation\"?\n- YOLO: Redmon et al. You Only Look Once CVPR 2016 DOI 10.1109/CVPR.2016.91.\n- MobileNetV2 / MobileNet: Howard et al. arXiv 2017; Sandler et al. CVPR 2018 DOI 10.1109/CVPR.2018.00474.\n- FPN: Lin et al. CVPR 2017 DOI 10.1109/CVPR.2017.106.\n- ShuffleNet: Zhang et al. CVPR 2018.\n- \"Object detection with deep learning: A review\"?\n- Edge device: \"A survey on knowledge distillation\"?\n- Gou et al. \"Knowledge Distillation: A Survey\" IJCV 2021, DOI 10.1007/s11263-021-01453-z.\n- \"Structured knowledge distillation for semantic segmentation\"?\n- Detection-specific edge: found \"Knowledge Distillation Boosted Ultra-light Weight Road Object Detection on Edge Device\" ICKII 2023.\n- \"LKD-YOLOv8\" Sensors 2025.\n- \"Learning Efficient Object Detection Models with Knowledge Distillation\" NeurIPS 2017 (Chen, Choi, Yu, Han, Chandraker? Actually authors: Guobin Chen, Wongun Choi, Xiang Yu, Tony Han, Manmohan Chandraker). NIPS 2017 pages 742-751.\n- \"Mimicking Very Efficient Network for Object Detection\" Li, Shu, Shen? CVPR 2017, DOI 10.1109/CVPR.2017.601.\n- \"Accelerating the Super-Resolution...\" no.\n- \"Distilling knowledge from refined datasets\"? no.\n\nAlso relevant: \"Deep Mutual Learning\"? no.\n\nBetter selection of 10 for the survey:\n1. Hinton et al. 2015 (foundation) — need DOI. 10.48550/arXiv.1503.02531.\n2. Gou et al. Knowledge Distillation: A Survey, IJCV 2021.\n3. Chen et al. Learning Efficient Object Detection Models with Knowledge Distillation, NeurIPS 2017.\n4. Li et al. Mimicking Very Efficient Network for Object Detection, CVPR 2017.\n5. Wang et al. Distilling Object Detectors With Fine-Grained Feature Imitation, CVPR 2019.\n6. Lin et al. Feature Pyramid Networks, CVPR 2017 (detection backbone).\n7. Sandler et al. MobileNetV2, CVPR 2018 (edge backbone).\n8. Duan-Yu Chen, Yi-Wen Hsu. KD ultra-light weight road object detection on edge device, ICKII 2023.\n9. Cao et al. LKD-YOLOv8, Sensors 2025.\n10. Maybe \"Knowledge Distillation for Object Detection: A Survey\"? Or \"Zoom in, Zoom out\"? Or another detection distillation: \"Learning from a Lightweight Teacher for Efficient Knowledge Distillation\"?\nMaybe better: Yang et al. \"Improving object detection with knowledge distillation\"? Let me search for a detection KD survey and for the Chen NeurIPS/ Li CVPR and Hinton to verify via Crossref.\n\nLet me search.",
+       "signature": "667679d0-fe25-4948-95b8-1dc8100107e6"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3211,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11904,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "1070e093-4f5a-4b62-8b7a-d0048ecb4c45",
+    "timestamp": "2026-10-31T11:53:53.970Z",
+    "thinking_duration_ms": 6780,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "667679d0-fe25-4948-95b8-1dc8100107e6",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_Zcmu2hmrBiAig9UBBZAu9665",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "Learning Efficient Object Detection Models with Knowledge Distillation"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3211,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11904,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "55346361-44b1-4a34-8ef5-2d732ab8341a",
+    "timestamp": "2026-10-31T11:53:54.115Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_Zcmu2hmrBiAig9UBBZAu9665",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "667679d0-fe25-4948-95b8-1dc8100107e6",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_01_J0MzNgr6Ubbyi9L2TqQO8386",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "Mimicking Very Efficient Network for Object Detection"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3211,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11904,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "bcc8c02b-5b13-48dd-b73c-7431bed76ee0",
+    "timestamp": "2026-10-31T11:53:54.299Z",
+    "tool_use_meta": [
+     {
+      "id": "call_01_J0MzNgr6Ubbyi9L2TqQO8386",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "667679d0-fe25-4948-95b8-1dc8100107e6",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_02_QVY1UpQET86Dqt8aAb2C5176",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "Knowledge Distillation A Survey Gou"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3211,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11904,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "268cb3dd-fc4d-4490-b9b0-d0e368f35fe7",
+    "timestamp": "2026-10-31T11:53:54.453Z",
+    "tool_use_meta": [
+     {
+      "id": "call_02_QVY1UpQET86Dqt8aAb2C5176",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "667679d0-fe25-4948-95b8-1dc8100107e6",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_03_wgqTutnYfc6RQXJShDPU0847",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "Feature Pyramid Networks for Object Detection Lin"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3211,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11904,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "60925b12-c336-4d24-a422-59f46eb314c2",
+    "timestamp": "2026-10-31T11:53:54.632Z",
+    "tool_use_meta": [
+     {
+      "id": "call_03_wgqTutnYfc6RQXJShDPU0847",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_Zcmu2hmrBiAig9UBBZAu9665",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Learning Efficient Object Detection Models with Knowledge Distillation\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Oumaima Moutik, Smail Tigani, Rachid Saadane, Abdellah Chehri. Hybrid Deep Learning Vision-based Models for Human Object Interaction Detection by Knowledge Distillation. Procedia Computer Science, 2021, 192: 5093-5103. DOI: 10.1016/j.procs.2021.09.287\\n2. Zixu Cheng. Integrated Knowledge Distillation for Efficient One-stage Object Detection Network. Applied and Computational Engineering, 2023, 2(1): 819-825. DOI: 10.54254/2755-2721/2/20220530\\n3. Jihan Yang, Shaoshuai Shi, Runyu Ding, Zhe Wang, Xiaojuan Qi. Towards Efficient 3D Object Detection with Knowledge Distillation. Advances in Neural Information Processing Systems 35, 2022, 21300-21313. DOI: 10.52202/068431-1548\\n4. Rung-Ching Chen, William Eric Manongga. Knowledge Distillation-Based Class Incremental Detection Learning for Object Detection. 2026 International Conference on Computer, Control, Informatics and its Applications (IC3INA), 2026, 373-378. DOI: 10.1109/ic3ina72033.2026.11714595\\n5. Ahmed Hamdi, Hassan Noura, Ali Chehab. Efficient and Lightweight Object Detection via Multi-Round Response-Based Knowledge Distillation. 2026 International Wireless Communications and Mobile Computing (IWCMC), 2026, 1-7. DOI: 10.1109/iwcmc69287.2026.11579867\\n6. Serhat Dikyar, Behcet Ugur Toreyin. Efficient Object Detection in Compressed Domain by Exploiting Knowledge Distillation from Pixel Domain. Journal of Imaging, 2026, 12(7): 325. DOI: 10.3390/jimaging12070325\\n7. Zheng Liu, Pinhe Wang, Ming Zeng, Kun Liu, Feiqi Deng. Attention-Guided Knowledge Distillation for Efficient U 2 Net Based Salient Object Detection. 2025 2nd International Conference on Image Processing, Multimedia Technology and Machine Learning (IPMML), 2025, 22-27. DOI: 10.1109/ipmml68499.2025.11407157\\n8. Dejie Yang, Yang Liu. Active Object Detection with Knowledge Aggregation and Distillation from Large Models. 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2024, 16624-16633. DOI: 10.1109/cvpr52733.2024.01573\\n9. Suho Son, Byung Cheol Song. NMS-KSD: Efficient Knowledge Distillation for Dense Object Detection via Non-Maximum Suppression and Feature Storage. IEEE Access, 2025, 13: 80723-80736. DOI: 10.1109/access.2025.3567103\\n10. Jong Gook Ko, Wonyoung Yoo. Knowledge Distillation based Compact Model Learning Method for Object Detection. 2020 International Conference on Information and Communication Technology Convergence (ICTC), 2020, 1276-1278. DOI: 10.1109/ictc49870.2020.9289463\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "f1a6c47b-d82b-404e-a161-edcefd0c9aba",
+    "timestamp": "2026-10-31T11:53:54.751Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Learning Efficient Object Detection Models with Knowledge Distillation\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Oumaima Moutik, Smail Tigani, Rachid Saadane, Abdellah Chehri. Hybrid Deep Learning Vision-based Models for Human Object Interaction Detection by Knowledge Distillation. Procedia Computer Science, 2021, 192: 5093-5103. DOI: 10.1016/j.procs.2021.09.287\\n2. Zixu Cheng. Integrated Knowledge Distillation for Efficient One-stage Object Detection Network. Applied and Computational Engineering, 2023, 2(1): 819-825. DOI: 10.54254/2755-2721/2/20220530\\n3. Jihan Yang, Shaoshuai Shi, Runyu Ding, Zhe Wang, Xiaojuan Qi. Towards Efficient 3D Object Detection with Knowledge Distillation. Advances in Neural Information Processing Systems 35, 2022, 21300-21313. DOI: 10.52202/068431-1548\\n4. Rung-Ching Chen, William Eric Manongga. Knowledge Distillation-Based Class Incremental Detection Learning for Object Detection. 2026 International Conference on Computer, Control, Informatics and its Applications (IC3INA), 2026, 373-378. DOI: 10.1109/ic3ina72033.2026.11714595\\n5. Ahmed Hamdi, Hassan Noura, Ali Chehab. Efficient and Lightweight Object Detection via Multi-Round Response-Based Knowledge Distillation. 2026 International Wireless Communications and Mobile Computing (IWCMC), 2026, 1-7. DOI: 10.1109/iwcmc69287.2026.11579867\\n6. Serhat Dikyar, Behcet Ugur Toreyin. Efficient Object Detection in Compressed Domain by Exploiting Knowledge Distillation from Pixel Domain. Journal of Imaging, 2026, 12(7): 325. DOI: 10.3390/jimaging12070325\\n7. Zheng Liu, Pinhe Wang, Ming Zeng, Kun Liu, Feiqi Deng. Attention-Guided Knowledge Distillation for Efficient U 2 Net Based Salient Object Detection. 2025 2nd International Conference on Image Processing, Multimedia Technology and Machine Learning (IPMML), 2025, 22-27. DOI: 10.1109/ipmml68499.2025.11407157\\n8. Dejie Yang, Yang Liu. Active Object Detection with Knowledge Aggregation and Distillation from Large Models. 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2024, 16624-16633. DOI: 10.1109/cvpr52733.2024.01573\\n9. Suho Son, Byung Cheol Song. NMS-KSD: Efficient Knowledge Distillation for Dense Object Detection via Non-Maximum Suppression and Feature Storage. IEEE Access, 2025, 13: 80723-80736. DOI: 10.1109/access.2025.3567103\\n10. Jong Gook Ko, Wonyoung Yoo. Knowledge Distillation based Compact Model Learning Method for Object Detection. 2020 International Conference on Information and Communication Technology Convergence (ICTC), 2020, 1276-1278. DOI: 10.1109/ictc49870.2020.9289463\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Learning Efficient Object Detection Models with Knowledge Distillation\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Oumaima Moutik, Smail Tigani, Rachid Saadane, Abdellah Chehri. Hybrid Deep Learning Vision-based Models for Human Object Interaction Detection by Knowledge Distillation. Procedia Computer Science, 2021, 192: 5093-5103. DOI: 10.1016/j.procs.2021.09.287\n2. Zixu Cheng. Integrated Knowledge Distillation for Efficient One-stage Object Detection Network. Applied and Computational Engineering, 2023, 2(1): 819-825. DOI: 10.54254/2755-2721/2/20220530\n3. Jihan Yang, Shaoshuai Shi, Runyu Ding, Zhe Wang, Xiaojuan Qi. Towards Efficient 3D Object Detection with Knowledge Distillation. Advances in Neural Information Processing Systems 35, 2022, 21300-21313. DOI: 10.52202/068431-1548\n4. Rung-Ching Chen, William Eric Manongga. Knowledge Distillation-Based Class Incremental Detection Learning for Object Detection. 2026 International Conference on Computer, Control, Informatics and its Applications (IC3INA), 2026, 373-378. DOI: 10.1109/ic3ina72033.2026.11714595\n5. Ahmed Hamdi, Hassan Noura, Ali Chehab. Efficient and Lightweight Object Detection via Multi-Round Response-Based Knowledge Distillation. 2026 International Wireless Communications and Mobile Computing (IWCMC), 2026, 1-7. DOI: 10.1109/iwcmc69287.2026.11579867\n6. Serhat Dikyar, Behcet Ugur Toreyin. Efficient Object Detection in Compressed Domain by Exploiting Knowledge Distillation from Pixel Domain. Journal of Imaging, 2026, 12(7): 325. DOI: 10.3390/jimaging12070325\n7. Zheng Liu, Pinhe Wang, Ming Zeng, Kun Liu, Feiqi Deng. Attention-Guided Knowledge Distillation for Efficient U 2 Net Based Salient Object Detection. 2025 2nd International Conference on Image Processing, Multimedia Technology and Machine Learning (IPMML), 2025, 22-27. DOI: 10.1109/ipmml68499.2025.11407157\n8. Dejie Yang, Yang Liu. Active Object Detection with Knowledge Aggregation and Distillation from Large Models. 2024 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2024, 16624-16633. DOI: 10.1109/cvpr52733.2024.01573\n9. Suho Son, Byung Cheol Song. NMS-KSD: Efficient Knowledge Distillation for Dense Object Detection via Non-Maximum Suppression and Feature Storage. IEEE Access, 2025, 13: 80723-80736. DOI: 10.1109/access.2025.3567103\n10. Jong Gook Ko, Wonyoung Yoo. Knowledge Distillation based Compact Model Learning Method for Object Detection. 2020 International Conference on Information and Communication Technology Convergence (ICTC), 2020, 1276-1278. DOI: 10.1109/ictc49870.2020.9289463\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_Zcmu2hmrBiAig9UBBZAu9665",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "667679d0-fe25-4948-95b8-1dc8100107e6",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_04_EF4j7Nfr9QpjyPbk20bB1122",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "MobileNetV2 inverted residuals linear bottlenecks Sandler"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3211,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11904,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "54a65933-ae9c-42fd-85cc-44a262f45da8",
+    "timestamp": "2026-10-31T11:53:54.836Z",
+    "tool_use_meta": [
+     {
+      "id": "call_04_EF4j7Nfr9QpjyPbk20bB1122",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_01_J0MzNgr6Ubbyi9L2TqQO8386",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Mimicking Very Efficient Network for Object Detection\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Quanquan Li, Shengying Jin, Junjie Yan. Mimicking Very Efficient Network for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 7341-7349. DOI: 10.1109/cvpr.2017.776\\n2. THU  THIEN NGO. Lightsod: Towards Lightweight and Efficient Network for Salient Object Detection. Elsevier BV, 2023. DOI: 10.2139/ssrn.4529425\\n3. Wei Hua, Qili Chen, Wenbai Chen. CSPDNet:A New Lightweight Network for Efficient UAV Object Detection. Research Square Platform LLC, 2024. DOI: 10.21203/rs.3.rs-4090916/v1\\n4. Swapnil Parikh, Manisha Paliwal, Vinoth T, Pravin Pravin. Efficient Object Detection Using Context-Guided and Deep Residual Learning in a Lightweight Network. Proceedings of the 1st International Conference on Intelligent Methods and Advanced Computer Scientific Innovations, 2025, 82-89. DOI: 10.5220/0014154500004932\\n5. Mohammad Hajizadeh, Mohammad Sabokrou, Adel Rahmani. Starnet: Spatio-Temporal Aware Recurrent Network for Efficient Video Object Detection on Mobile Devices. Elsevier BV, 2023. DOI: 10.2139/ssrn.4356111\\n6. Gurjeet Singh, . Sunmiao, Shi Shi, Patrick Chiang. FotonNet: A Hardware-efficient Object Detection System using 3D-depth Segmentation and 2D-deep Neural Network Classifier. Proceedings of the 9th International Conference on Pattern Recognition Applications and Methods, 2020, 461-468. DOI: 10.5220/0008958604610468\\n7. Shuo Hu, Run Xing, Liyang Han, Tongtong Liu. EBAD-YOLO: Efficient Bidirectional Adaptive Dense Network for UAV Small Object Detection. Springer Science and Business Media LLC, 2025. DOI: 10.21203/rs.3.rs-7578170/v1\\n8. Fufang Li, Yuehua Zhang, Yuxuan Fan. EABI-DETR: An Efficient Aerial Small Object Detection Network. Biomimetics, 2025, 10(11): 770. DOI: 10.3390/biomimetics10110770\\n9. Danqing Xu, Yiquan Wu. An Efficient Detector with Auxiliary Network for Remote Sensing Object Detection. Electronics, 2023, 12(21): 4448. DOI: 10.3390/electronics12214448\\n10. Jayashree Dev, Jibitesh Mishra. Energy-Efficient Object Detection and Tracking Framework for Wireless Sensor Network. Sensors, 2023, 23(2): 746. DOI: 10.3390/s23020746\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "946f4b74-b791-4020-b165-53f257e95611",
+    "timestamp": "2026-10-31T11:53:56.818Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Mimicking Very Efficient Network for Object Detection\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Quanquan Li, Shengying Jin, Junjie Yan. Mimicking Very Efficient Network for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 7341-7349. DOI: 10.1109/cvpr.2017.776\\n2. THU  THIEN NGO. Lightsod: Towards Lightweight and Efficient Network for Salient Object Detection. Elsevier BV, 2023. DOI: 10.2139/ssrn.4529425\\n3. Wei Hua, Qili Chen, Wenbai Chen. CSPDNet:A New Lightweight Network for Efficient UAV Object Detection. Research Square Platform LLC, 2024. DOI: 10.21203/rs.3.rs-4090916/v1\\n4. Swapnil Parikh, Manisha Paliwal, Vinoth T, Pravin Pravin. Efficient Object Detection Using Context-Guided and Deep Residual Learning in a Lightweight Network. Proceedings of the 1st International Conference on Intelligent Methods and Advanced Computer Scientific Innovations, 2025, 82-89. DOI: 10.5220/0014154500004932\\n5. Mohammad Hajizadeh, Mohammad Sabokrou, Adel Rahmani. Starnet: Spatio-Temporal Aware Recurrent Network for Efficient Video Object Detection on Mobile Devices. Elsevier BV, 2023. DOI: 10.2139/ssrn.4356111\\n6. Gurjeet Singh, . Sunmiao, Shi Shi, Patrick Chiang. FotonNet: A Hardware-efficient Object Detection System using 3D-depth Segmentation and 2D-deep Neural Network Classifier. Proceedings of the 9th International Conference on Pattern Recognition Applications and Methods, 2020, 461-468. DOI: 10.5220/0008958604610468\\n7. Shuo Hu, Run Xing, Liyang Han, Tongtong Liu. EBAD-YOLO: Efficient Bidirectional Adaptive Dense Network for UAV Small Object Detection. Springer Science and Business Media LLC, 2025. DOI: 10.21203/rs.3.rs-7578170/v1\\n8. Fufang Li, Yuehua Zhang, Yuxuan Fan. EABI-DETR: An Efficient Aerial Small Object Detection Network. Biomimetics, 2025, 10(11): 770. DOI: 10.3390/biomimetics10110770\\n9. Danqing Xu, Yiquan Wu. An Efficient Detector with Auxiliary Network for Remote Sensing Object Detection. Electronics, 2023, 12(21): 4448. DOI: 10.3390/electronics12214448\\n10. Jayashree Dev, Jibitesh Mishra. Energy-Efficient Object Detection and Tracking Framework for Wireless Sensor Network. Sensors, 2023, 23(2): 746. DOI: 10.3390/s23020746\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Mimicking Very Efficient Network for Object Detection\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Quanquan Li, Shengying Jin, Junjie Yan. Mimicking Very Efficient Network for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 7341-7349. DOI: 10.1109/cvpr.2017.776\n2. THU  THIEN NGO. Lightsod: Towards Lightweight and Efficient Network for Salient Object Detection. Elsevier BV, 2023. DOI: 10.2139/ssrn.4529425\n3. Wei Hua, Qili Chen, Wenbai Chen. CSPDNet:A New Lightweight Network for Efficient UAV Object Detection. Research Square Platform LLC, 2024. DOI: 10.21203/rs.3.rs-4090916/v1\n4. Swapnil Parikh, Manisha Paliwal, Vinoth T, Pravin Pravin. Efficient Object Detection Using Context-Guided and Deep Residual Learning in a Lightweight Network. Proceedings of the 1st International Conference on Intelligent Methods and Advanced Computer Scientific Innovations, 2025, 82-89. DOI: 10.5220/0014154500004932\n5. Mohammad Hajizadeh, Mohammad Sabokrou, Adel Rahmani. Starnet: Spatio-Temporal Aware Recurrent Network for Efficient Video Object Detection on Mobile Devices. Elsevier BV, 2023. DOI: 10.2139/ssrn.4356111\n6. Gurjeet Singh, . Sunmiao, Shi Shi, Patrick Chiang. FotonNet: A Hardware-efficient Object Detection System using 3D-depth Segmentation and 2D-deep Neural Network Classifier. Proceedings of the 9th International Conference on Pattern Recognition Applications and Methods, 2020, 461-468. DOI: 10.5220/0008958604610468\n7. Shuo Hu, Run Xing, Liyang Han, Tongtong Liu. EBAD-YOLO: Efficient Bidirectional Adaptive Dense Network for UAV Small Object Detection. Springer Science and Business Media LLC, 2025. DOI: 10.21203/rs.3.rs-7578170/v1\n8. Fufang Li, Yuehua Zhang, Yuxuan Fan. EABI-DETR: An Efficient Aerial Small Object Detection Network. Biomimetics, 2025, 10(11): 770. DOI: 10.3390/biomimetics10110770\n9. Danqing Xu, Yiquan Wu. An Efficient Detector with Auxiliary Network for Remote Sensing Object Detection. Electronics, 2023, 12(21): 4448. DOI: 10.3390/electronics12214448\n10. Jayashree Dev, Jibitesh Mishra. Energy-Efficient Object Detection and Tracking Framework for Wireless Sensor Network. Sensors, 2023, 23(2): 746. DOI: 10.3390/s23020746\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_01_J0MzNgr6Ubbyi9L2TqQO8386",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_02_QVY1UpQET86Dqt8aAb2C5176",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Knowledge Distillation A Survey Gou\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jianping Gou, Baosheng Yu, Stephen J. Maybank, Dacheng Tao. Knowledge Distillation: A Survey. International Journal of Computer Vision, 2021, 129(6): 1789-1819. DOI: 10.1007/s11263-021-01453-z\\n2. Jianping Gou, Hongfang Zhu, Renjie Huang, Lan Du, Qing Tian, Shaoning Zeng. Online feature correlation knowledge distillation via adaptive ensemble teacher. Knowledge-Based Systems, 2026, 347: 116263. DOI: 10.1016/j.knosys.2026.116263\\n3. Jianping Gou, Yue Hu, Liyuan Sun, Zhi Wang, Hongxing Ma. Collaborative knowledge distillation via filter knowledge transfer. Expert Systems with Applications, 2024, 238: 121884. DOI: 10.1016/j.eswa.2023.121884\\n4. Lin Li, Jianping Gou, Baosheng Yu, Lan Du, Yi Zhang, Dacheng Tao. Federated Distillation: A Survey. ACM Computing Surveys, 2026. DOI: 10.1145/3857792\\n5. Songze Li, Tonghua Su, Xuyao Zhang, Zhongjie Wang. Continual Learning with Knowledge Distillation: A Survey. Institute of Electrical and Electronics Engineers (IEEE), 2024. DOI: 10.36227/techrxiv.170422196.66991957/v1\\n6. Benyamin Ghojogh, Ali Ghodsi. Neural Network Compression and Knowledge Distillation: Tutorial and Survey. Center for Open Science, 2024. DOI: 10.31219/osf.io/4n2cb\\n7. Jianping Gou, Xiaomeng Xin, Baosheng Yu, Heping Song, Weiyong Zhang, Shaohua Wan. Neighborhood relation-based knowledge distillation for image classification. Neural Networks, 2025, 188: 107429. DOI: 10.1016/j.neunet.2025.107429\\n8. Daidai Liu, Fan Gao, Jianping Gou, Jiacheng Liu, Baosheng Yu, Zhang Yi. Weighted sample correlation knowledge distillation for visual recognition. Pattern Recognition, 2026, 179: 113911. DOI: 10.1016/j.patcog.2026.113911\\n9. Xiaomeng Xin, Heping Song, Jianping Gou. A New Similarity-Based Relational Knowledge Distillation Method. ICASSP 2024 - 2024 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 2024, 3535-3539. DOI: 10.1109/icassp48485.2024.10447596\\n10. Aorui Gou, Chao Liu, Heming Sun, Xiaoyang Zeng, Yibo Fan. A-A KD: Attention and Activation Knowledge Distillation. 2021 IEEE Seventh International Conference on Multimedia Big Data (BigMM), 2021, 57-60. DOI: 10.1109/bigmm52142.2021.00016\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "40f394f5-f85b-4977-b0e3-548cd7eda9d6",
+    "timestamp": "2026-10-31T11:53:57.787Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Knowledge Distillation A Survey Gou\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jianping Gou, Baosheng Yu, Stephen J. Maybank, Dacheng Tao. Knowledge Distillation: A Survey. International Journal of Computer Vision, 2021, 129(6): 1789-1819. DOI: 10.1007/s11263-021-01453-z\\n2. Jianping Gou, Hongfang Zhu, Renjie Huang, Lan Du, Qing Tian, Shaoning Zeng. Online feature correlation knowledge distillation via adaptive ensemble teacher. Knowledge-Based Systems, 2026, 347: 116263. DOI: 10.1016/j.knosys.2026.116263\\n3. Jianping Gou, Yue Hu, Liyuan Sun, Zhi Wang, Hongxing Ma. Collaborative knowledge distillation via filter knowledge transfer. Expert Systems with Applications, 2024, 238: 121884. DOI: 10.1016/j.eswa.2023.121884\\n4. Lin Li, Jianping Gou, Baosheng Yu, Lan Du, Yi Zhang, Dacheng Tao. Federated Distillation: A Survey. ACM Computing Surveys, 2026. DOI: 10.1145/3857792\\n5. Songze Li, Tonghua Su, Xuyao Zhang, Zhongjie Wang. Continual Learning with Knowledge Distillation: A Survey. Institute of Electrical and Electronics Engineers (IEEE), 2024. DOI: 10.36227/techrxiv.170422196.66991957/v1\\n6. Benyamin Ghojogh, Ali Ghodsi. Neural Network Compression and Knowledge Distillation: Tutorial and Survey. Center for Open Science, 2024. DOI: 10.31219/osf.io/4n2cb\\n7. Jianping Gou, Xiaomeng Xin, Baosheng Yu, Heping Song, Weiyong Zhang, Shaohua Wan. Neighborhood relation-based knowledge distillation for image classification. Neural Networks, 2025, 188: 107429. DOI: 10.1016/j.neunet.2025.107429\\n8. Daidai Liu, Fan Gao, Jianping Gou, Jiacheng Liu, Baosheng Yu, Zhang Yi. Weighted sample correlation knowledge distillation for visual recognition. Pattern Recognition, 2026, 179: 113911. DOI: 10.1016/j.patcog.2026.113911\\n9. Xiaomeng Xin, Heping Song, Jianping Gou. A New Similarity-Based Relational Knowledge Distillation Method. ICASSP 2024 - 2024 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 2024, 3535-3539. DOI: 10.1109/icassp48485.2024.10447596\\n10. Aorui Gou, Chao Liu, Heming Sun, Xiaoyang Zeng, Yibo Fan. A-A KD: Attention and Activation Knowledge Distillation. 2021 IEEE Seventh International Conference on Multimedia Big Data (BigMM), 2021, 57-60. DOI: 10.1109/bigmm52142.2021.00016\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Knowledge Distillation A Survey Gou\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Jianping Gou, Baosheng Yu, Stephen J. Maybank, Dacheng Tao. Knowledge Distillation: A Survey. International Journal of Computer Vision, 2021, 129(6): 1789-1819. DOI: 10.1007/s11263-021-01453-z\n2. Jianping Gou, Hongfang Zhu, Renjie Huang, Lan Du, Qing Tian, Shaoning Zeng. Online feature correlation knowledge distillation via adaptive ensemble teacher. Knowledge-Based Systems, 2026, 347: 116263. DOI: 10.1016/j.knosys.2026.116263\n3. Jianping Gou, Yue Hu, Liyuan Sun, Zhi Wang, Hongxing Ma. Collaborative knowledge distillation via filter knowledge transfer. Expert Systems with Applications, 2024, 238: 121884. DOI: 10.1016/j.eswa.2023.121884\n4. Lin Li, Jianping Gou, Baosheng Yu, Lan Du, Yi Zhang, Dacheng Tao. Federated Distillation: A Survey. ACM Computing Surveys, 2026. DOI: 10.1145/3857792\n5. Songze Li, Tonghua Su, Xuyao Zhang, Zhongjie Wang. Continual Learning with Knowledge Distillation: A Survey. Institute of Electrical and Electronics Engineers (IEEE), 2024. DOI: 10.36227/techrxiv.170422196.66991957/v1\n6. Benyamin Ghojogh, Ali Ghodsi. Neural Network Compression and Knowledge Distillation: Tutorial and Survey. Center for Open Science, 2024. DOI: 10.31219/osf.io/4n2cb\n7. Jianping Gou, Xiaomeng Xin, Baosheng Yu, Heping Song, Weiyong Zhang, Shaohua Wan. Neighborhood relation-based knowledge distillation for image classification. Neural Networks, 2025, 188: 107429. DOI: 10.1016/j.neunet.2025.107429\n8. Daidai Liu, Fan Gao, Jianping Gou, Jiacheng Liu, Baosheng Yu, Zhang Yi. Weighted sample correlation knowledge distillation for visual recognition. Pattern Recognition, 2026, 179: 113911. DOI: 10.1016/j.patcog.2026.113911\n9. Xiaomeng Xin, Heping Song, Jianping Gou. A New Similarity-Based Relational Knowledge Distillation Method. ICASSP 2024 - 2024 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 2024, 3535-3539. DOI: 10.1109/icassp48485.2024.10447596\n10. Aorui Gou, Chao Liu, Heming Sun, Xiaoyang Zeng, Yibo Fan. A-A KD: Attention and Activation Knowledge Distillation. 2021 IEEE Seventh International Conference on Multimedia Big Data (BigMM), 2021, 57-60. DOI: 10.1109/bigmm52142.2021.00016\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_02_QVY1UpQET86Dqt8aAb2C5176",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_03_wgqTutnYfc6RQXJShDPU0847",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Feature Pyramid Networks for Object Detection Lin\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Chengyang Wang, Caiming Zhong. Adaptive Feature Pyramid Networks for Object Detection. IEEE Access, 2021, 9: 107024-107032. DOI: 10.1109/access.2021.3100369\\n2. Tsung-Yi Lin, Piotr Dollar, Ross Girshick, Kaiming He, Bharath Hariharan, Serge Belongie. Feature Pyramid Networks for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 936-944. DOI: 10.1109/cvpr.2017.106\\n3. Le Liang, Cheng Wang, Lefei Zhang. MambaFPN: A SSM-based feature pyramid network for object detection. Neural Networks, 2026, 198: 108544. DOI: 10.1016/j.neunet.2026.108544\\n4. John  Anthony Doherty, Bryan Gardiner, Emmett Kerr, Nazmul Siddique. Bifpn-Yolo: One-Stage Object Detection Integrating Bi-Directional Feature Pyramid Networks. Elsevier BV, 2023. DOI: 10.2139/ssrn.4498139\\n5. Kyungseo Min, Gun-Hee Lee, Seong-Whan Lee. Attentional feature pyramid network for small object detection. Neural Networks, 2022, 155: 439-450. DOI: 10.1016/j.neunet.2022.08.029\\n6. Mingjian Zhu. Dynamic feature pyramid networks for object detection. Fifteenth International Conference on Signal Processing Systems (ICSPS 2023), 2024, 24. DOI: 10.1117/12.3022812\\n7. Taizhe Tan, Guiming Pan. A weighted converging and radiating feature pyramid network for object detection. 2025 International Joint Conference on Neural Networks (IJCNN), 2025, 1-8. DOI: 10.1109/ijcnn64981.2025.11227332\\n8. Seong-Ho Lee, Seung-Hwan Bae. AFI-GAN: Improving feature interpolation of feature pyramid networks via adversarial training for object detection. Pattern Recognition, 2023, 138: 109365. DOI: 10.1016/j.patcog.2023.109365\\n9. ZhiYing Zhou, Jianqiang Xiao, Satoshi Yamane. SAFPN: Self Adapted Feature Pyramid Networks for Object Detection. 2021 IEEE 10th Global Conference on Consumer Electronics (GCCE), 2021, 1-3. DOI: 10.1109/gcce53005.2021.9622105\\n10. Fang Qingyun, Zhang Lin, Wang Zhaokui. An Efficient Feature Pyramid Network for Object Detection in Remote Sensing Imagery. IEEE Access, 2020, 8: 93058-93068. DOI: 10.1109/access.2020.2993998\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "c72996e8-af0d-4ac0-a4c3-25a0eef0b550",
+    "timestamp": "2026-10-31T11:53:59.916Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Feature Pyramid Networks for Object Detection Lin\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Chengyang Wang, Caiming Zhong. Adaptive Feature Pyramid Networks for Object Detection. IEEE Access, 2021, 9: 107024-107032. DOI: 10.1109/access.2021.3100369\\n2. Tsung-Yi Lin, Piotr Dollar, Ross Girshick, Kaiming He, Bharath Hariharan, Serge Belongie. Feature Pyramid Networks for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 936-944. DOI: 10.1109/cvpr.2017.106\\n3. Le Liang, Cheng Wang, Lefei Zhang. MambaFPN: A SSM-based feature pyramid network for object detection. Neural Networks, 2026, 198: 108544. DOI: 10.1016/j.neunet.2026.108544\\n4. John  Anthony Doherty, Bryan Gardiner, Emmett Kerr, Nazmul Siddique. Bifpn-Yolo: One-Stage Object Detection Integrating Bi-Directional Feature Pyramid Networks. Elsevier BV, 2023. DOI: 10.2139/ssrn.4498139\\n5. Kyungseo Min, Gun-Hee Lee, Seong-Whan Lee. Attentional feature pyramid network for small object detection. Neural Networks, 2022, 155: 439-450. DOI: 10.1016/j.neunet.2022.08.029\\n6. Mingjian Zhu. Dynamic feature pyramid networks for object detection. Fifteenth International Conference on Signal Processing Systems (ICSPS 2023), 2024, 24. DOI: 10.1117/12.3022812\\n7. Taizhe Tan, Guiming Pan. A weighted converging and radiating feature pyramid network for object detection. 2025 International Joint Conference on Neural Networks (IJCNN), 2025, 1-8. DOI: 10.1109/ijcnn64981.2025.11227332\\n8. Seong-Ho Lee, Seung-Hwan Bae. AFI-GAN: Improving feature interpolation of feature pyramid networks via adversarial training for object detection. Pattern Recognition, 2023, 138: 109365. DOI: 10.1016/j.patcog.2023.109365\\n9. ZhiYing Zhou, Jianqiang Xiao, Satoshi Yamane. SAFPN: Self Adapted Feature Pyramid Networks for Object Detection. 2021 IEEE 10th Global Conference on Consumer Electronics (GCCE), 2021, 1-3. DOI: 10.1109/gcce53005.2021.9622105\\n10. Fang Qingyun, Zhang Lin, Wang Zhaokui. An Efficient Feature Pyramid Network for Object Detection in Remote Sensing Imagery. IEEE Access, 2020, 8: 93058-93068. DOI: 10.1109/access.2020.2993998\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Feature Pyramid Networks for Object Detection Lin\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Chengyang Wang, Caiming Zhong. Adaptive Feature Pyramid Networks for Object Detection. IEEE Access, 2021, 9: 107024-107032. DOI: 10.1109/access.2021.3100369\n2. Tsung-Yi Lin, Piotr Dollar, Ross Girshick, Kaiming He, Bharath Hariharan, Serge Belongie. Feature Pyramid Networks for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 936-944. DOI: 10.1109/cvpr.2017.106\n3. Le Liang, Cheng Wang, Lefei Zhang. MambaFPN: A SSM-based feature pyramid network for object detection. Neural Networks, 2026, 198: 108544. DOI: 10.1016/j.neunet.2026.108544\n4. John  Anthony Doherty, Bryan Gardiner, Emmett Kerr, Nazmul Siddique. Bifpn-Yolo: One-Stage Object Detection Integrating Bi-Directional Feature Pyramid Networks. Elsevier BV, 2023. DOI: 10.2139/ssrn.4498139\n5. Kyungseo Min, Gun-Hee Lee, Seong-Whan Lee. Attentional feature pyramid network for small object detection. Neural Networks, 2022, 155: 439-450. DOI: 10.1016/j.neunet.2022.08.029\n6. Mingjian Zhu. Dynamic feature pyramid networks for object detection. Fifteenth International Conference on Signal Processing Systems (ICSPS 2023), 2024, 24. DOI: 10.1117/12.3022812\n7. Taizhe Tan, Guiming Pan. A weighted converging and radiating feature pyramid network for object detection. 2025 International Joint Conference on Neural Networks (IJCNN), 2025, 1-8. DOI: 10.1109/ijcnn64981.2025.11227332\n8. Seong-Ho Lee, Seung-Hwan Bae. AFI-GAN: Improving feature interpolation of feature pyramid networks via adversarial training for object detection. Pattern Recognition, 2023, 138: 109365. DOI: 10.1016/j.patcog.2023.109365\n9. ZhiYing Zhou, Jianqiang Xiao, Satoshi Yamane. SAFPN: Self Adapted Feature Pyramid Networks for Object Detection. 2021 IEEE 10th Global Conference on Consumer Electronics (GCCE), 2021, 1-3. DOI: 10.1109/gcce53005.2021.9622105\n10. Fang Qingyun, Zhang Lin, Wang Zhaokui. An Efficient Feature Pyramid Network for Object Detection in Remote Sensing Imagery. IEEE Access, 2020, 8: 93058-93068. DOI: 10.1109/access.2020.2993998\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_03_wgqTutnYfc6RQXJShDPU0847",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_04_EF4j7Nfr9QpjyPbk20bB1122",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：MobileNetV2 inverted residuals linear bottlenecks Sandler\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen. MobileNetV2: Inverted Residuals and Linear Bottlenecks. 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2018, 4510-4520. DOI: 10.1109/cvpr.2018.00474\\n2. Ronit Raj, Priyanshu Tiwari, Mahendra Kumar Gourisaria, Himansu Das. Efficient Object Detection and Labeling in Retail Environments using MobileNetV2 with Inverted Residuals. 2023 OITS International Conference on Information Technology (OCIT), 2023, 634-639. DOI: 10.1109/ocit59427.2023.10430647\\n3. Sujata Patil, Madan Mali, Supriya Rajankar. AI-Driven Micro-Doppler Classification: Inverted Residual Network with Linear Bottlenecks for Small Unmanned Aerial Vehicles. 2025 International Conference on Artificial Intelligence and Quantum Computation-Based Sensor Application (ICAIQSA), 2025, 1-8. DOI: 10.1109/icaiqsa67794.2025.11440658\\n4. Doo-Seo Park, Min-Young Lee, Ki-hyun Kim, Hong-Chul Lee. A Lightweight Model for Heart Sound Classification Based on Inverted Residuals. Journal of the Korean Institute of Industrial Engineers, 2021, 47(6): 514-528. DOI: 10.7232/jkiie.2021.47.6.514\\n5. Xinjie Tong, Teng Wang. Attention-guided Face Alignment Based on Inverted Residuals. 2019 Chinese Automation Congress (CAC), 2019, 759-763. DOI: 10.1109/cac48633.2019.8996276\\n6. Pornthep Sarakon, Hideaki Kawano, Seiichi Serikawa. Surface-Defect Segmentation using U-shaped Inverted Residuals. 2019 12th Biomedical Engineering International Conference (BMEiCON), 2019, 1-4. DOI: 10.1109/bmeicon47515.2019.8990212\\n7. Seppo Pynnonen. Distribution of Linear Transformations of Internally Studentized Least Squared Residuals. Elsevier BV, 2010. DOI: 10.2139/ssrn.1691997\\n8. Raymond J. Carroll. On the Distribution of Quantiles of Residuals in a Linear Model.. Defense Technical Information Center, 1978. DOI: 10.21236/ada053597\\n9. Sheldon S. Sandler. Linear Antennas. Wiley Encyclopedia of Telecommunications, 2003. DOI: 10.1002/0471219282.eot115\\n10. Huifang Kong, Lei Fan, Xiaoxue Zhang. Semantic Segmentation with Inverted Residuals and Atrous Convolution. SAE Technical Paper Series, 2018, 1. DOI: 10.4271/2018-01-1635\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "013c8fe4-4354-45b1-bd51-5a7c386acbfe",
+    "timestamp": "2026-10-31T11:54:02.325Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：MobileNetV2 inverted residuals linear bottlenecks Sandler\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen. MobileNetV2: Inverted Residuals and Linear Bottlenecks. 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2018, 4510-4520. DOI: 10.1109/cvpr.2018.00474\\n2. Ronit Raj, Priyanshu Tiwari, Mahendra Kumar Gourisaria, Himansu Das. Efficient Object Detection and Labeling in Retail Environments using MobileNetV2 with Inverted Residuals. 2023 OITS International Conference on Information Technology (OCIT), 2023, 634-639. DOI: 10.1109/ocit59427.2023.10430647\\n3. Sujata Patil, Madan Mali, Supriya Rajankar. AI-Driven Micro-Doppler Classification: Inverted Residual Network with Linear Bottlenecks for Small Unmanned Aerial Vehicles. 2025 International Conference on Artificial Intelligence and Quantum Computation-Based Sensor Application (ICAIQSA), 2025, 1-8. DOI: 10.1109/icaiqsa67794.2025.11440658\\n4. Doo-Seo Park, Min-Young Lee, Ki-hyun Kim, Hong-Chul Lee. A Lightweight Model for Heart Sound Classification Based on Inverted Residuals. Journal of the Korean Institute of Industrial Engineers, 2021, 47(6): 514-528. DOI: 10.7232/jkiie.2021.47.6.514\\n5. Xinjie Tong, Teng Wang. Attention-guided Face Alignment Based on Inverted Residuals. 2019 Chinese Automation Congress (CAC), 2019, 759-763. DOI: 10.1109/cac48633.2019.8996276\\n6. Pornthep Sarakon, Hideaki Kawano, Seiichi Serikawa. Surface-Defect Segmentation using U-shaped Inverted Residuals. 2019 12th Biomedical Engineering International Conference (BMEiCON), 2019, 1-4. DOI: 10.1109/bmeicon47515.2019.8990212\\n7. Seppo Pynnonen. Distribution of Linear Transformations of Internally Studentized Least Squared Residuals. Elsevier BV, 2010. DOI: 10.2139/ssrn.1691997\\n8. Raymond J. Carroll. On the Distribution of Quantiles of Residuals in a Linear Model.. Defense Technical Information Center, 1978. DOI: 10.21236/ada053597\\n9. Sheldon S. Sandler. Linear Antennas. Wiley Encyclopedia of Telecommunications, 2003. DOI: 10.1002/0471219282.eot115\\n10. Huifang Kong, Lei Fan, Xiaoxue Zhang. Semantic Segmentation with Inverted Residuals and Atrous Convolution. SAE Technical Paper Series, 2018, 1. DOI: 10.4271/2018-01-1635\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：MobileNetV2 inverted residuals linear bottlenecks Sandler\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen. MobileNetV2: Inverted Residuals and Linear Bottlenecks. 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2018, 4510-4520. DOI: 10.1109/cvpr.2018.00474\n2. Ronit Raj, Priyanshu Tiwari, Mahendra Kumar Gourisaria, Himansu Das. Efficient Object Detection and Labeling in Retail Environments using MobileNetV2 with Inverted Residuals. 2023 OITS International Conference on Information Technology (OCIT), 2023, 634-639. DOI: 10.1109/ocit59427.2023.10430647\n3. Sujata Patil, Madan Mali, Supriya Rajankar. AI-Driven Micro-Doppler Classification: Inverted Residual Network with Linear Bottlenecks for Small Unmanned Aerial Vehicles. 2025 International Conference on Artificial Intelligence and Quantum Computation-Based Sensor Application (ICAIQSA), 2025, 1-8. DOI: 10.1109/icaiqsa67794.2025.11440658\n4. Doo-Seo Park, Min-Young Lee, Ki-hyun Kim, Hong-Chul Lee. A Lightweight Model for Heart Sound Classification Based on Inverted Residuals. Journal of the Korean Institute of Industrial Engineers, 2021, 47(6): 514-528. DOI: 10.7232/jkiie.2021.47.6.514\n5. Xinjie Tong, Teng Wang. Attention-guided Face Alignment Based on Inverted Residuals. 2019 Chinese Automation Congress (CAC), 2019, 759-763. DOI: 10.1109/cac48633.2019.8996276\n6. Pornthep Sarakon, Hideaki Kawano, Seiichi Serikawa. Surface-Defect Segmentation using U-shaped Inverted Residuals. 2019 12th Biomedical Engineering International Conference (BMEiCON), 2019, 1-4. DOI: 10.1109/bmeicon47515.2019.8990212\n7. Seppo Pynnonen. Distribution of Linear Transformations of Internally Studentized Least Squared Residuals. Elsevier BV, 2010. DOI: 10.2139/ssrn.1691997\n8. Raymond J. Carroll. On the Distribution of Quantiles of Residuals in a Linear Model.. Defense Technical Information Center, 1978. DOI: 10.21236/ada053597\n9. Sheldon S. Sandler. Linear Antennas. Wiley Encyclopedia of Telecommunications, 2003. DOI: 10.1002/0471219282.eot115\n10. Huifang Kong, Lei Fan, Xiaoxue Zhang. Semantic Segmentation with Inverted Residuals and Atrous Convolution. SAE Technical Paper Series, 2018, 1. DOI: 10.4271/2018-01-1635\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_04_EF4j7Nfr9QpjyPbk20bB1122",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "7467c1c5-36a1-4cb2-a951-4abf6f9ed90e",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Good. Now I need Hinton's paper. Let me search. Also maybe another edge-specific paper and a YOLO paper. Also \"Towards Efficient 3D Object Detection with Knowledge Distillation\" NeurIPS 2022. And maybe \"Knowledge Distillation: A Survey\" is good.\n\nI need 10 references. Proposed:\n1. Hinton, Vinyals, Dean 2015 — Distilling the Knowledge in a Neural Network. Need DOI and venue. Crossref may list arXiv. Let me search.\n2. Gou et al. 2021 IJCV survey.\n3. Li, Jin, Yan 2017 CVPR Mimicking very efficient network.\n4. Wang et al. 2019 CVPR fine-grained feature imitation.\n5. Chen et al. 2017 NeurIPS Learning efficient object detection models with KD — Crossref may not have it. Search returned only related. Try exact title search again different wording or \"Guobin Chen Wongun Choi Xiang Yu\".\n6. Lin et al. FPN 2017 CVPR.\n7. Sandler et al. MobileNetV2 2018 CVPR.\n8. Chen & Hsu 2023 ICKII edge device.\n9. Cao et al. 2025 Sensors LKD-YOLOv8.\n10. Yang et al. 2022 NeurIPS Towards Efficient 3D Object Detection with KD. Or another edge-specific one: \"Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing\" 2024. That's very on-topic.\n\nMaybe include \"Knowledge Distillation Boosted Ultra-light Weight Road Object Detection on Edge Device\" and \"LKD-YOLOv8\" plus \"Real Time Switch Object Detection Model Based on KD for Edge Computing\". Three edge-specific. Plus core KD methods. Let's aim:\n\n1. Hinton et al. 2015 (foundation)\n2. Gou et al. 2021 survey\n3. Li et al. 2017 CVPR mimicking\n4. Wang et al. 2019 CVPR fine-grained\n5. Chen et al. 2017 NeurIPS learning efficient detection KD\n6. Lin et al. 2017 CVPR FPN\n7. Sandler et al. 2018 CVPR MobileNetV2\n8. Chen & Hsu 2023 ICKII edge\n9. Cao et al. 2025 Sensors LKD-YOLOv8\n10. Li & Li 2024 CBD edge computing switch detection\n\nNeed exact metadata for all, especially #1 Hinton and #5 Chen NeurIPS. Search for them.",
+       "signature": "7467c1c5-36a1-4cb2-a951-4abf6f9ed90e"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3766,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16384,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "fbd32b87-0ee1-48a5-b73b-acc3186300d3",
+    "timestamp": "2026-10-31T11:54:06.045Z",
+    "thinking_duration_ms": 3100,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "7467c1c5-36a1-4cb2-a951-4abf6f9ed90e",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_lRwDESRZyPND4vGhrIuY6703",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "Distilling the Knowledge in a Neural Network Hinton Vinyals Dean"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3766,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16384,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "65471a61-206c-4bcd-b374-884b4aa6138c",
+    "timestamp": "2026-10-31T11:54:06.215Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_lRwDESRZyPND4vGhrIuY6703",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "7467c1c5-36a1-4cb2-a951-4abf6f9ed90e",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_01_DcINV3ucSsXdy9QnyTCR9656",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "Guobin Chen Wongun Choi Xiang Yu Tony Han Manmohan Chandraker knowledge distillation object detection"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3766,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16384,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "b3f8c3b5-0e3c-41ad-8c6d-f7c40a3584e6",
+    "timestamp": "2026-10-31T11:54:06.468Z",
+    "tool_use_meta": [
+     {
+      "id": "call_01_DcINV3ucSsXdy9QnyTCR9656",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "7467c1c5-36a1-4cb2-a951-4abf6f9ed90e",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_02_Z3icC5vf1RdmaYBF5zdM5348",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "You Only Look Once unified real-time object detection Redmon"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3766,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16384,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "0bd3de46-f623-4107-a7d8-5412b496f410",
+    "timestamp": "2026-10-31T11:54:06.674Z",
+    "tool_use_meta": [
+     {
+      "id": "call_02_Z3icC5vf1RdmaYBF5zdM5348",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "7467c1c5-36a1-4cb2-a951-4abf6f9ed90e",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_03_s2STaZh3zjDDnQ71yGUG7258",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 8,
+        "query": "Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3766,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16384,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "f1ce938f-f673-4948-866e-db65a4ba3377",
+    "timestamp": "2026-10-31T11:54:06.854Z",
+    "tool_use_meta": [
+     {
+      "id": "call_03_s2STaZh3zjDDnQ71yGUG7258",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_lRwDESRZyPND4vGhrIuY6703",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Distilling the Knowledge in a Neural Network Hinton Vinyals Dean\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jeremy H. M. Wong, Huayun Zhang, Nancy F. Chen. Distilling knowledge from Gaussian process teacher to neural network student. INTERSPEECH 2023, 2023, 426-430. DOI: 10.21437/interspeech.2023-190\\n2. Salvatore Candido, Aakanksha Singh, Luca Delle Monache. Distilling an Analog Ensemble into a Deep Neural Network. Wiley, 2020. DOI: 10.1002/essoar.10502348.1\\n3. Yevgen Chebotar, Austin Waters. Distilling Knowledge from Ensembles of Neural Networks for Speech Recognition. Interspeech 2016, 2016, 3439-3443. DOI: 10.21437/interspeech.2016-1190\\n4. Geoff Dean, Petter Gottschalk. ‘Investigative Pathways’ System: Neural Network Mapping Application. Knowledge Management in Policing and Law Enforcement, 2007, 164-194. DOI: 10.1093/oso/9780199214075.003.0008\\n5. Jiawei Liu. Distilling Graph Neural Networks. Synthesis Lectures on Data Mining and Knowledge Discovery, 2022, 131-151. DOI: 10.1007/978-3-031-16174-2_7\\n6. Vasundhara Acharya, Bülent Yener, Gillian Beamer. Distilling knowledge from graph neural networks trained on cell graphs to non-neural student models. Scientific Reports, 2025, 15(1). DOI: 10.1038/s41598-025-13697-7\\n7. Virginia de Sa, Geoffrey Hinton. Cascaded redundancy reduction. Network: Computation in Neural Systems, 1998, 9(1): 73-84. DOI: 10.1088/0954-898x/9/1/004\\n8. Virginia R de Sa, Geoffrey E Hinton. Cascaded redundancy reduction. Network: Computation in Neural Systems, 1998, 9(1): 73-84. DOI: 10.1088/0954-898x_9_1_004\\n9. Jing Liu, Tianai Yue, Chuanguang Yang, Yuqi Li, Qinfen Hao, Xiang Li, Shiping Wen. Distilling Multi-Teacher Knowledge from Distinct Graph Neural Networks. Elsevier BV, 2025. DOI: 10.2139/ssrn.5084903\\n10. Peter Ormerod. Distilling Knowledge Work. Elsevier BV, 2026. DOI: 10.2139/ssrn.7435061\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "a3fce1b5-8a87-403b-a104-9abb153ef1f9",
+    "timestamp": "2026-10-31T11:54:07.026Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Distilling the Knowledge in a Neural Network Hinton Vinyals Dean\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jeremy H. M. Wong, Huayun Zhang, Nancy F. Chen. Distilling knowledge from Gaussian process teacher to neural network student. INTERSPEECH 2023, 2023, 426-430. DOI: 10.21437/interspeech.2023-190\\n2. Salvatore Candido, Aakanksha Singh, Luca Delle Monache. Distilling an Analog Ensemble into a Deep Neural Network. Wiley, 2020. DOI: 10.1002/essoar.10502348.1\\n3. Yevgen Chebotar, Austin Waters. Distilling Knowledge from Ensembles of Neural Networks for Speech Recognition. Interspeech 2016, 2016, 3439-3443. DOI: 10.21437/interspeech.2016-1190\\n4. Geoff Dean, Petter Gottschalk. ‘Investigative Pathways’ System: Neural Network Mapping Application. Knowledge Management in Policing and Law Enforcement, 2007, 164-194. DOI: 10.1093/oso/9780199214075.003.0008\\n5. Jiawei Liu. Distilling Graph Neural Networks. Synthesis Lectures on Data Mining and Knowledge Discovery, 2022, 131-151. DOI: 10.1007/978-3-031-16174-2_7\\n6. Vasundhara Acharya, Bülent Yener, Gillian Beamer. Distilling knowledge from graph neural networks trained on cell graphs to non-neural student models. Scientific Reports, 2025, 15(1). DOI: 10.1038/s41598-025-13697-7\\n7. Virginia de Sa, Geoffrey Hinton. Cascaded redundancy reduction. Network: Computation in Neural Systems, 1998, 9(1): 73-84. DOI: 10.1088/0954-898x/9/1/004\\n8. Virginia R de Sa, Geoffrey E Hinton. Cascaded redundancy reduction. Network: Computation in Neural Systems, 1998, 9(1): 73-84. DOI: 10.1088/0954-898x_9_1_004\\n9. Jing Liu, Tianai Yue, Chuanguang Yang, Yuqi Li, Qinfen Hao, Xiang Li, Shiping Wen. Distilling Multi-Teacher Knowledge from Distinct Graph Neural Networks. Elsevier BV, 2025. DOI: 10.2139/ssrn.5084903\\n10. Peter Ormerod. Distilling Knowledge Work. Elsevier BV, 2026. DOI: 10.2139/ssrn.7435061\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Distilling the Knowledge in a Neural Network Hinton Vinyals Dean\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Jeremy H. M. Wong, Huayun Zhang, Nancy F. Chen. Distilling knowledge from Gaussian process teacher to neural network student. INTERSPEECH 2023, 2023, 426-430. DOI: 10.21437/interspeech.2023-190\n2. Salvatore Candido, Aakanksha Singh, Luca Delle Monache. Distilling an Analog Ensemble into a Deep Neural Network. Wiley, 2020. DOI: 10.1002/essoar.10502348.1\n3. Yevgen Chebotar, Austin Waters. Distilling Knowledge from Ensembles of Neural Networks for Speech Recognition. Interspeech 2016, 2016, 3439-3443. DOI: 10.21437/interspeech.2016-1190\n4. Geoff Dean, Petter Gottschalk. ‘Investigative Pathways’ System: Neural Network Mapping Application. Knowledge Management in Policing and Law Enforcement, 2007, 164-194. DOI: 10.1093/oso/9780199214075.003.0008\n5. Jiawei Liu. Distilling Graph Neural Networks. Synthesis Lectures on Data Mining and Knowledge Discovery, 2022, 131-151. DOI: 10.1007/978-3-031-16174-2_7\n6. Vasundhara Acharya, Bülent Yener, Gillian Beamer. Distilling knowledge from graph neural networks trained on cell graphs to non-neural student models. Scientific Reports, 2025, 15(1). DOI: 10.1038/s41598-025-13697-7\n7. Virginia de Sa, Geoffrey Hinton. Cascaded redundancy reduction. Network: Computation in Neural Systems, 1998, 9(1): 73-84. DOI: 10.1088/0954-898x/9/1/004\n8. Virginia R de Sa, Geoffrey E Hinton. Cascaded redundancy reduction. Network: Computation in Neural Systems, 1998, 9(1): 73-84. DOI: 10.1088/0954-898x_9_1_004\n9. Jing Liu, Tianai Yue, Chuanguang Yang, Yuqi Li, Qinfen Hao, Xiang Li, Shiping Wen. Distilling Multi-Teacher Knowledge from Distinct Graph Neural Networks. Elsevier BV, 2025. DOI: 10.2139/ssrn.5084903\n10. Peter Ormerod. Distilling Knowledge Work. Elsevier BV, 2026. DOI: 10.2139/ssrn.7435061\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_lRwDESRZyPND4vGhrIuY6703",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_01_DcINV3ucSsXdy9QnyTCR9656",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Guobin Chen Wongun Choi Xiang Yu Tony Han Manmohan Chandraker knowledge distillation object detection\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Li Chen, Chunyan Yu, Lvcai Chen. A New Knowledge Distillation for Incremental Object Detection. 2019 International Joint Conference on Neural Networks (IJCNN), 2019, 1-7. DOI: 10.1109/ijcnn.2019.8851980\\n2. Yu Xiang, Wongun Choi, Yuanqing Lin, Silvio Savarese. Data-driven 3D Voxel Patterns for object category recognition. 2015 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2015, 1903-1911. DOI: 10.1109/cvpr.2015.7298800\\n3. Wenzhuo Liu, Shuiying Xiang, Tao Zhang, Yanan Han, Yahui Zhang, Xingxing Guo, Licun Yu, Yue Hao. S4-KD: A single step spiking SiamFC+ + for object tracking with knowledge distillation. Neural Networks, 2025, 188: 107478. DOI: 10.1016/j.neunet.2025.107478\\n4. Guangyu Ren, Yinxiao Yu, Hengyan Liu, Tania Stathaki. Dynamic Knowledge Distillation with Noise Elimination for Rgb-D Salient Object Detection. Elsevier BV, 2022. DOI: 10.2139/ssrn.4125204\\n5. Yuexing Han, Zhiyi Huang, Yan Sun, Bing Wang, Qiaochuan Chen. Agricultural object detection in complex environments via co-attention and self-knowledge distillation. Information Sciences, 2026, 724: 122711. DOI: 10.1016/j.ins.2025.122711\\n6. Di Wu, Pengfei Chen, Xuehui Yu, Guorong Li, Zhenjun Han, Jianbin Jiao. Spatial Self-Distillation for Object Detection with Inaccurate Bounding Boxes. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 6832-6842. DOI: 10.1109/iccv51070.2023.00631\\n7. Weiqing Yan, Changhong Bu, Yuanyang Zhang, Guanghui Yue, Wei Zhou, Xiatian Zhu, Jungong Han. 3D Object Detection and Knowledge Distillation in Autonomous Driving: A Survey. Elsevier BV, 2026. DOI: 10.2139/ssrn.6695711\\n8. Wanwei Wang, Wei Hong, Feng Wang, Jinke Yu. GAN-Knowledge Distillation for One-Stage Object Detection. IEEE Access, 2020, 8: 60719-60727. DOI: 10.1109/access.2020.2983174\\n9. Fan Liu, Xinlei Zhang, Chuanyi Zhang, Liang Yao, Fan Cheng, Xinyuan Li, Xiaohan Yu. Heterogeneous Knowledge Distillation Fostered Pre-training for Remote Sensing Object Detection. Elsevier BV, 2025. DOI: 10.2139/ssrn.5669025\\n10. Jisu Kang, Wooseok Shin, Sung Won Han. Towards Real-Time 3d Object Detection in Lidar-Only Scenario: Semi-Supervised Learning, Point Cloud Density Augmentation and Knowledge Distillation. Elsevier BV, 2025. DOI: 10.2139/ssrn.5157874\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "27254bfd-d028-4406-83e2-466c4bce120f",
+    "timestamp": "2026-10-31T11:54:08.150Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Guobin Chen Wongun Choi Xiang Yu Tony Han Manmohan Chandraker knowledge distillation object detection\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Li Chen, Chunyan Yu, Lvcai Chen. A New Knowledge Distillation for Incremental Object Detection. 2019 International Joint Conference on Neural Networks (IJCNN), 2019, 1-7. DOI: 10.1109/ijcnn.2019.8851980\\n2. Yu Xiang, Wongun Choi, Yuanqing Lin, Silvio Savarese. Data-driven 3D Voxel Patterns for object category recognition. 2015 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2015, 1903-1911. DOI: 10.1109/cvpr.2015.7298800\\n3. Wenzhuo Liu, Shuiying Xiang, Tao Zhang, Yanan Han, Yahui Zhang, Xingxing Guo, Licun Yu, Yue Hao. S4-KD: A single step spiking SiamFC+ + for object tracking with knowledge distillation. Neural Networks, 2025, 188: 107478. DOI: 10.1016/j.neunet.2025.107478\\n4. Guangyu Ren, Yinxiao Yu, Hengyan Liu, Tania Stathaki. Dynamic Knowledge Distillation with Noise Elimination for Rgb-D Salient Object Detection. Elsevier BV, 2022. DOI: 10.2139/ssrn.4125204\\n5. Yuexing Han, Zhiyi Huang, Yan Sun, Bing Wang, Qiaochuan Chen. Agricultural object detection in complex environments via co-attention and self-knowledge distillation. Information Sciences, 2026, 724: 122711. DOI: 10.1016/j.ins.2025.122711\\n6. Di Wu, Pengfei Chen, Xuehui Yu, Guorong Li, Zhenjun Han, Jianbin Jiao. Spatial Self-Distillation for Object Detection with Inaccurate Bounding Boxes. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 6832-6842. DOI: 10.1109/iccv51070.2023.00631\\n7. Weiqing Yan, Changhong Bu, Yuanyang Zhang, Guanghui Yue, Wei Zhou, Xiatian Zhu, Jungong Han. 3D Object Detection and Knowledge Distillation in Autonomous Driving: A Survey. Elsevier BV, 2026. DOI: 10.2139/ssrn.6695711\\n8. Wanwei Wang, Wei Hong, Feng Wang, Jinke Yu. GAN-Knowledge Distillation for One-Stage Object Detection. IEEE Access, 2020, 8: 60719-60727. DOI: 10.1109/access.2020.2983174\\n9. Fan Liu, Xinlei Zhang, Chuanyi Zhang, Liang Yao, Fan Cheng, Xinyuan Li, Xiaohan Yu. Heterogeneous Knowledge Distillation Fostered Pre-training for Remote Sensing Object Detection. Elsevier BV, 2025. DOI: 10.2139/ssrn.5669025\\n10. Jisu Kang, Wooseok Shin, Sung Won Han. Towards Real-Time 3d Object Detection in Lidar-Only Scenario: Semi-Supervised Learning, Point Cloud Density Augmentation and Knowledge Distillation. Elsevier BV, 2025. DOI: 10.2139/ssrn.5157874\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Guobin Chen Wongun Choi Xiang Yu Tony Han Manmohan Chandraker knowledge distillation object detection\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Li Chen, Chunyan Yu, Lvcai Chen. A New Knowledge Distillation for Incremental Object Detection. 2019 International Joint Conference on Neural Networks (IJCNN), 2019, 1-7. DOI: 10.1109/ijcnn.2019.8851980\n2. Yu Xiang, Wongun Choi, Yuanqing Lin, Silvio Savarese. Data-driven 3D Voxel Patterns for object category recognition. 2015 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2015, 1903-1911. DOI: 10.1109/cvpr.2015.7298800\n3. Wenzhuo Liu, Shuiying Xiang, Tao Zhang, Yanan Han, Yahui Zhang, Xingxing Guo, Licun Yu, Yue Hao. S4-KD: A single step spiking SiamFC+ + for object tracking with knowledge distillation. Neural Networks, 2025, 188: 107478. DOI: 10.1016/j.neunet.2025.107478\n4. Guangyu Ren, Yinxiao Yu, Hengyan Liu, Tania Stathaki. Dynamic Knowledge Distillation with Noise Elimination for Rgb-D Salient Object Detection. Elsevier BV, 2022. DOI: 10.2139/ssrn.4125204\n5. Yuexing Han, Zhiyi Huang, Yan Sun, Bing Wang, Qiaochuan Chen. Agricultural object detection in complex environments via co-attention and self-knowledge distillation. Information Sciences, 2026, 724: 122711. DOI: 10.1016/j.ins.2025.122711\n6. Di Wu, Pengfei Chen, Xuehui Yu, Guorong Li, Zhenjun Han, Jianbin Jiao. Spatial Self-Distillation for Object Detection with Inaccurate Bounding Boxes. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 6832-6842. DOI: 10.1109/iccv51070.2023.00631\n7. Weiqing Yan, Changhong Bu, Yuanyang Zhang, Guanghui Yue, Wei Zhou, Xiatian Zhu, Jungong Han. 3D Object Detection and Knowledge Distillation in Autonomous Driving: A Survey. Elsevier BV, 2026. DOI: 10.2139/ssrn.6695711\n8. Wanwei Wang, Wei Hong, Feng Wang, Jinke Yu. GAN-Knowledge Distillation for One-Stage Object Detection. IEEE Access, 2020, 8: 60719-60727. DOI: 10.1109/access.2020.2983174\n9. Fan Liu, Xinlei Zhang, Chuanyi Zhang, Liang Yao, Fan Cheng, Xinyuan Li, Xiaohan Yu. Heterogeneous Knowledge Distillation Fostered Pre-training for Remote Sensing Object Detection. Elsevier BV, 2025. DOI: 10.2139/ssrn.5669025\n10. Jisu Kang, Wooseok Shin, Sung Won Han. Towards Real-Time 3d Object Detection in Lidar-Only Scenario: Semi-Supervised Learning, Point Cloud Density Augmentation and Knowledge Distillation. Elsevier BV, 2025. DOI: 10.2139/ssrn.5157874\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_01_DcINV3ucSsXdy9QnyTCR9656",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_02_Z3icC5vf1RdmaYBF5zdM5348",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：You Only Look Once unified real-time object detection Redmon\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Joseph Redmon, Santosh Divvala, Ross Girshick, Ali Farhadi. You Only Look Once: Unified, Real-Time Object Detection. 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2016, 779-788. DOI: 10.1109/cvpr.2016.91\\n2. Deepika H C. An Overview of You Only Look Once: Unified, Real-Time Object Detection. International Journal for Research in Applied Science and Engineering Technology, 2020, 8(6): 607-609. DOI: 10.22214/ijraset.2020.6098\\n3. Abbas Shaik, R. Thandaiah Prabu. Detection of face mask using convolutional neural network-based real-time object detection algorithm you only look once-V4 (YOLO-V4) compared with you only look once-V3 (YOLO-V3) algorithm to improve precision. AIP Conference Proceedings, 2024, 3150: 020023. DOI: 10.1063/5.0227993\\n4. Yan Zhou. IYOLO-NL: An improved you only look once and none left object detector for real-time face mask detection. Heliyon, 2023, 9(8): e19064. DOI: 10.1016/j.heliyon.2023.e19064\\n5. Isna Ayu Muarofah, Muhammad Jauhar Vikri, Ita Aristia Sa'ida. REAL-TIME TOMATO QUALITY DETECTION SYSTEM USING YOU ONLY LOOK ONCE (YOLOv7) ALGORITHM. Ultimatics : Jurnal Teknik Informatika, 2024, 15(2): 89-98. DOI: 10.31937/ti.v15i2.3337\\n6. Allumallu Veera Venkata Susmitha. Smart Recognition System for Business Predictions (You Only Look Once – V3) Unified, Real-Time Object Detection. EAI/Springer Innovations in Communication and Computing, 2019, 137-146. DOI: 10.1007/978-3-030-32530-5_9\\n7. Mrudula Dasi, Deepa. Real Time Object Detection Using You Only Look Once (Yolo) Algorithm. international journal of engineering technology and management sciences, 2025, 9(4): 103-109. DOI: 10.46647/ijetms.2025.v09i04.012\\n8. Sandeep Bhattacharjee. A Literature-based Performance Assessment of the YOLO (You Only Look Once) CNN Approach for Real-time Object Detection. Computology: Journal of Applied Computer Science and Intelligent Technologies, 2025, 4(2): 18-40. DOI: 10.17492/computology.v4i2.2402\\n9. Gowtham V, Devi. T. Analysis of Access Time in Malicious Application Detection Using You Only Look Once V3-Spatial Pyramid Pooling in Comparison with You Only Look Once. 2023 6th International Conference on Contemporary Computing and Informatics (IC3I), 2023, 2571-2574. DOI: 10.1109/ic3i59117.2023.10397599\\n10. YuRan Chen, BaiTing Zhao, XiaoFen Jia, TianBing Ma. Efficient real-time object detection for embedded and industrial systems:The You Only Look Once-Compact approach. Engineering Applications of Artificial Intelligence, 2025, 156: 109927. DOI: 10.1016/j.engappai.2024.109927\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "993b1ca9-4996-4ad3-a759-c10a7891b1c3",
+    "timestamp": "2026-10-31T11:54:09.118Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：You Only Look Once unified real-time object detection Redmon\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Joseph Redmon, Santosh Divvala, Ross Girshick, Ali Farhadi. You Only Look Once: Unified, Real-Time Object Detection. 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2016, 779-788. DOI: 10.1109/cvpr.2016.91\\n2. Deepika H C. An Overview of You Only Look Once: Unified, Real-Time Object Detection. International Journal for Research in Applied Science and Engineering Technology, 2020, 8(6): 607-609. DOI: 10.22214/ijraset.2020.6098\\n3. Abbas Shaik, R. Thandaiah Prabu. Detection of face mask using convolutional neural network-based real-time object detection algorithm you only look once-V4 (YOLO-V4) compared with you only look once-V3 (YOLO-V3) algorithm to improve precision. AIP Conference Proceedings, 2024, 3150: 020023. DOI: 10.1063/5.0227993\\n4. Yan Zhou. IYOLO-NL: An improved you only look once and none left object detector for real-time face mask detection. Heliyon, 2023, 9(8): e19064. DOI: 10.1016/j.heliyon.2023.e19064\\n5. Isna Ayu Muarofah, Muhammad Jauhar Vikri, Ita Aristia Sa'ida. REAL-TIME TOMATO QUALITY DETECTION SYSTEM USING YOU ONLY LOOK ONCE (YOLOv7) ALGORITHM. Ultimatics : Jurnal Teknik Informatika, 2024, 15(2): 89-98. DOI: 10.31937/ti.v15i2.3337\\n6. Allumallu Veera Venkata Susmitha. Smart Recognition System for Business Predictions (You Only Look Once – V3) Unified, Real-Time Object Detection. EAI/Springer Innovations in Communication and Computing, 2019, 137-146. DOI: 10.1007/978-3-030-32530-5_9\\n7. Mrudula Dasi, Deepa. Real Time Object Detection Using You Only Look Once (Yolo) Algorithm. international journal of engineering technology and management sciences, 2025, 9(4): 103-109. DOI: 10.46647/ijetms.2025.v09i04.012\\n8. Sandeep Bhattacharjee. A Literature-based Performance Assessment of the YOLO (You Only Look Once) CNN Approach for Real-time Object Detection. Computology: Journal of Applied Computer Science and Intelligent Technologies, 2025, 4(2): 18-40. DOI: 10.17492/computology.v4i2.2402\\n9. Gowtham V, Devi. T. Analysis of Access Time in Malicious Application Detection Using You Only Look Once V3-Spatial Pyramid Pooling in Comparison with You Only Look Once. 2023 6th International Conference on Contemporary Computing and Informatics (IC3I), 2023, 2571-2574. DOI: 10.1109/ic3i59117.2023.10397599\\n10. YuRan Chen, BaiTing Zhao, XiaoFen Jia, TianBing Ma. Efficient real-time object detection for embedded and industrial systems:The You Only Look Once-Compact approach. Engineering Applications of Artificial Intelligence, 2025, 156: 109927. DOI: 10.1016/j.engappai.2024.109927\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：You Only Look Once unified real-time object detection Redmon\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Joseph Redmon, Santosh Divvala, Ross Girshick, Ali Farhadi. You Only Look Once: Unified, Real-Time Object Detection. 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2016, 779-788. DOI: 10.1109/cvpr.2016.91\n2. Deepika H C. An Overview of You Only Look Once: Unified, Real-Time Object Detection. International Journal for Research in Applied Science and Engineering Technology, 2020, 8(6): 607-609. DOI: 10.22214/ijraset.2020.6098\n3. Abbas Shaik, R. Thandaiah Prabu. Detection of face mask using convolutional neural network-based real-time object detection algorithm you only look once-V4 (YOLO-V4) compared with you only look once-V3 (YOLO-V3) algorithm to improve precision. AIP Conference Proceedings, 2024, 3150: 020023. DOI: 10.1063/5.0227993\n4. Yan Zhou. IYOLO-NL: An improved you only look once and none left object detector for real-time face mask detection. Heliyon, 2023, 9(8): e19064. DOI: 10.1016/j.heliyon.2023.e19064\n5. Isna Ayu Muarofah, Muhammad Jauhar Vikri, Ita Aristia Sa'ida. REAL-TIME TOMATO QUALITY DETECTION SYSTEM USING YOU ONLY LOOK ONCE (YOLOv7) ALGORITHM. Ultimatics : Jurnal Teknik Informatika, 2024, 15(2): 89-98. DOI: 10.31937/ti.v15i2.3337\n6. Allumallu Veera Venkata Susmitha. Smart Recognition System for Business Predictions (You Only Look Once – V3) Unified, Real-Time Object Detection. EAI/Springer Innovations in Communication and Computing, 2019, 137-146. DOI: 10.1007/978-3-030-32530-5_9\n7. Mrudula Dasi, Deepa. Real Time Object Detection Using You Only Look Once (Yolo) Algorithm. international journal of engineering technology and management sciences, 2025, 9(4): 103-109. DOI: 10.46647/ijetms.2025.v09i04.012\n8. Sandeep Bhattacharjee. A Literature-based Performance Assessment of the YOLO (You Only Look Once) CNN Approach for Real-time Object Detection. Computology: Journal of Applied Computer Science and Intelligent Technologies, 2025, 4(2): 18-40. DOI: 10.17492/computology.v4i2.2402\n9. Gowtham V, Devi. T. Analysis of Access Time in Malicious Application Detection Using You Only Look Once V3-Spatial Pyramid Pooling in Comparison with You Only Look Once. 2023 6th International Conference on Contemporary Computing and Informatics (IC3I), 2023, 2571-2574. DOI: 10.1109/ic3i59117.2023.10397599\n10. YuRan Chen, BaiTing Zhao, XiaoFen Jia, TianBing Ma. Efficient real-time object detection for embedded and industrial systems:The You Only Look Once-Compact approach. Engineering Applications of Artificial Intelligence, 2025, 156: 109927. DOI: 10.1016/j.engappai.2024.109927\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_02_Z3icC5vf1RdmaYBF5zdM5348",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_03_s2STaZh3zjDDnQ71yGUG7258",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Bingchan Li, Chunguo Li. Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing. 2024 Twelfth International Conference on Advanced Cloud and Big Data (CBD), 2024, 102-105. DOI: 10.1109/cbd65573.2024.00028\\n2. Bingchan Li, Chunguo Li. Switch object detection based on knowledge distillation for real time edge computing. Complex & Intelligent Systems, 2026, 12(6). DOI: 10.1007/s40747-026-02302-7\\n3. Mostafa Etemadinia, Saeed Sharifian. Multi-Teacher Knowledge Distillation for Efficient Satellite-Based Change Detection in Remote Sensing: Advancing Edge Computing for Real-Time Environmental Hazard Monitoring in LEO Networks. Elsevier BV, 2026. DOI: 10.2139/ssrn.6174514\\n4. Tanpreet Singh. Optimizing Neural Networks for Real-Time Object Detection Using Edge Computing and AI. Elsevier BV, 2025. DOI: 10.2139/ssrn.5018415\\n5. Nuo Chen, Peng Zhao, Shouquan Hou. FFKD-Net: lightweight small-object detection based on feature fusion and knowledge distillation. Journal of Real-Time Image Processing, 2026, 23(4). DOI: 10.1007/s11554-026-01910-3\\n6. Sudha S K, Aji S. TA-EnVODT: A cloud-edge integrated temporal-aware ensemble for real-time video object detection and tracking using knowledge projection. Knowledge-Based Systems, 2025, 326: 114067. DOI: 10.1016/j.knosys.2025.114067\\n7. Taisuke Noguchi, Takuya Azumi. 3D Point Cloud Object Detection on Edge Devices for Split Computing. 2024 IEEE 3rd Real-Time and Intelligent Edge Computing Workshop (RAGE), 2024, 1-6. DOI: 10.1109/rage62451.2024.00009\\n8. Chi Kien Ha, Hoanh Nguyen, Long Ho Le. AAB-FusionNet: A real-time object detection model for UAV edge computing platforms. MethodsX, 2025, 15: 103654. DOI: 10.1016/j.mex.2025.103654\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "7190a807-87b6-4e16-8634-f66b3ad536ba",
+    "timestamp": "2026-10-31T11:54:11.232Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Bingchan Li, Chunguo Li. Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing. 2024 Twelfth International Conference on Advanced Cloud and Big Data (CBD), 2024, 102-105. DOI: 10.1109/cbd65573.2024.00028\\n2. Bingchan Li, Chunguo Li. Switch object detection based on knowledge distillation for real time edge computing. Complex & Intelligent Systems, 2026, 12(6). DOI: 10.1007/s40747-026-02302-7\\n3. Mostafa Etemadinia, Saeed Sharifian. Multi-Teacher Knowledge Distillation for Efficient Satellite-Based Change Detection in Remote Sensing: Advancing Edge Computing for Real-Time Environmental Hazard Monitoring in LEO Networks. Elsevier BV, 2026. DOI: 10.2139/ssrn.6174514\\n4. Tanpreet Singh. Optimizing Neural Networks for Real-Time Object Detection Using Edge Computing and AI. Elsevier BV, 2025. DOI: 10.2139/ssrn.5018415\\n5. Nuo Chen, Peng Zhao, Shouquan Hou. FFKD-Net: lightweight small-object detection based on feature fusion and knowledge distillation. Journal of Real-Time Image Processing, 2026, 23(4). DOI: 10.1007/s11554-026-01910-3\\n6. Sudha S K, Aji S. TA-EnVODT: A cloud-edge integrated temporal-aware ensemble for real-time video object detection and tracking using knowledge projection. Knowledge-Based Systems, 2025, 326: 114067. DOI: 10.1016/j.knosys.2025.114067\\n7. Taisuke Noguchi, Takuya Azumi. 3D Point Cloud Object Detection on Edge Devices for Split Computing. 2024 IEEE 3rd Real-Time and Intelligent Edge Computing Workshop (RAGE), 2024, 1-6. DOI: 10.1109/rage62451.2024.00009\\n8. Chi Kien Ha, Hoanh Nguyen, Long Ho Le. AAB-FusionNet: A real-time object detection model for UAV edge computing platforms. MethodsX, 2025, 15: 103654. DOI: 10.1016/j.mex.2025.103654\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Bingchan Li, Chunguo Li. Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing. 2024 Twelfth International Conference on Advanced Cloud and Big Data (CBD), 2024, 102-105. DOI: 10.1109/cbd65573.2024.00028\n2. Bingchan Li, Chunguo Li. Switch object detection based on knowledge distillation for real time edge computing. Complex & Intelligent Systems, 2026, 12(6). DOI: 10.1007/s40747-026-02302-7\n3. Mostafa Etemadinia, Saeed Sharifian. Multi-Teacher Knowledge Distillation for Efficient Satellite-Based Change Detection in Remote Sensing: Advancing Edge Computing for Real-Time Environmental Hazard Monitoring in LEO Networks. Elsevier BV, 2026. DOI: 10.2139/ssrn.6174514\n4. Tanpreet Singh. Optimizing Neural Networks for Real-Time Object Detection Using Edge Computing and AI. Elsevier BV, 2025. DOI: 10.2139/ssrn.5018415\n5. Nuo Chen, Peng Zhao, Shouquan Hou. FFKD-Net: lightweight small-object detection based on feature fusion and knowledge distillation. Journal of Real-Time Image Processing, 2026, 23(4). DOI: 10.1007/s11554-026-01910-3\n6. Sudha S K, Aji S. TA-EnVODT: A cloud-edge integrated temporal-aware ensemble for real-time video object detection and tracking using knowledge projection. Knowledge-Based Systems, 2025, 326: 114067. DOI: 10.1016/j.knosys.2025.114067\n7. Taisuke Noguchi, Takuya Azumi. 3D Point Cloud Object Detection on Edge Devices for Split Computing. 2024 IEEE 3rd Real-Time and Intelligent Edge Computing Workshop (RAGE), 2024, 1-6. DOI: 10.1109/rage62451.2024.00009\n8. Chi Kien Ha, Hoanh Nguyen, Long Ho Le. AAB-FusionNet: A real-time object detection model for UAV edge computing platforms. MethodsX, 2025, 15: 103654. DOI: 10.1016/j.mex.2025.103654\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_03_s2STaZh3zjDDnQ71yGUG7258",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "d352691d-640f-4a9c-b617-69b4d0366e5c",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Hinton's paper isn't in Crossref (arXiv preprint). The CiteGuard verification may accept it via arXiv/Semantic Scholar? The tool description says \"所有数据源都查不到\" — maybe it uses Crossref, Semantic Scholar, OpenAlex. Hinton's paper definitely exists. But metadata requirement includes DOI: 10.48550/arXiv.1503.02531. In a bibliography, \"arXiv preprint arXiv:1503.02531\" is the standard venue. But the user requires \"会议/期刊\" and \"卷期页码\". Hmm strictly, all 10 entries must contain all those fields. For a NeurIPS paper, pages are available (742-751) but no volume/issue. For conferences, \"卷期页码\" can be pages only. Let me avoid arXiv Hinton and instead choose peer-reviewed works with complete metadata. Yet Hinton is the foundational KD paper; but the topic is detection on edge, and we can cite survey, feature imitation, etc. We can include a journal version of foundational ideas? Alternatively cite \"Distilling the Knowledge in a Neural Network\" with arXiv DOI — it lacks journal and volume. Better to satisfy the strict format.\n\nCould use the 2021 IJCV survey as the foundation reference instead. But including Hinton may be expected. I could format: arXiv preprint arXiv:1503.02531, 2015, 1-9, DOI: 10.48550/arXiv.1503.02531. arXiv is not a conference/journal, though. Hmm.\n\nMaybe there's a peer-reviewed version: \"Distilling the Knowledge in a Neural Network\" has no peer-reviewed version. I'll skip it and use the survey to cover foundational concept. Or include it anyway with arXiv as venue; but strict user requirement might be checked. Since CiteGuard is the actual priority (verify references), let's see if verify_references accepts arXiv. I can test later.\n\nNow the NeurIPS Chen et al. paper: Crossref didn't return it, but NeurIPS proceedings often have DOIs? NeurIPS 2017 papers generally don't have DOIs. The user requires DOI for each. So avoid papers without DOI. Use only papers with DOIs from Crossref.\n\nLet's choose 10 all with DOI and complete metadata:\n\n1. Gou, Yu, Maybank, Tao. Knowledge Distillation: A Survey. IJCV, 2021, 129(6): 1789–1819. DOI 10.1007/s11263-021-01453-z.\n2. Li, Jin, Yan. Mimicking Very Efficient Network for Object Detection. CVPR 2017, 7341–7349. DOI 10.1109/cvpr.2017.776.\n3. Wang, Yuan, Zhang, Feng. Distilling Object Detectors With Fine-Grained Feature Imitation. CVPR 2019, 4928–4937. DOI 10.1109/cvpr.2019.00507.\n4. Lin, Dollár, Girshick, He, Hariharan, Belongie. Feature Pyramid Networks for Object Detection. CVPR 2017, 936–944. DOI 10.1109/cvpr.2017.106.\n5. Sandler, Howard, Zhu, Zhmoginov, Chen. MobileNetV2: Inverted Residuals and Linear Bottlenecks. CVPR 2018, 4510–4520. DOI 10.1109/cvpr.2018.00474.\n6. Redmon, Divvala, Girshick, Farhadi. You Only Look Once: Unified, Real-Time Object Detection. CVPR 2016, 779–788. DOI 10.1109/cvpr.2016.91.\n7. Chen, Hsu. Knowledge Distillation Boosted Ultra-light Weight Road Object Detection on Edge Device. ICKII 2023, 456–460. DOI 10.1109/ickii58656.2023.10332715.\n8. Cao, Hu, Zhang. LKD-YOLOv8: A Lightweight Knowledge Distillation-Based Method for Infrared Object Detection. Sensors, 2025, 25(13): 4054. DOI 10.3390/s25134054.\n9. Li, Li. Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing. CBD 2024, 102–105. DOI 10.1109/cbd65573.2024.00028.\n10. Yang, Shi, Ding, Wang, Qi. Towards Efficient 3D Object Detection with Knowledge Distillation. NeurIPS 35, 2022, 21300–21313. DOI 10.52202/068431-1548. (Has DOI, volume 35, pages.)\n\nAlternatively include a detection KD survey or \"Multi-level knowledge distillation for low-resolution object detection\". But current set is fine. However, the review should mention edge deployment quantization/pruning? 600 Chinese characters is short; focus on KD for detection on edge.\n\nMaybe better to include one more recent detection KD method with edge relevance: \"NMS-KSD: Efficient Knowledge Distillation for Dense Object Detection via Non-Maximum Suppression and Feature Storage\" IEEE Access 2025, 13: 80723-80736, DOI 10.1109/access.2025.3567103. But 10 is enough; maybe replace FPN or YOLO? Those are useful for background. Let's consider user intent: \"知识蒸馏用于边缘设备上的目标检测\" — review should cover: background (edge constraints), KD basics (response/feature/relation), detection-specific challenges (foreground-background imbalance, multi-scale), edge methods, evaluation, future directions. References should support. FPN and YOLO/MobileNet support edge detector architecture. Fine.\n\nWait: I should not claim specific numbers/results not verified. Write a general review without fabricated quantitative claims. Good.\n\nThe Chinese length \"约600字\" — around 600 Chinese characters. I'll write ~650 characters including punctuation? Let's aim 600-700 Chinese characters body, plus references.\n\nThen verify with verify_references. I'll format refs as [1]...[10] with full metadata.\n\nLet me draft:\n\n标题：知识蒸馏在边缘设备目标检测中的应用综述\n\n正文:\n随着智能摄像头、无人机与移动终端的普及，在算力、功耗和存储受限的边缘设备上部署高精度目标检测器成为关键需求。大型检测网络虽精度高，却难以满足实时性；直接压缩又常导致精度下降。知识蒸馏通过让轻量学生模型模仿教师模型的输出或中间表示，为精度与效率的平衡提供了有效途径。\n\n早期工作将分类中的软标签思想迁移到检测，Chen等... Actually avoid uncited claims tied to refs? We can cite [1] survey, [2] mimic, [3] fine-grained. Mention response-based distillation transfers classification logits and bounding-box regression outputs; feature-based distillation aligns backbone/neck features, e.g., fine-grained feature imitation [3]; relation-based distillation models inter-region relations.\n\nDetection-specific difficulties: foreground-background imbalance, multi-scale objects, teacher-student capacity gap. FPN [4] provides multi-scale features; distillation at pyramid levels helps small objects. Edge backbones like MobileNetV2 [5] and one-stage detectors like YOLO [6] serve as students.\n\nThen edge cases: Chen & Hsu [7] ultra-light road detection; LKD-YOLOv8 [8] infrared; Li & Li [9] switch detection edge computing; 3D detection KD [10].\n\nChallenges: teacher-student gap, unlabeled data, heterogeneous sensors, deployment-aware distillation combining pruning/quantization, evaluation on real edge hardware. Future: multi-teacher, self-distillation, transformer detectors, automated search.\n\nNeed ~600 chars. Let's write concise.\n\nReferences format in English, all authors, title, venue, year, volume(issue): pages, DOI.\n\nFor conference papers, volume/issue absent. The requirement \"卷期页码\" — for conferences provide pages. Could add \"vol.\" only where applicable. To be safe, format conference as \"Proceedings of ... , 2017, pp. 7341–7349.\" That contains pages but no volume. The user likely accepts. Could include \"vol. 1\" false info — no, don't fabricate. Better honest.\n\nLet me verify all 10 with the tool. I'll write the reference list text. Note the verify tool may need each entry numbered [1] etc.\n\nLet me run verify.",
+       "signature": "d352691d-640f-4a9c-b617-69b4d0366e5c"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 2977,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 20864,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "698cf9fb-472f-4ebf-a4e9-335bc1bfc83d",
+    "timestamp": "2026-10-31T11:54:22.976Z",
+    "thinking_duration_ms": 11160,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "d352691d-640f-4a9c-b617-69b4d0366e5c",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_KANp77IJzbWyfBxaLcS86345",
+       "name": "mcp__citeguard__verify_references",
+       "input": {
+        "text": "[1] Jianping Gou, Baosheng Yu, Stephen J. Maybank, Dacheng Tao. Knowledge Distillation: A Survey. International Journal of Computer Vision, 2021, 129(6): 1789-1819. DOI: 10.1007/s11263-021-01453-z\n[2] Quanquan Li, Shengying Jin, Junjie Yan. Mimicking Very Efficient Network for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 7341-7349. DOI: 10.1109/cvpr.2017.776\n[3] Tao Wang, Li Yuan, Xiaopeng Zhang, Jiashi Feng. Distilling Object Detectors With Fine-Grained Feature Imitation. 2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2019, 4928-4937. DOI: 10.1109/cvpr.2019.00507\n[4] Tsung-Yi Lin, Piotr Dollar, Ross Girshick, Kaiming He, Bharath Hariharan, Serge Belongie. Feature Pyramid Networks for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 936-944. DOI: 10.1109/cvpr.2017.106\n[5] Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen. MobileNetV2: Inverted Residuals and Linear Bottlenecks. 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2018, 4510-4520. DOI: 10.1109/cvpr.2018.00474\n[6] Joseph Redmon, Santosh Divvala, Ross Girshick, Ali Farhadi. You Only Look Once: Unified, Real-Time Object Detection. 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2016, 779-788. DOI: 10.1109/cvpr.2016.91\n[7] Duan-Yu Chen, Yi-Wen Hsu. Knowledge Distillation Boosted Ultra-light Weight Road Object Detection on Edge Device. 2023 IEEE 6th International Conference on Knowledge Innovation and Invention (ICKII), 2023, 456-460. DOI: 10.1109/ickii58656.2023.10332715\n[8] Xiancheng Cao, Yueli Hu, Haikun Zhang. LKD-YOLOv8: A Lightweight Knowledge Distillation-Based Method for Infrared Object Detection. Sensors, 2025, 25(13): 4054. DOI: 10.3390/s25134054\n[9] Bingchan Li, Chunguo Li. Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing. 2024 Twelfth International Conference on Advanced Cloud and Big Data (CBD), 2024, 102-105. DOI: 10.1109/cbd65573.2024.00028\n[10] Jihan Yang, Shaoshuai Shi, Runyu Ding, Zhe Wang, Xiaojuan Qi. Towards Efficient 3D Object Detection with Knowledge Distillation. Advances in Neural Information Processing Systems 35, 2022, 21300-21313. DOI: 10.52202/068431-1548"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 2977,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 20864,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "8abec9d9-2fcc-4942-b9b8-5636356e41dc",
+    "timestamp": "2026-10-31T11:54:25.352Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_KANp77IJzbWyfBxaLcS86345",
+      "display_name": "Verify References",
+      "server_display_name": "citeguard",
+      "tool_name": "verify_references"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_KANp77IJzbWyfBxaLcS86345",
+       "type": "tool_result",
+       "content": "{\"result\":\"## CiteGuard 核查报告\\n\\n共 10 条：✅ 10　⚠️ 0　❌ 0　❓ 0\\n\\n### [1] ✅ VERIFIED　《Knowledge Distillation: A Survey》\\n\\n\\n### [2] ✅ VERIFIED　《Mimicking Very Efficient Network for Object Detection》\\n\\n\\n### [3] ✅ VERIFIED　《Distilling Object Detectors With Fine-Grained Feature Imitation》\\n\\n\\n### [4] ✅ VERIFIED　《Feature Pyramid Networks for Object Detection》\\n\\n\\n### [5] ✅ VERIFIED　《MobileNetV2: Inverted Residuals and Linear Bottlenecks》\\n\\n\\n### [6] ✅ VERIFIED　《You Only Look Once: Unified, Real-Time Object Detection》\\n\\n\\n### [7] ✅ VERIFIED　《Knowledge Distillation Boosted Ultra-light Weight Road Object Detection on Edge Device》\\n\\n\\n### [8] ✅ VERIFIED　《LKD-YOLOv8: A Lightweight Knowledge Distillation-Based Method for Infrared Object Detection》\\n\\n\\n### [9] ✅ VERIFIED　《Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing》\\n\\n\\n### [10] ✅ VERIFIED　《Towards Efficient 3D Object Detection with Knowledge Distillation》\\n\\n\\n全部通过核查（❓ 条目除外），可以输出终稿。\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "44d21863-85e3-4314-8057-4fc894ed0ca3",
+    "timestamp": "2026-10-31T11:54:26.052Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## CiteGuard 核查报告\\n\\n共 10 条：✅ 10　⚠️ 0　❌ 0　❓ 0\\n\\n### [1] ✅ VERIFIED　《Knowledge Distillation: A Survey》\\n\\n\\n### [2] ✅ VERIFIED　《Mimicking Very Efficient Network for Object Detection》\\n\\n\\n### [3] ✅ VERIFIED　《Distilling Object Detectors With Fine-Grained Feature Imitation》\\n\\n\\n### [4] ✅ VERIFIED　《Feature Pyramid Networks for Object Detection》\\n\\n\\n### [5] ✅ VERIFIED　《MobileNetV2: Inverted Residuals and Linear Bottlenecks》\\n\\n\\n### [6] ✅ VERIFIED　《You Only Look Once: Unified, Real-Time Object Detection》\\n\\n\\n### [7] ✅ VERIFIED　《Knowledge Distillation Boosted Ultra-light Weight Road Object Detection on Edge Device》\\n\\n\\n### [8] ✅ VERIFIED　《LKD-YOLOv8: A Lightweight Knowledge Distillation-Based Method for Infrared Object Detection》\\n\\n\\n### [9] ✅ VERIFIED　《Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing》\\n\\n\\n### [10] ✅ VERIFIED　《Towards Efficient 3D Object Detection with Knowledge Distillation》\\n\\n\\n全部通过核查（❓ 条目除外），可以输出终稿。\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## CiteGuard 核查报告\n\n共 10 条：✅ 10　⚠️ 0　❌ 0　❓ 0\n\n### [1] ✅ VERIFIED　《Knowledge Distillation: A Survey》\n\n\n### [2] ✅ VERIFIED　《Mimicking Very Efficient Network for Object Detection》\n\n\n### [3] ✅ VERIFIED　《Distilling Object Detectors With Fine-Grained Feature Imitation》\n\n\n### [4] ✅ VERIFIED　《Feature Pyramid Networks for Object Detection》\n\n\n### [5] ✅ VERIFIED　《MobileNetV2: Inverted Residuals and Linear Bottlenecks》\n\n\n### [6] ✅ VERIFIED　《You Only Look Once: Unified, Real-Time Object Detection》\n\n\n### [7] ✅ VERIFIED　《Knowledge Distillation Boosted Ultra-light Weight Road Object Detection on Edge Device》\n\n\n### [8] ✅ VERIFIED　《LKD-YOLOv8: A Lightweight Knowledge Distillation-Based Method for Infrared Object Detection》\n\n\n### [9] ✅ VERIFIED　《Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing》\n\n\n### [10] ✅ VERIFIED　《Towards Efficient 3D Object Detection with Knowledge Distillation》\n\n\n全部通过核查（❓ 条目除外），可以输出终稿。\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_KANp77IJzbWyfBxaLcS86345",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "1e851b6e-9c06-4063-87ab-1b3d7338e08f",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "All verified. Now write the review in Chinese ~600 characters. Need to be careful: only make claims consistent with cited works' actual content. I know these works generally. Let me draft.\n\nTitle: 面向边缘设备目标检测的知识蒸馏综述\n\nBody paragraphs ~600 Chinese characters.\n\nDraft:\n\n\"随着智能监控、无人机和移动机器人的普及，在算力、功耗与存储受限的边缘设备上部署目标检测模型成为刚需。高精度检测器通常参数量大、推理延迟高，难以直接落地；而单纯压缩轻量模型又会带来明显精度损失。知识蒸馏（Knowledge Distillation, KD）通过让轻量学生模型模仿教师模型的输出或中间表示，为精度与效率的折中提供了可行路径[1]。\n\n根据迁移知识的形式，检测蒸馏可分为响应型、特征型和关系型三类。响应型蒸馏对齐教师的分类软标签与边界框回归输出；特征型蒸馏则约束学生与教师在骨干或颈部网络上的特征图，如细粒度特征模仿方法通过注意力掩码聚焦前景区域，缓解了检测中严重的背景主导问题[2,3]。关系型方法进一步建模样本或区域之间的结构关系，对教师−学生容量差距更稳健[1]。\n\n检测任务的特殊性在于前景与背景极不均衡、目标尺度跨度大。特征金字塔网络（FPN）提供的多尺度表示因此常被用作蒸馏的中间桥梁[4]；MobileNetV2等轻量骨干[5]与YOLO系列单阶段检测器[6]则是最常见的学生载体。针对边缘场景，已有研究将蒸馏用于超轻量道路目标检测[7]、红外图像中的YOLOv8轻量化[8]，以及边缘计算下的实时开关检测[9]，在保持实时性的同时缩小了与教师模型的差距。三维检测领域也出现了系统性的蒸馏框架[10]。\n\n当前仍存在教师与学生容量失配、无标注边缘数据利用不足、跨传感器异构知识迁移困难等问题。未来可探索多教师协同、自蒸馏与部署感知的联合优化，将蒸馏与剪枝、量化结合，并在真实边缘硬件上建立兼顾精度、延迟与能耗的评测基准。\"\n\nCount roughly: paragraph 1 ~150, p2 ~200, p3 ~230, p4 ~100 => ~680 characters. \"约600字\" is okay. Maybe trim a bit. Let's count actual Chinese characters (excluding punctuation and refs). I'll estimate ~600. Fine.\n\nNeed references listed at end in English. Title mentions 综述.\n\nOne concern: citation [2,3] descriptions: Li et al. 2017 \"Mimicking Very Efficient Network\" uses feature mimicking with attention? Chen et al. 2017 uses attention masks; Li et al. uses feature mimicking. Wang et al. 2019 uses fine-grained feature imitation with non-local? Actually Wang et al. fine-grained feature imitation uses attention-guided feature imitation (mask). The sentence \"如细粒度特征模仿方法通过注意力掩码聚焦前景区域\" is accurate for Wang et al. [3] (uses attention mask). [2] is feature mimicking. Fine.\n\n\"关系型方法...更稳健\" general survey claim [1]. Fine.\n\n[7] ultra-light road object detection on edge device; [8] infrared; [9] switch detection edge computing. [10] 3D detection KD.\n\nYOLO [6] is 2016 single-stage; saying \"YOLO系列单阶段检测器\" okay though ref is original YOLO; \"YOLO系列\" slightly broad but acceptable. Maybe \"YOLO等单阶段检测器\" to be precise.\n\nAlso \"MobileNetV2等轻量骨干\" [5] accurate.\n\nThe review length — let me actually count with Python maybe. But no need exact. The user said about 600. I can count body characters quickly. Let me just output.\n\nOne thing: the reference format requires \"会议/期刊、年份、卷期页码、DOI\" — conference entries lack volume/issue; that's inherent. Could add \"vol.\"? No. For [1] journal has 129(6): 1789-1819. [8] 25(13): 4054. [10] Advances in NeurIPS 35, pages. Good.\n\nFormat conference: \"In: 2017 IEEE Conference... (CVPR), 2017: 7341–7349.\" Better standard. I'll keep \"2017 IEEE Conference ..., 2017, 7341-7349.\" It's fine.\n\nI should mention all 10 cited in body: [1]-[10] all used. Yes.\n\nLet me output with markdown headings and numbered refs.",
+       "signature": "1e851b6e-9c06-4063-87ab-1b3d7338e08f"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 379,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 26368,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "8e82f353-fe19-4268-85ab-44f27c2907b6",
+    "timestamp": "2026-10-31T11:54:34.029Z",
+    "thinking_duration_ms": 7202,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "1e851b6e-9c06-4063-87ab-1b3d7338e08f",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "text",
+       "text": "# 面向边缘设备目标检测的知识蒸馏综述\n\n随着智能监控、无人机和移动机器人的普及，在算力、功耗与存储受限的边缘设备上部署目标检测模型已成为迫切需求。为了保证检测精度，精度较高的检测器通常参数量大、推理延迟高，难以直接部署；而仅把模型压缩成轻量模型，又会导致明显的精度损失。知识蒸馏通过让轻量学生模型模仿教师模型的输出或中间表示，为平衡精度与效率提供了一条可行途径[1]。\n\n按照迁移的知识形式，检测蒸馏可分为响应型、特征型和关系型三类。响应型蒸馏对齐教师模型的分类软标签和边界框回归输出；特征型蒸馏约束学生模型与教师模型在骨干网络或颈部网络（neck）上的特征图，例如细粒度特征模仿方法通过注意力掩码聚焦前景区域，从而缓解检测中背景占主导的问题[2,3]。关系型方法进一步建模样本或区域之间的结构关系，对教师模型与学生模型之间的容量差距更稳健[1]。\n\n检测任务的特殊性在于前景与背景极不均衡，且目标尺度跨度大。因此，特征金字塔网络提供的多尺度表示常被用作蒸馏的中间桥梁[4]；MobileNetV2 等轻量骨干网络[5]与 YOLO 等单阶段检测器[6]则是最常见的学生模型。针对边缘场景，已有研究将蒸馏用于超轻量道路目标检测[7]、红外图像中 YOLOv8 的轻量化[8]，以及边缘计算下的实时开关检测[9]，在保持实时性的同时缩小了与教师模型的差距。在三维检测领域，也出现了系统性的蒸馏框架[10]。\n\n当前仍存在教师模型与学生模型容量失配、边缘无标注数据利用不足、跨传感器异构知识迁移困难等问题。未来可探索多教师协同、自蒸馏与部署感知的联合优化，将蒸馏与剪枝、量化结合，并在真实的边缘硬件上建立兼顾精度、延迟与能耗的评测基准。\n\n## 参考文献\n\n[1] Jianping Gou, Baosheng Yu, Stephen J. Maybank, Dacheng Tao. Knowledge Distillation: A Survey. International Journal of Computer Vision, 2021, 129(6): 1789–1819. DOI: 10.1007/s11263-021-01453-z.\n\n[2] Quanquan Li, Shengying Jin, Junjie Yan. Mimicking Very Efficient Network for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 7341–7349. DOI: 10.1109/cvpr.2017.776.\n\n[3] Tao Wang, Li Yuan, Xiaopeng Zhang, Jiashi Feng. Distilling Object Detectors with Fine-Grained Feature Imitation. 2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2019, 4928–4937. DOI: 10.1109/cvpr.2019.00507.\n\n[4] Tsung-Yi Lin, Piotr Dollár, Ross Girshick, Kaiming He, Bharath Hariharan, Serge Belongie. Feature Pyramid Networks for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 936–944. DOI: 10.1109/cvpr.2017.106.\n\n[5] Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen. MobileNetV2: Inverted Residuals and Linear Bottlenecks. 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2018, 4510–4520. DOI: 10.1109/cvpr.2018.00474.\n\n[6] Joseph Redmon, Santosh Divvala, Ross Girshick, Ali Farhadi. You Only Look Once: Unified, Real-Time Object Detection. 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2016, 779–788. DOI: 10.1109/cvpr.2016.91.\n\n[7] Duan-Yu Chen, Yi-Wen Hsu. Knowledge Distillation Boosted Ultra-light Weight Road Object Detection on Edge Device. 2023 IEEE 6th International Conference on Knowledge Innovation and Invention (ICKII), 2023, 456–460. DOI: 10.1109/ickii58656.2023.10332715.\n\n[8] Xiancheng Cao, Yueli Hu, Haikun Zhang. LKD-YOLOv8: A Lightweight Knowledge Distillation-Based Method for Infrared Object Detection. Sensors, 2025, 25(13): 4054. DOI: 10.3390/s25134054.\n\n[9] Bingchan Li, Chunguo Li. Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing. 2024 Twelfth International Conference on Advanced Cloud and Big Data (CBD), 2024, 102–105. DOI: 10.1109/cbd65573.2024.00028.\n\n[10] Jihan Yang, Shaoshuai Shi, Runyu Ding, Zhe Wang, Xiaojuan Qi. Towards Efficient 3D Object Detection with Knowledge Distillation. Advances in Neural Information Processing Systems 35, 2022, 21300–21313. DOI: 10.52202/068431-1548.\n\n以上 10 条参考文献均已通过 CiteGuard 核查，其作者、标题、会议或期刊、年份、卷期页码与 DOI 均真实且一致。"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 379,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 26368,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "uuid": "fda2b8da-a7fa-455d-bbeb-e7692d78c8a8",
+    "timestamp": "2026-10-31T11:54:38.502Z"
+   },
+   {
+    "duration_api_ms": 43848,
+    "stop_reason": "end_turn",
+    "session_id": "735292ff-9afb-44d6-94e0-af2ecd97b78a",
+    "total_cost_usd": 0.33669099999999996,
+    "usage": {
+     "input_tokens": 21907,
+     "cache_creation_input_tokens": 0,
+     "cache_read_input_tokens": 86912,
+     "output_tokens": 7348,
+     "output_tokens_details": {
+      "thinking_tokens": 0
+     },
+     "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+     },
+     "service_tier": "standard",
+     "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+     },
+     "inference_geo": "",
+     "iterations": [],
+     "speed": "standard",
+     "fallback_credit": null
+    },
+    "modelUsage": {
+     "deepseek-flash": {
+      "inputTokens": 21907,
+      "outputTokens": 7348,
+      "cacheReadInputTokens": 86912,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.33669099999999996,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "deepseek-flash",
+      "provider": "firstParty",
+      "costBasis": "unknown"
+     }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+     "spawned": 0,
+     "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+     },
+     "started_in_background": 0,
+     "max_depth": 0,
+     "spawned_by_subagents": 0,
+     "completed": 0,
+     "failed": 0,
+     "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+     },
+     "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+     },
+     "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 15,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "# 面向边缘设备目标检测的知识蒸馏综述\n\n随着智能监控、无人机和移动机器人的普及，在算力、功耗与存储受限的边缘设备上部署目标检测模型已成为迫切需求。为了保证检测精度，精度较高的检测器通常参数量大、推理延迟高，难以直接部署；而仅把模型压缩成轻量模型，又会导致明显的精度损失。知识蒸馏通过让轻量学生模型模仿教师模型的输出或中间表示，为平衡精度与效率提供了一条可行途径[1]。\n\n按照迁移的知识形式，检测蒸馏可分为响应型、特征型和关系型三类。响应型蒸馏对齐教师模型的分类软标签和边界框回归输出；特征型蒸馏约束学生模型与教师模型在骨干网络或颈部网络（neck）上的特征图，例如细粒度特征模仿方法通过注意力掩码聚焦前景区域，从而缓解检测中背景占主导的问题[2,3]。关系型方法进一步建模样本或区域之间的结构关系，对教师模型与学生模型之间的容量差距更稳健[1]。\n\n检测任务的特殊性在于前景与背景极不均衡，且目标尺度跨度大。因此，特征金字塔网络提供的多尺度表示常被用作蒸馏的中间桥梁[4]；MobileNetV2 等轻量骨干网络[5]与 YOLO 等单阶段检测器[6]则是最常见的学生模型。针对边缘场景，已有研究将蒸馏用于超轻量道路目标检测[7]、红外图像中 YOLOv8 的轻量化[8]，以及边缘计算下的实时开关检测[9]，在保持实时性的同时缩小了与教师模型的差距。在三维检测领域，也出现了系统性的蒸馏框架[10]。\n\n当前仍存在教师模型与学生模型容量失配、边缘无标注数据利用不足、跨传感器异构知识迁移困难等问题。未来可探索多教师协同、自蒸馏与部署感知的联合优化，将蒸馏与剪枝、量化结合，并在真实的边缘硬件上建立兼顾精度、延迟与能耗的评测基准。\n\n## 参考文献\n\n[1] Jianping Gou, Baosheng Yu, Stephen J. Maybank, Dacheng Tao. Knowledge Distillation: A Survey. International Journal of Computer Vision, 2021, 129(6): 1789–1819. DOI: 10.1007/s11263-021-01453-z.\n\n[2] Quanquan Li, Shengying Jin, Junjie Yan. Mimicking Very Efficient Network for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 7341–7349. DOI: 10.1109/cvpr.2017.776.\n\n[3] Tao Wang, Li Yuan, Xiaopeng Zhang, Jiashi Feng. Distilling Object Detectors with Fine-Grained Feature Imitation. 2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2019, 4928–4937. DOI: 10.1109/cvpr.2019.00507.\n\n[4] Tsung-Yi Lin, Piotr Dollár, Ross Girshick, Kaiming He, Bharath Hariharan, Serge Belongie. Feature Pyramid Networks for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017, 936–944. DOI: 10.1109/cvpr.2017.106.\n\n[5] Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen. MobileNetV2: Inverted Residuals and Linear Bottlenecks. 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2018, 4510–4520. DOI: 10.1109/cvpr.2018.00474.\n\n[6] Joseph Redmon, Santosh Divvala, Ross Girshick, Ali Farhadi. You Only Look Once: Unified, Real-Time Object Detection. 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2016, 779–788. DOI: 10.1109/cvpr.2016.91.\n\n[7] Duan-Yu Chen, Yi-Wen Hsu. Knowledge Distillation Boosted Ultra-light Weight Road Object Detection on Edge Device. 2023 IEEE 6th International Conference on Knowledge Innovation and Invention (ICKII), 2023, 456–460. DOI: 10.1109/ickii58656.2023.10332715.\n\n[8] Xiancheng Cao, Yueli Hu, Haikun Zhang. LKD-YOLOv8: A Lightweight Knowledge Distillation-Based Method for Infrared Object Detection. Sensors, 2025, 25(13): 4054. DOI: 10.3390/s25134054.\n\n[9] Bingchan Li, Chunguo Li. Real Time Switch Object Detection Model Based on Knowledge Distillation for Edge Computing. 2024 Twelfth International Conference on Advanced Cloud and Big Data (CBD), 2024, 102–105. DOI: 10.1109/cbd65573.2024.00028.\n\n[10] Jihan Yang, Shaoshuai Shi, Runyu Ding, Zhe Wang, Xiaojuan Qi. Towards Efficient 3D Object Detection with Knowledge Distillation. Advances in Neural Information Processing Systems 35, 2022, 21300–21313. DOI: 10.52202/068431-1548.\n\n以上 10 条参考文献均已通过 CiteGuard 核查，其作者、标题、会议或期刊、年份、卷期页码与 DOI 均真实且一致。",
+    "ttft_ms": 2581,
+    "type": "result",
+    "duration_ms": 57999,
+    "uuid": "726a8fa9-6e05-4e11-a5a1-1d4e71e1aac0",
+    "ttft_stream_ms": 1256,
+    "time_to_request_ms": 189,
+    "first_content_frame_ms": 1256,
+    "time_to_request_from_spawn_ms": 1622905,
+    "warm_spare_claimed": false,
+    "flag_fetch_kick": "started_after_init_empty",
+    "time_origin_ms": 1793447618905.6445,
+    "queued_turn_count": 0,
+    "result_index": 0,
+    "model_usage_since_last_result": {
+     "deepseek-flash": {
+      "inputTokens": 21907,
+      "outputTokens": 7348,
+      "cacheReadInputTokens": 86912,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.33669099999999996,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "deepseek-flash",
+      "provider": "firstParty",
+      "costBasis": "unknown"
+     }
+    }
+   }
+  ]
+ },
+ "error": null
+}
