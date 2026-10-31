@@ -29,9 +29,11 @@ from experiments.pilot import RESULTS_DIR
 B0_DIR = RESULTS_DIR / "main" / "B0"
 GOLD_DIR = RESULTS_DIR / "gold"
 GOLD2_DIR = RESULTS_DIR / "gold2"
+GOLD3_DIR = RESULTS_DIR / "gold3"
 SAMPLE_SIZE = 100
 SEED = 20261031
 SEED2 = 20261101
+SEED3 = 20261102
 STATUSES = ["VERIFIED", "MISMATCH", "NOT_FOUND"]
 
 
@@ -193,16 +195,16 @@ def score(gold_dir: Path) -> dict:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="金标准")
     parser.add_argument("command", choices=["sample", "evidence", "score"])
-    parser.add_argument("--set", type=int, choices=[1, 2], default=1)
+    parser.add_argument("--set", type=int, choices=[1, 2, 3], default=1)
     args = parser.parse_args(argv)
     sys.stdout.reconfigure(encoding="utf-8")
-    gold_dir = GOLD_DIR if args.set == 1 else GOLD2_DIR
+    gold_dir = {1: GOLD_DIR, 2: GOLD2_DIR, 3: GOLD3_DIR}[args.set]
     if args.command == "sample":
         items = enumerate_references(B0_DIR)
-        if args.set == 2:
-            used = {row["id"] for row in read_csv(GOLD_DIR / "sample.csv")}
-            items = [i for i in items if i["id"] not in used]
-        chosen = sample(items, SAMPLE_SIZE, seed=SEED if args.set == 1 else SEED2)
+        previous = [GOLD_DIR, GOLD2_DIR][:args.set - 1]  # gold-2 排除 gold-1；gold-3 排除前两批（即剩余全部）
+        used = {row["id"] for d in previous for row in read_csv(d / "sample.csv")}
+        items = [i for i in items if i["id"] not in used]
+        chosen = sample(items, SAMPLE_SIZE, seed={1: SEED, 2: SEED2, 3: SEED3}[args.set])
         write_csv(gold_dir / "sample.csv", chosen, ["id", "slug", "idx", "raw"])
         print(f"可抽 {len(items)} 条，抽取 {len(chosen)} 条 → {gold_dir / 'sample.csv'}")
     elif args.command == "evidence":
