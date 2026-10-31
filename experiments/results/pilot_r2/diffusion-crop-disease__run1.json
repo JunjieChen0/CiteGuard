@@ -1,0 +1,102 @@
+{
+  "slug": "diffusion-crop-disease",
+  "topic": "扩散模型用于农作物病害图像数据增广",
+  "kind": "niche",
+  "run": 1,
+  "prompt": "用中文写一篇约 800 字的综述，主题是：扩散模型用于农作物病害图像数据增广。文末列出 15 条英文参考文献，必须是直接研究该主题的论文，不要引用通用的基础模型或经典方法论文，优先选择 2022 年以后发表的工作。每条包含全部作者、标题、会议/期刊、年份、卷期页码、DOI。直接输出文本，不要使用任何工具。",
+  "timestamp": "2026-10-31T06:26:15.216606+00:00",
+  "response": {
+    "duration_api_ms": 23725,
+    "stop_reason": "end_turn",
+    "session_id": "e3c087a5-e6d8-4e99-842d-02a4afe64a25",
+    "total_cost_usd": 0.13307,
+    "usage": {
+      "input_tokens": 11089,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 3105,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "deepseek-flash": {
+        "inputTokens": 11089,
+        "outputTokens": 3105,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.13307,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 0,
+        "canonicalModel": "deepseek-flash",
+        "provider": "firstParty",
+        "costBasis": "unknown"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 1,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "# 扩散模型在农作物病害图像数据增广中的研究进展\n\n农作物病害识别模型的性能高度依赖大规模、类别均衡且标注准确的图像数据，但田间采集成本高、专家标注稀缺，稀有病害与早期症状样本尤其不足，长尾分布与域偏移已成为制约识别精度的主要瓶颈。传统增广手段（翻转、裁剪、色彩抖动）只改变像素统计，难以生成新的病理形态，生成式增广因此受到关注。早期工作多基于生成对抗网络，但训练不稳定与模式坍塌限制了样本多样性。扩散模型以逐步去噪的方式建模数据分布，在训练稳定性与分布覆盖上更具优势，近三年被迅速引入作物病害数据增广。\n\n从技术路线看，相关研究大致可分为三类。其一是类条件生成：以病害类别为条件训练去噪网络，为少数类合成样本，直接缓解类别不平衡。其二是结构与语义可控生成：借助分割掩码、边缘图或文本描述约束病斑的位置、形状与严重程度，使合成图像在病理上可信，ControlNet 一类条件注入机制被广泛借用。其三是低成本适配策略：在潜在空间执行扩散以降低算力开销，并通过少样本微调使通用生成器适配特定作物与拍摄设备。部分工作还将合成数据与半监督学习、对比学习结合，利用无标注田间图像实现生成与识别的协同提升。\n\n评价体系是当前争议的焦点。Fréchet Inception Distance 等分布距离指标与下游任务的实际增益并不总是一致，仅凭视觉逼真度不足以证明增广有效。较严谨的研究采用三重证据：合成样本的多样性度量、在固定测试集上的分类或检测精度提升，以及植保专家参与的盲测评判。已有结果普遍显示，适量合成数据能够提升小样本条件下的识别精度；但过量或保真度不足的合成样本会引入伪影与标签噪声，反而导致性能下降，因此合成与真实数据的配比及筛选策略成为关键超参数。\n\n仍存在若干待解问题。首先是合成与真实之间的域差距：温室摆拍图像与田间复杂背景、光照和遮挡差异显著，生成器容易复制训练集的拍摄偏差。其次是病理语义的可控性不足，病斑的形态学特征（色泽、坏死边缘、扩展方式）尚未被显式建模，文本或掩码条件仍较粗粒度。第三是评估与基准缺失，各研究采用的作物、病害类别与数据划分方式不一致，结论难以横向比较。此外，扩散模型推理开销大，难以部署于田间边缘设备，合成样本的版权与标注责任亦缺乏规范。\n\n未来研究可从三方面推进：构建公开的、按病害严重程度分层的基准数据集与统一评价协议；将病理先验（病斑分割、严重度分级）显式引入生成过程，实现语义级可控；探索蒸馏、少步采样与轻量化架构以降低生成成本，并研究合成数据的主动筛选与不确定性加权。随着多模态模型的发展，文本—图像联合条件有望让研究者以农艺描述直接指定病害类型与严重度，从而把数据增广从像素层面推进到语义层面。\n\n---\n\n**关于参考文献的说明**\n\n我不能提供你要求的 15 条文献。这不是格式问题，而是可靠性问题：在不检索的情况下，我无法凭记忆给出这一细分方向上论文的完整作者名单、卷期页码和 DOI。这类信息一旦记错，就会产生看似规范、实则虚构的条目，比没有参考文献危害更大——它们可能被直接写进投稿稿件。你要求“不要使用任何工具”，而唯一能保证这 15 条真实可核验的途径恰恰是检索（Web of Science、Scopus、Google Scholar、Crossref）。\n\n因此我选择不编造。可行的替代方案：\n\n1. **允许我联网检索**，我可以按“diffusion model + plant/crop disease + data augmentation/synthetic image”检索 2022 年以来的原创研究，逐条核对 DOI 与卷期页码后给你 15 条完整条目；\n2. **你自己检索后把条目发我**，我负责核对正文引用位置与文献是否对应；\n3. 我可以先给出**检索策略**：在 Computers and Electronics in Agriculture、Plant Methods、Frontiers in Plant Science、Smart Agricultural Technology、Precision Agriculture 等期刊，以 `diffusion` AND (`crop disease` OR `plant disease`) AND (`augmentation` OR `synthetic`) 组合检索，并排除 DDPM、LDM 等基础方法论文。\n\n需要我执行第 1 种方案的话，请解除工具限制。",
+    "ttft_ms": 18646,
+    "type": "result",
+    "duration_ms": 23948,
+    "uuid": "cde34f74-994b-49c8-afed-7f7a27d66ea6",
+    "ttft_stream_ms": 1132,
+    "time_to_request_ms": 242,
+    "first_content_frame_ms": 1133,
+    "time_to_request_from_spawn_ms": 90400,
+    "warm_spare_claimed": false,
+    "flag_fetch_kick": "started_after_init_empty",
+    "time_origin_ms": 1793427950801.0579,
+    "queued_turn_count": 0,
+    "result_index": 0
+  },
+  "error": null
+}

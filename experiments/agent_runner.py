@@ -23,6 +23,9 @@ DEFAULT_TIMEOUT_SECONDS = 600
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 RUNTIME_CONFIG_DIR = PROJECT_ROOT / ".claude-runtime"
 DOTENV_PATH = PROJECT_ROOT / ".env"
+CACHE_DIR = PROJECT_ROOT / ".citeguard_cache"
+SKILL_DIR = PROJECT_ROOT / "skill" / "citeguard"
+CITEGUARD_TOOLS = ["mcp__citeguard__verify_references", "mcp__citeguard__search_papers", "Skill"]
 
 # 从父进程继承、可能把子进程连回 Anthropic 或带入本机配置的变量
 _INHERITED_PREFIXES = ("ANTHROPIC_", "CLAUDE_CODE_", "CLAUDE_CONFIG_DIR")
@@ -70,11 +73,12 @@ def build_env(base: Mapping[str, str], api_key: str, model: str, config_dir: Pat
     return env
 
 
-def build_command(claude_exe: str, model: str, mcp_config: Path | None) -> list[str]:
+def build_command(claude_exe: str, model: str, mcp_config: Path | None,
+                  allowed_tools: list[str] | None = None, stream: bool = False) -> list[str]:
     cmd = [
         claude_exe,
         "-p",
-        "--output-format", "json",
+        "--output-format", "stream-json" if stream else "json",
         "--model", model,
         "--setting-sources", "project",
         "--strict-mcp-config",
@@ -82,7 +86,48 @@ def build_command(claude_exe: str, model: str, mcp_config: Path | None) -> list[
     ]
     if mcp_config is not None:
         cmd += ["--mcp-config", str(mcp_config)]
+    if stream:
+        cmd.append("--verbose")  # stream-json 要求 --verbose
+    if allowed_tools:
+        cmd += ["--allowedTools", ",".join(allowed_tools)]
     return cmd
+
+
+def parse_stream_output(stdout: str) -> dict:
+    """stream-json：每行一个事件，最后的 result 事件与 json 模式的输出相同；附上完整事件记录。"""
+    events = [json.loads(line) for line in stdout.splitlines() if line.strip()]
+    # thinking_tokens 是思考过程的增量进度事件，体积大且与 assistant 消息重复
+    events = [e for e in events if not (e.get("type") == "system" and e.get("subtype") == "thinking_tokens")]
+    results = [e for e in events if e.get("type") == "result"]
+    if not results:
+        raise RuntimeError("stream-json 输出中没有 result 事件")
+    return {**results[-1], "transcript": events}
+
+
+def tool_calls(result: dict) -> list[str]:
+    """按顺序列出 Agent 发起的工具调用名称。"""
+    names = []
+    for event in result.get("transcript", []):
+        if event.get("type") == "assistant":
+            for block in (event.get("message") or {}).get("content", []):
+                if block.get("type") == "tool_use":
+                    names.append(block.get("name"))
+    return names
+
+
+def install_skill(skill_dir: Path, workdir: Path) -> Path:
+    """把 Skill 复制到工作目录的 .claude/skills/ 下（--setting-sources project 只加载项目级 Skill）。"""
+    target = workdir / ".claude" / "skills" / skill_dir.name
+    shutil.copytree(skill_dir, target, dirs_exist_ok=True)
+    return target
+
+
+def write_citeguard_mcp_config(path: Path, cache_dir: Path = CACHE_DIR) -> Path:
+    command = Path(sys.executable).parent / ("citeguard-mcp.exe" if os.name == "nt" else "citeguard-mcp")
+    config = {"mcpServers": {"citeguard": {"command": str(command), "args": [],
+                                           "env": {"CITEGUARD_CACHE_DIR": str(cache_dir)}}}}
+    path.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
+    return path
 
 
 def run_agent(
@@ -91,15 +136,20 @@ def run_agent(
     mcp_config: Path | None = None,
     model: str = DEFAULT_MODEL,
     timeout: int = DEFAULT_TIMEOUT_SECONDS,
+    allowed_tools: list[str] | None = None,
+    skill_dir: Path | None = None,
+    stream: bool = False,
 ) -> dict:
     claude_exe = shutil.which("claude")
     if claude_exe is None:
         raise RuntimeError("找不到 claude 命令，请先安装 Claude Code")
     api_key = resolve_api_key(os.environ, load_dotenv(DOTENV_PATH))
     RUNTIME_CONFIG_DIR.mkdir(exist_ok=True)
+    if skill_dir is not None:
+        install_skill(skill_dir, workdir)
 
     proc = subprocess.run(
-        build_command(claude_exe, model, mcp_config),
+        build_command(claude_exe, model, mcp_config, allowed_tools, stream),
         input=prompt,
         cwd=workdir,
         env=build_env(os.environ, api_key, model, RUNTIME_CONFIG_DIR),
@@ -110,7 +160,7 @@ def run_agent(
     )
     if proc.returncode != 0:
         raise RuntimeError(f"claude 退出码 {proc.returncode}：{(proc.stderr or proc.stdout)[-2000:]}")
-    return json.loads(proc.stdout)
+    return parse_stream_output(proc.stdout) if stream else json.loads(proc.stdout)
 
 
 def main() -> int:

@@ -1,0 +1,102 @@
+{
+  "slug": "snn-edge",
+  "topic": "脉冲神经网络在边缘设备上的片上训练",
+  "kind": "niche",
+  "run": 1,
+  "prompt": "用中文写一篇约 500 字的综述，主题是：脉冲神经网络在边缘设备上的片上训练。文末列出 8–10 条英文参考文献，每条包含作者、标题、会议/期刊、年份、DOI。直接输出文本，不要使用任何工具。",
+  "timestamp": "2026-10-31T06:09:32.758864+00:00",
+  "response": {
+    "duration_api_ms": 31504,
+    "stop_reason": "end_turn",
+    "session_id": "de3d079b-9d65-481f-b636-7b6a7f7aae33",
+    "total_cost_usd": 0.19293,
+    "usage": {
+      "input_tokens": 11061,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 5505,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "deepseek-flash": {
+        "inputTokens": 11061,
+        "outputTokens": 5505,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.19293,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 0,
+        "canonicalModel": "deepseek-flash",
+        "provider": "firstParty",
+        "costBasis": "unknown"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 1,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "# 脉冲神经网络在边缘设备上的片上训练\n\n脉冲神经网络（SNN）以事件驱动的稀疏脉冲传递信息，只有在膜电位越过阈值时才产生计算与通信，因此在功耗和延迟上天然契合资源受限的边缘场景。然而，边缘设备所处的环境，其数据分布会随时间漂移。如果只依赖云端离线训练再下发权重，不仅会带来通信开销和隐私风险，也难以适应个性化和在线变化。片上训练（on-chip learning）因此成为一项关键使能技术：它让学习在传感器附近完成，同时兼顾能效、隐私与实时自适应。\n\n在算法层面，早期工作以脉冲时序依赖可塑性（STDP）为代表，利用局部脉冲的时序关系实现无监督特征学习，Diehl 与 Cook 在 MNIST 上验证了该范式的可行性。但 STDP 难以直接优化全局损失，监督式训练于是转向替代梯度（surrogate gradient）：对脉冲发放函数的导数做平滑近似，使反向传播能够穿过离散脉冲。STBP 将误差沿时间和空间联合展开，SuperSpike 则给出连续时间下的监督学习规则。针对边缘端无法承受完整 BPTT 存储开销的问题，e-prop 用资格迹实现时空局部、可在线更新的信用分配，把内存需求降至与网络规模线性相关。\n\n在硬件层面，Loihi 在众核架构中集成了可编程学习引擎，支持片上 STDP 与三因子规则；DYNAPs 与 SpiNNaker 分别以异步多核和通用核阵列提供灵活的学习承载能力；面向超低功耗场景，Frenkel 等提出的 28 nm 在线学习处理器与 MorphIC 采用随机脉冲驱动的二值权重更新，在毫瓦级的功耗预算内完成片上学习。\n\n当前的挑战集中在三个方面：替代梯度的近似误差与训练稳定性、时序展开带来的片上存储与访存能耗，以及模拟器件和忆阻器件的非理想性对权重更新的扰动。未来趋势包括事件驱动的稀疏反向传播、学习规则与器件特性的协同设计，以及面向持续学习的片上遗忘抑制机制。\n\n## 参考文献\n\n1. Davies, M., Srinivasa, N., Lin, T.-H., Chinya, G., Cao, Y., Choday, S. H., Dimou, G., Joshi, P., Imam, N., Jain, S., Liao, Y., Lin, C.-K., Lines, A., Liu, R., Mathaikutty, D., McCoy, S., Paul, A., Tse, J., Venkataramanan, G., Weng, Y.-H., Wild, A., Yang, Y., Wang, H. \"Loihi: A Neuromorphic Manycore Processor with On-Chip Learning.\" *IEEE Micro*, 38(1), 82–99, 2018. DOI: 10.1109/MM.2018.112130359\n\n2. Moradi, S., Qiao, N., Stefanini, F., Indiveri, G. \"A Scalable Multicore Architecture With Heterogeneous Memory Structures for Dynamic Neuromorphic Asynchronous Processors (DYNAPs).\" *IEEE Transactions on Biomedical Circuits and Systems*, 12(1), 106–122, 2018. DOI: 10.1109/TBCAS.2017.2759700\n\n3. Furber, S. B., Galluppi, F., Temple, S., Plana, L. A. \"The SpiNNaker Project.\" *Proceedings of the IEEE*, 102(5), 652–665, 2014. DOI: 10.1109/JPROC.2014.2304638\n\n4. Diehl, P. U., Cook, M. \"Unsupervised learning of digit recognition using spike-timing-dependent plasticity.\" *Frontiers in Computational Neuroscience*, 9, 99, 2015. DOI: 10.3389/fncom.2015.00099\n\n5. Zenke, F., Ganguli, S. \"SuperSpike: Supervised Learning in Multilayer Spiking Neural Networks.\" *Neural Computation*, 30(6), 1514–1541, 2018. DOI: 10.1162/neco_a_01086\n\n6. Wu, Y., Deng, L., Li, G., Zhu, J., Shi, L. \"Spatio-temporal backpropagation for training high-performance spiking neural networks.\" *Frontiers in Neuroscience*, 12, 331, 2018. DOI: 10.3389/fnins.2018.00331\n\n7. Neftci, E. O., Mostafa, H., Zenke, F. \"Surrogate Gradient Learning in Spiking Neural Networks.\" *IEEE Signal Processing Magazine*, 36(6), 51–63, 2019. DOI: 10.1109/MSP.2019.2931595\n\n8. Frenkel, C., Lefebvre, M., Legat, J.-D., Bol, D. \"A 0.086-mm² 12.7-pJ/SOP 64k-Synapse 256-Neuron Online-Learning Digital Spiking Neuromorphic Processor in 28-nm CMOS.\" *IEEE Transactions on Biomedical Circuits and Systems*, 13(1), 145–158, 2019. DOI: 10.1109/TBCAS.2018.2880425\n\n9. Frenkel, C., Legat, J.-D., Bol, D. \"MorphIC: A 65-nm 738k-Synapse/mm² Quad-Core Binary-Weight Digital Neuromorphic Processor With Stochastic Spike-Driven Online Learning.\" *IEEE Transactions on Biomedical Circuits and Systems*, 13(5), 999–1010, 2019. DOI: 10.1109/TBCAS.2019.2928793\n\n10. Bellec, G., Scherr, F., Subramoney, A., Hajek, E., Salaj, D., Legenstein, R., Maass, W. \"A solution to the learning dilemma for recurrent networks of spiking neurons.\" *Nature Communications*, 11, 3625, 2020. DOI: 10.1038/s41467-020-17236-y\n\n*注：以上条目依据记忆整理，未在本次会话中联网核对；正式投稿前建议用 Crossref 逐条复核卷期、页码与 DOI。*",
+    "ttft_ms": 26546,
+    "type": "result",
+    "duration_ms": 31702,
+    "uuid": "8bc6c696-7438-458e-887b-d97dcb8e2301",
+    "ttft_stream_ms": 1081,
+    "time_to_request_ms": 214,
+    "first_content_frame_ms": 1081,
+    "time_to_request_from_spawn_ms": 75570,
+    "warm_spare_claimed": false,
+    "flag_fetch_kick": "started_after_init_empty",
+    "time_origin_ms": 1793426940580.1177,
+    "queued_turn_count": 0,
+    "result_index": 0
+  },
+  "error": null
+}

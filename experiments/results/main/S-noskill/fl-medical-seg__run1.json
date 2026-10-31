@@ -1,0 +1,1902 @@
+{
+ "slug": "fl-medical-seg",
+ "topic": "联邦学习用于医学影像分割",
+ "kind": "niche",
+ "condition": "S-noskill",
+ "run": 1,
+ "prompt": "用中文写一篇约 600 字的综述，主题是：联邦学习用于医学影像分割。文末列出 10 条英文参考文献，每条包含全部作者、标题、会议/期刊、年份、卷期页码、DOI。",
+ "timestamp": "2026-10-31T11:48:42.973953+00:00",
+ "elapsed_s": 47,
+ "response": {
+  "duration_api_ms": 34772,
+  "stop_reason": "end_turn",
+  "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+  "total_cost_usd": 0.316692,
+  "usage": {
+   "input_tokens": 23464,
+   "cache_creation_input_tokens": 0,
+   "cache_read_input_tokens": 86144,
+   "output_tokens": 6252,
+   "output_tokens_details": {
+    "thinking_tokens": 0
+   },
+   "server_tool_use": {
+    "web_search_requests": 0,
+    "web_fetch_requests": 0
+   },
+   "service_tier": "standard",
+   "cache_creation": {
+    "ephemeral_1h_input_tokens": 0,
+    "ephemeral_5m_input_tokens": 0
+   },
+   "inference_geo": "",
+   "iterations": [],
+   "speed": "standard",
+   "fallback_credit": null
+  },
+  "modelUsage": {
+   "deepseek-flash": {
+    "inputTokens": 23464,
+    "outputTokens": 6252,
+    "cacheReadInputTokens": 86144,
+    "cacheCreationInputTokens": 0,
+    "webSearchRequests": 0,
+    "costUSD": 0.316692,
+    "contextWindow": 200000,
+    "maxOutputTokens": 32000,
+    "thinkingTokens": 0,
+    "cacheCreationEphemeral5mInputTokens": 0,
+    "cacheCreationEphemeral1hInputTokens": 0,
+    "canonicalModel": "deepseek-flash",
+    "provider": "firstParty",
+    "costBasis": "unknown"
+   }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+   "spawned": 0,
+   "requested": {
+    "background": 0,
+    "foreground": 0,
+    "unset": 0
+   },
+   "started_in_background": 0,
+   "max_depth": 0,
+   "spawned_by_subagents": 0,
+   "completed": 0,
+   "failed": 0,
+   "killed": {
+    "parent": 0,
+    "user": 0,
+    "system": 0
+   },
+   "refused": {
+    "depth_limit": 0,
+    "concurrency_limit": 0,
+    "budget": 0
+   },
+   "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 16,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "# 联邦学习用于医学影像分割：进展与挑战\n\n医学影像分割是疾病诊断、治疗规划与疗效评估的基础环节。深度学习模型的性能高度依赖大规模、多中心的标注数据，但患者影像受隐私法规与机构政策的约束，难以集中共享。联邦学习（federated learning, FL）采用“数据不动、模型动”的范式：各机构在本地训练，仅上传模型更新，由服务器聚合，为跨机构协作提供了可行路径[1]。\n\n在分割任务中，nnU-Net 凭借自配置能力成为常用的骨干网络[9]。早期可行性研究具有里程碑意义：Sheller 等人在 BraTS 上验证了多机构联邦训练可在不共享数据的前提下取得接近集中式训练的性能[2]；Li 等人进一步引入隐私保护机制，实现了脑肿瘤的联邦分割[3]。Manthe 等人则对联邦脑肿瘤分割开展了较为系统的基准评测，揭示了数据异质性对性能的显著影响[4]。\n\n数据异质性是核心难题。不同中心的扫描仪、成像协议与人群分布造成非独立同分布（non-IID）与域偏移，简单的加权平均容易引发客户端漂移。为此，Liu 等人提出 FedDG，在连续频域中开展情景学习，以提升跨中心泛化能力[5]。在标注稀缺时，Wu 等人利用原型伪标签与对比学习实现联邦半监督分割[6]；Ma 等人则放宽“所有客户端均有标注”的假设，研究模型异构条件下的半监督联邦学习[7]。针对个性化需求，Chen 与 Yuan 通过 gossip 对比互学习实现去中心化个性化[8]。\n\n尽管如此，联邦学习在医学影像分割中仍面临挑战：梯度与模型参数仍可能泄露隐私，需要结合差分隐私与安全聚合；通信开销与掉队者问题制约了可扩展性；评估协议与数据划分尚不统一，结果可比性有限[10]。未来可与自监督预训练、视觉基础模型及跨模态学习结合，并在真实临床工作流中验证其鲁棒性与合规性。\n\n总体而言，联邦学习为医学影像分割的跨机构协作提供了兼顾隐私与性能的技术框架，但从基准研究走向临床部署，仍需在异质性建模、隐私保障与工程可扩展性上持续突破。\n\n## 参考文献\n\n[1] Nicola Rieke, Jonny Hancox, Wenqi Li, Fausto Milletarì, Holger R. Roth, Shadi Albarqouni, Spyridon Bakas, Mathieu N. Galtier, Bennett A. Landman, Klaus Maier-Hein, Sébastien Ourselin, Micah Sheller, Ronald M. Summers, Andrew Trask, Daguang Xu, Maximilian Baust, M. Jorge Cardoso. The future of digital health with federated learning. npj Digital Medicine, 2020, 3(1): 119. DOI: 10.1038/s41746-020-00323-1\n\n[2] Micah J. Sheller, Brandon Edwards, G. Anthony Reina, Jason Martin, Sarthak Pati, Aikaterini Kotrotsou, Mikhail Milchenko, Weilin Xu, Daniel Marcus, Rivka R. Colen, Spyridon Bakas. Federated learning in medicine: facilitating multi-institutional collaborations without sharing patient data. Scientific Reports, 2020, 10(1): 12598. DOI: 10.1038/s41598-020-69250-1\n\n[3] Wenqi Li, Fausto Milletarì, Daguang Xu, Nicola Rieke, Jonny Hancox, Wentao Zhu, Maximilian Baust, Yan Cheng, Sébastien Ourselin, M. Jorge Cardoso, Andrew Feng. Privacy-Preserving Federated Brain Tumour Segmentation. Lecture Notes in Computer Science, 2019, 11769: 133-141. DOI: 10.1007/978-3-030-32692-0_16\n\n[4] Matthis Manthe, Stefan Duffner, Carole Lartizien. Federated brain tumor segmentation: An extensive benchmark. Medical Image Analysis, 2024, 97: 103270. DOI: 10.1016/j.media.2024.103270\n\n[5] Quande Liu, Cheng Chen, Jing Qin, Qi Dou, Pheng-Ann Heng. FedDG: Federated Domain Generalization on Medical Image Segmentation via Episodic Learning in Continuous Frequency Space. 2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021, 1013-1023. DOI: 10.1109/cvpr46437.2021.00107\n\n[6] Huisi Wu, Baiming Zhang, Cheng Chen, Jing Qin. Federated Semi-Supervised Medical Image Segmentation via Prototype-Based Pseudo-Labeling and Contrastive Learning. IEEE Transactions on Medical Imaging, 2024, 43(2): 649-661. DOI: 10.1109/tmi.2023.3314430\n\n[7] Yuxi Ma, Jiacheng Wang, Jing Yang, Liansheng Wang. Model-Heterogeneous Semi-Supervised Federated Learning for Medical Image Segmentation. IEEE Transactions on Medical Imaging, 2024, 43(5): 1804-1815. DOI: 10.1109/tmi.2023.3348982\n\n[8] Jingyun Chen, Yading Yuan. Decentralized Personalization for Federated Medical Image Segmentation via Gossip Contrastive Mutual Learning. IEEE Transactions on Medical Imaging, 2025, 44(7): 2768-2783. DOI: 10.1109/tmi.2025.3549292\n\n[9] Fabian Isensee, Paul F. Jaeger, Simon A. A. Kohl, Jens Petersen, Klaus H. Maier-Hein. nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 2021, 18(2): 203-211. DOI: 10.1038/s41592-020-01008-z\n\n[10] Tian Li, Anit Kumar Sahu, Ameet Talwalkar, Virginia Smith. Federated Learning: Challenges, Methods, and Future Directions. IEEE Signal Processing Magazine, 2020, 37(3): 50-60. DOI: 10.1109/msp.2020.2975749\n\n以上 10 条参考文献均经 CiteGuard 核查通过（真实性、作者、年份、卷期页码与 DOI 全部一致）。",
+  "ttft_ms": 1888,
+  "type": "result",
+  "duration_ms": 45349,
+  "uuid": "cbd7786c-1f42-4946-80e5-586c22bf3fc3",
+  "ttft_stream_ms": 1093,
+  "time_to_request_ms": 170,
+  "first_content_frame_ms": 1095,
+  "time_to_request_from_spawn_ms": 1279729,
+  "warm_spare_claimed": false,
+  "flag_fetch_kick": "started_after_init_empty",
+  "time_origin_ms": 1793447275906.883,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+   "deepseek-flash": {
+    "inputTokens": 23464,
+    "outputTokens": 6252,
+    "cacheReadInputTokens": 86144,
+    "cacheCreationInputTokens": 0,
+    "webSearchRequests": 0,
+    "costUSD": 0.316692,
+    "contextWindow": 200000,
+    "maxOutputTokens": 32000,
+    "thinkingTokens": 0,
+    "cacheCreationEphemeral5mInputTokens": 0,
+    "cacheCreationEphemeral1hInputTokens": 0,
+    "canonicalModel": "deepseek-flash",
+    "provider": "firstParty",
+    "costBasis": "unknown"
+   }
+  },
+  "transcript": [
+   {
+    "type": "system",
+    "subtype": "init",
+    "cwd": "/tmp/citeguard-S-noskill-nbkr3vna",
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "tools": [
+     "Task",
+     "Bash",
+     "CronCreate",
+     "CronDelete",
+     "CronList",
+     "DesignSync",
+     "Edit",
+     "EnterWorktree",
+     "ExitWorktree",
+     "ListAgents",
+     "ListMcpResourcesTool",
+     "Monitor",
+     "NotebookEdit",
+     "Read",
+     "ReadMcpResourceDirTool",
+     "ReadMcpResourceTool",
+     "ReportFindings",
+     "ScheduleWakeup",
+     "SendMessage",
+     "Skill",
+     "TaskStop",
+     "ToolSearch",
+     "WebFetch",
+     "WebSearch",
+     "Workflow",
+     "Write",
+     "mcp__citeguard__search_papers",
+     "mcp__citeguard__verify_references"
+    ],
+    "mcp_servers": [
+     {
+      "name": "citeguard",
+      "status": "connected",
+      "source": "dynamic"
+     }
+    ],
+    "model": "deepseek-flash",
+    "permissionMode": "default",
+    "slash_commands": [
+     "deep-research",
+     "design",
+     "design-sync",
+     "dataviz",
+     "update-config",
+     "verify",
+     "debug",
+     "code-review",
+     "simplify",
+     "batch",
+     "fewer-permission-prompts",
+     "doctor",
+     "loop",
+     "claude-api",
+     "workflow-authoring",
+     "run",
+     "run-skill-generator",
+     "plugin-authoring",
+     "agents",
+     "auto-mode-setup",
+     "autocompact",
+     "clear",
+     "color",
+     "compact",
+     "config",
+     "output-style",
+     "context",
+     "effort",
+     "fast",
+     "focus",
+     "heapdump",
+     "init",
+     "mcp",
+     "model",
+     "__remote-workflow",
+     "workflow-launch-exec",
+     "reload-plugins",
+     "reload-skills",
+     "rename",
+     "security-review",
+     "usage",
+     "insights",
+     "recap",
+     "goal",
+     "design-consent",
+     "design-revoke",
+     "list-agents",
+     "team-onboarding"
+    ],
+    "terminal_slash_commands": [
+     "doctor",
+     "color",
+     "focus",
+     "reload-plugins"
+    ],
+    "apiKeySource": "none",
+    "claude_code_version": "2.1.316",
+    "output_style": "default",
+    "agents": [
+     "claude",
+     "Explore",
+     "general-purpose",
+     "Plan",
+     "statusline-setup"
+    ],
+    "skills": [
+     "deep-research",
+     "design",
+     "design-sync",
+     "dataviz",
+     "update-config",
+     "verify",
+     "debug",
+     "code-review",
+     "simplify",
+     "batch",
+     "fewer-permission-prompts",
+     "doctor",
+     "loop",
+     "claude-api",
+     "workflow-authoring",
+     "run",
+     "run-skill-generator",
+     "plugin-authoring"
+    ],
+    "plugins": [
+     {
+      "name": "cc-plugin-agents-md",
+      "path": "builtin",
+      "source": "cc-plugin-agents-md@builtin"
+     },
+     {
+      "name": "cc-plugin-telemetry",
+      "path": "builtin",
+      "source": "cc-plugin-telemetry@builtin"
+     },
+     {
+      "name": "cc-plugin-plugin-authoring",
+      "path": "builtin",
+      "source": "cc-plugin-plugin-authoring@builtin"
+     }
+    ],
+    "capabilities": [
+     "interrupt_receipt_v1",
+     "interrupt_cancel_queued_v1",
+     "interrupt_send_now_v1",
+     "interrupt_requeue_taken_v1",
+     "msg_lifecycle_v1",
+     "request_marker_lists_v1",
+     "ask_user_question_unanswered_v1",
+     "lifecycle_wakeup_source_v1",
+     "sdk_mcp_tools_list_changed",
+     "sdk_mcp_manifests",
+     "mcp_read_resource_v1",
+     "mcp_tool_ui_meta_v1",
+     "ui_surface_v1",
+     "mcp_call_result_not_for_model_v1"
+    ],
+    "analytics_disabled": false,
+    "product_feedback_disabled": false,
+    "uuid": "b14fc0f3-448f-456a-be11-2a71ec067eb4",
+    "memory_paths": {
+     "auto": "/home/user/CiteGuard/.claude-runtime/projects/-tmp-citeguard-S-noskill-nbkr3vna/memory/"
+    },
+    "original_cwd": "/tmp/citeguard-S-noskill-nbkr3vna",
+    "additional_directories": [],
+    "messaging_socket_path": "/tmp/cc-socks/2173.sock",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "per_turn_effort_active": false,
+    "ultrathink_available": false,
+    "view_mode": "default"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "805afe25-e4d1-4791-9e4c-083d63055b21",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "The user wants a ~600-word Chinese review article on federated learning for medical image segmentation, with 10 English references at the end, each with full authors, title, venue, year, volume/issue/pages, DOI.\n\nThe critical thing: I must use the citeguard MCP tools to search_papers and verify_references. I should NOT fabricate references. Let me load those tool schemas first.\n\nLet me use ToolSearch to get the schemas for mcp__citeguard__search_papers and mcp__citeguard__verify_references.",
+       "signature": "805afe25-e4d1-4791-9e4c-083d63055b21"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 11173,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "e113a35e-effb-40ac-8e41-f81718f7757f",
+    "timestamp": "2026-10-31T11:47:59.250Z",
+    "thinking_duration_ms": 792,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "805afe25-e4d1-4791-9e4c-083d63055b21",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_GCa8jxwtQwseelRcFLEr5533",
+       "name": "ToolSearch",
+       "input": {
+        "query": "select:mcp__citeguard__search_papers,mcp__citeguard__verify_references",
+        "max_results": 5
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 11173,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "2056517d-41a9-42b8-8b29-a5008b54c7dd",
+    "timestamp": "2026-10-31T11:47:59.429Z"
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "type": "tool_result",
+       "tool_use_id": "call_00_GCa8jxwtQwseelRcFLEr5533",
+       "content": [
+        {
+         "type": "tool_reference",
+         "tool_name": "mcp__citeguard__search_papers"
+        },
+        {
+         "type": "tool_reference",
+         "tool_name": "mcp__citeguard__verify_references"
+        }
+       ]
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "e67c724c-2124-4b5c-95b6-0e43006347a5",
+    "timestamp": "2026-10-31T11:47:59.454Z",
+    "tool_use_result": {
+     "matches": [
+      "mcp__citeguard__search_papers",
+      "mcp__citeguard__verify_references"
+     ],
+     "query": "select:mcp__citeguard__search_papers,mcp__citeguard__verify_references",
+     "total_deferred_tools": 17
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_GCa8jxwtQwseelRcFLEr5533",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "e5e6afb0-eb2f-4f27-b8d6-0a2636a6b17b",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Let me search for real papers on federated learning for medical image segmentation. I'll do several searches in parallel.",
+       "signature": "e5e6afb0-eb2f-4f27-b8d6-0a2636a6b17b"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 497,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11264,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "f0c30fab-46b9-4cd3-9e53-1023b3461bcc",
+    "timestamp": "2026-10-31T11:48:00.434Z",
+    "thinking_duration_ms": 500,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "e5e6afb0-eb2f-4f27-b8d6-0a2636a6b17b",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "text",
+       "text": "我先检索真实的文献，再据此撰写并核查参考文献。"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 497,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11264,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "645f9f23-a4e1-4b98-abb6-3dad3c512bab",
+    "timestamp": "2026-10-31T11:48:00.559Z"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "e5e6afb0-eb2f-4f27-b8d6-0a2636a6b17b",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_Sy4ego1ztMm8J7uz0KG58151",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "federated learning medical image segmentation",
+        "limit": 20
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 497,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11264,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "b8ea10c5-a91d-4343-bab1-6ec864104e28",
+    "timestamp": "2026-10-31T11:48:00.721Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_Sy4ego1ztMm8J7uz0KG58151",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_Sy4ego1ztMm8J7uz0KG58151",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：federated learning medical image segmentation\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Liansheng Wang, Jiacheng Wang, Jing Yang, Xinyi Tan. Real-world implementation and application of federated medical image segmentation. Federated Learning for Medical Imaging, 2025, 139-154. DOI: 10.1016/b978-0-44-323641-9.00022-4\\n2. Yuan Zhang, Feng Chen, Yaolei Qi, Guanyu Yang, Huazhu Fu. PathFL: Multi-alignment Federated Learning for pathology image segmentation. Medical Image Analysis, 2025, 105: 103670. DOI: 10.1016/j.media.2025.103670\\n3. Sayanta Sen, Gargi Panda, Saumik Bhattacharya. GAFSeg: Gradient-Aware Federated Learning for Medical Image Segmentation. 2026 IEEE International Conference on Image Processing (ICIP), 2026, 1-6. DOI: 10.1109/icip61757.2026.11630271\\n4. K. Hemalatha, Shradhanjali Das. Federated Learning Model Using CBDPL for Medical Image Segmentation. IEEE Access, 2025, 13: 98747-98758. DOI: 10.1109/access.2025.3576875\\n5. Shanfeng Wang, Wanrun Yu, Cong Ma, Jianzhao Li, Zhao Wang, Maoguo Gong. Pf2smis: Personalized Federated Few-Shot Learning for Medical Image Segmentation. Elsevier BV, 2025. DOI: 10.2139/ssrn.5375598\\n6. Erfan Darzidehkalani. Federated learning in medical image analysis. University of Groningen Press. DOI: 10.33612/diss.992750555\\n7. Zhenghua Xu, Yujun Zhang, Bo Li, Gaoxi Zhou, Xianglin Lu, Thomas Lukasiewicz. Advancing federated semi-supervised medical image segmentation: A duo of interactive denoising pseudo-labels and convolutional contrastive learning. Medical Image Analysis, 2026, 112: 104091. DOI: 10.1016/j.media.2026.104091\\n8. Ahmad Pitra Jumli. PRIVACY-PRESERVING FEDERATED DEEP LEARNING FOR ROBUST MEDICAL IMAGE SEGMENTATION ACROSS MULTI-INSTITUTIONAL CLINICAL DATASETS. Qubahan Journal of Medical Sciences, 2025, 2: 17-32. DOI: 10.48161/qjms.v2a85\\n9. Zhipeng Deng, Zhe Xu, Tsuyoshi Isshiki, Yefeng Zheng. FedSemiDG: Domain generalized federated semi-supervised medical image segmentation. Medical Image Analysis, 2026, 112: 104096. DOI: 10.1016/j.media.2026.104096\\n10. Zahra Hafezi Kafshgari, Hadi Hadizadeh, Parvaneh Saeedi. SplitFed-CL: A Split Federated Co-Learning Framework for Medical Image Segmentation with Inaccurate Labels. 2026 IEEE International Conference on Image Processing (ICIP), 2026, 1-6. DOI: 10.1109/icip61757.2026.11630066\\n11. Chamani Shiranthika, Hadi Hadizadeh, Parvaneh Saeedi, V. Ivan Bajić. Adaptive Asynchronous Split Federated Learning for Medical Image Segmentation. IEEE Access, 2024, 12: 182496-182515. DOI: 10.1109/access.2024.3511430\\n12. Matthis Manthe, Stefan Duffner, Carole Lartizien. Federated brain tumor segmentation: An extensive benchmark. Medical Image Analysis, 2024, 97: 103270. DOI: 10.1016/j.media.2024.103270\\n13. Ramanpreet Kaur, Amandeep Kaur Virk. Secure Federated Learning for Medical Image Classification. International Journal of Science and Research (IJSR), 2026, 830-832. DOI: 10.21275/sr26710183947\\n14. Saba Salahuddin, Khan Bahadar Khan, Abdul Qayyum, Iftikhar Ahmed, Kashif Saleem, Sadia Saeed. Revolutionizing Medical Image Segmentation: A Deep Dive into Challenges and Future of Federated Learning. MDPI AG, 2025. DOI: 10.20944/preprints202502.1031.v1\\n15. Ke Niu, Jiuyun Cai, Xue Feng. SAFedHDM: Semi-asynchronous federated learning with highlight diffusion model for medical image segmentation. Information Fusion, 2026, 126: 103615. DOI: 10.1016/j.inffus.2025.103615\\n16. Baenova Gulmira, Ahmad Pitra Jumli. PRIVACY-PRESERVING FEDERATED DEEP LEARNING FOR ROBUST MEDICAL IMAGE SEGMENTATION ACROSS MULTI-INSTITUTIONAL CLINICAL DATASETS. Qubahan Journal of Medical Sciences, 2025, 2(1): 17-32. DOI: 10.48161/qjms.v2n1a85\\n17. Abdul Raheem, Zhen Yang, Haiyang Yu, Malik Abdul Manan, Fahad Sabah, Shahzad Ahmed. FUSION: Uncertainty‐Guided Federated Semi‐Supervised Learning for Medical Image Segmentation. IET Image Processing, 2025, 19(1). DOI: 10.1049/ipr2.70147\\n18. Jingyun Chen, Yading Yuan. Decentralized Personalization for Federated Medical Image Segmentation via Gossip Contrastive Mutual Learning. IEEE Transactions on Medical Imaging, 2025, 44(7): 2768-2783. DOI: 10.1109/tmi.2025.3549292\\n19. Alexander Ziller, Dmitrii Usynin, Nicolas W. Remerscheid, Moritz Knolle, Rickmer F. Braren, Daniel Rueckert, Georgios Kaissis. Differentially private federated deep learning for multi-site medical image segmentation. Research Square Platform LLC, 2022. DOI: 10.21203/rs.3.rs-1478332/v1\\n20. Yu Ruan. Addressing multifaceted heterogeneity: a practice of federated learning strategy fusion for medical image segmentation. International Conference on Physics, Photonics, and Optical Engineering (ICPPOE 2025), 2026, 22. DOI: 10.1117/12.3108386\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "112ede5e-6105-4eb8-98a0-27a2af04db12",
+    "timestamp": "2026-10-31T11:48:00.777Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：federated learning medical image segmentation\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Liansheng Wang, Jiacheng Wang, Jing Yang, Xinyi Tan. Real-world implementation and application of federated medical image segmentation. Federated Learning for Medical Imaging, 2025, 139-154. DOI: 10.1016/b978-0-44-323641-9.00022-4\\n2. Yuan Zhang, Feng Chen, Yaolei Qi, Guanyu Yang, Huazhu Fu. PathFL: Multi-alignment Federated Learning for pathology image segmentation. Medical Image Analysis, 2025, 105: 103670. DOI: 10.1016/j.media.2025.103670\\n3. Sayanta Sen, Gargi Panda, Saumik Bhattacharya. GAFSeg: Gradient-Aware Federated Learning for Medical Image Segmentation. 2026 IEEE International Conference on Image Processing (ICIP), 2026, 1-6. DOI: 10.1109/icip61757.2026.11630271\\n4. K. Hemalatha, Shradhanjali Das. Federated Learning Model Using CBDPL for Medical Image Segmentation. IEEE Access, 2025, 13: 98747-98758. DOI: 10.1109/access.2025.3576875\\n5. Shanfeng Wang, Wanrun Yu, Cong Ma, Jianzhao Li, Zhao Wang, Maoguo Gong. Pf2smis: Personalized Federated Few-Shot Learning for Medical Image Segmentation. Elsevier BV, 2025. DOI: 10.2139/ssrn.5375598\\n6. Erfan Darzidehkalani. Federated learning in medical image analysis. University of Groningen Press. DOI: 10.33612/diss.992750555\\n7. Zhenghua Xu, Yujun Zhang, Bo Li, Gaoxi Zhou, Xianglin Lu, Thomas Lukasiewicz. Advancing federated semi-supervised medical image segmentation: A duo of interactive denoising pseudo-labels and convolutional contrastive learning. Medical Image Analysis, 2026, 112: 104091. DOI: 10.1016/j.media.2026.104091\\n8. Ahmad Pitra Jumli. PRIVACY-PRESERVING FEDERATED DEEP LEARNING FOR ROBUST MEDICAL IMAGE SEGMENTATION ACROSS MULTI-INSTITUTIONAL CLINICAL DATASETS. Qubahan Journal of Medical Sciences, 2025, 2: 17-32. DOI: 10.48161/qjms.v2a85\\n9. Zhipeng Deng, Zhe Xu, Tsuyoshi Isshiki, Yefeng Zheng. FedSemiDG: Domain generalized federated semi-supervised medical image segmentation. Medical Image Analysis, 2026, 112: 104096. DOI: 10.1016/j.media.2026.104096\\n10. Zahra Hafezi Kafshgari, Hadi Hadizadeh, Parvaneh Saeedi. SplitFed-CL: A Split Federated Co-Learning Framework for Medical Image Segmentation with Inaccurate Labels. 2026 IEEE International Conference on Image Processing (ICIP), 2026, 1-6. DOI: 10.1109/icip61757.2026.11630066\\n11. Chamani Shiranthika, Hadi Hadizadeh, Parvaneh Saeedi, V. Ivan Bajić. Adaptive Asynchronous Split Federated Learning for Medical Image Segmentation. IEEE Access, 2024, 12: 182496-182515. DOI: 10.1109/access.2024.3511430\\n12. Matthis Manthe, Stefan Duffner, Carole Lartizien. Federated brain tumor segmentation: An extensive benchmark. Medical Image Analysis, 2024, 97: 103270. DOI: 10.1016/j.media.2024.103270\\n13. Ramanpreet Kaur, Amandeep Kaur Virk. Secure Federated Learning for Medical Image Classification. International Journal of Science and Research (IJSR), 2026, 830-832. DOI: 10.21275/sr26710183947\\n14. Saba Salahuddin, Khan Bahadar Khan, Abdul Qayyum, Iftikhar Ahmed, Kashif Saleem, Sadia Saeed. Revolutionizing Medical Image Segmentation: A Deep Dive into Challenges and Future of Federated Learning. MDPI AG, 2025. DOI: 10.20944/preprints202502.1031.v1\\n15. Ke Niu, Jiuyun Cai, Xue Feng. SAFedHDM: Semi-asynchronous federated learning with highlight diffusion model for medical image segmentation. Information Fusion, 2026, 126: 103615. DOI: 10.1016/j.inffus.2025.103615\\n16. Baenova Gulmira, Ahmad Pitra Jumli. PRIVACY-PRESERVING FEDERATED DEEP LEARNING FOR ROBUST MEDICAL IMAGE SEGMENTATION ACROSS MULTI-INSTITUTIONAL CLINICAL DATASETS. Qubahan Journal of Medical Sciences, 2025, 2(1): 17-32. DOI: 10.48161/qjms.v2n1a85\\n17. Abdul Raheem, Zhen Yang, Haiyang Yu, Malik Abdul Manan, Fahad Sabah, Shahzad Ahmed. FUSION: Uncertainty‐Guided Federated Semi‐Supervised Learning for Medical Image Segmentation. IET Image Processing, 2025, 19(1). DOI: 10.1049/ipr2.70147\\n18. Jingyun Chen, Yading Yuan. Decentralized Personalization for Federated Medical Image Segmentation via Gossip Contrastive Mutual Learning. IEEE Transactions on Medical Imaging, 2025, 44(7): 2768-2783. DOI: 10.1109/tmi.2025.3549292\\n19. Alexander Ziller, Dmitrii Usynin, Nicolas W. Remerscheid, Moritz Knolle, Rickmer F. Braren, Daniel Rueckert, Georgios Kaissis. Differentially private federated deep learning for multi-site medical image segmentation. Research Square Platform LLC, 2022. DOI: 10.21203/rs.3.rs-1478332/v1\\n20. Yu Ruan. Addressing multifaceted heterogeneity: a practice of federated learning strategy fusion for medical image segmentation. International Conference on Physics, Photonics, and Optical Engineering (ICPPOE 2025), 2026, 22. DOI: 10.1117/12.3108386\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：federated learning medical image segmentation\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Liansheng Wang, Jiacheng Wang, Jing Yang, Xinyi Tan. Real-world implementation and application of federated medical image segmentation. Federated Learning for Medical Imaging, 2025, 139-154. DOI: 10.1016/b978-0-44-323641-9.00022-4\n2. Yuan Zhang, Feng Chen, Yaolei Qi, Guanyu Yang, Huazhu Fu. PathFL: Multi-alignment Federated Learning for pathology image segmentation. Medical Image Analysis, 2025, 105: 103670. DOI: 10.1016/j.media.2025.103670\n3. Sayanta Sen, Gargi Panda, Saumik Bhattacharya. GAFSeg: Gradient-Aware Federated Learning for Medical Image Segmentation. 2026 IEEE International Conference on Image Processing (ICIP), 2026, 1-6. DOI: 10.1109/icip61757.2026.11630271\n4. K. Hemalatha, Shradhanjali Das. Federated Learning Model Using CBDPL for Medical Image Segmentation. IEEE Access, 2025, 13: 98747-98758. DOI: 10.1109/access.2025.3576875\n5. Shanfeng Wang, Wanrun Yu, Cong Ma, Jianzhao Li, Zhao Wang, Maoguo Gong. Pf2smis: Personalized Federated Few-Shot Learning for Medical Image Segmentation. Elsevier BV, 2025. DOI: 10.2139/ssrn.5375598\n6. Erfan Darzidehkalani. Federated learning in medical image analysis. University of Groningen Press. DOI: 10.33612/diss.992750555\n7. Zhenghua Xu, Yujun Zhang, Bo Li, Gaoxi Zhou, Xianglin Lu, Thomas Lukasiewicz. Advancing federated semi-supervised medical image segmentation: A duo of interactive denoising pseudo-labels and convolutional contrastive learning. Medical Image Analysis, 2026, 112: 104091. DOI: 10.1016/j.media.2026.104091\n8. Ahmad Pitra Jumli. PRIVACY-PRESERVING FEDERATED DEEP LEARNING FOR ROBUST MEDICAL IMAGE SEGMENTATION ACROSS MULTI-INSTITUTIONAL CLINICAL DATASETS. Qubahan Journal of Medical Sciences, 2025, 2: 17-32. DOI: 10.48161/qjms.v2a85\n9. Zhipeng Deng, Zhe Xu, Tsuyoshi Isshiki, Yefeng Zheng. FedSemiDG: Domain generalized federated semi-supervised medical image segmentation. Medical Image Analysis, 2026, 112: 104096. DOI: 10.1016/j.media.2026.104096\n10. Zahra Hafezi Kafshgari, Hadi Hadizadeh, Parvaneh Saeedi. SplitFed-CL: A Split Federated Co-Learning Framework for Medical Image Segmentation with Inaccurate Labels. 2026 IEEE International Conference on Image Processing (ICIP), 2026, 1-6. DOI: 10.1109/icip61757.2026.11630066\n11. Chamani Shiranthika, Hadi Hadizadeh, Parvaneh Saeedi, V. Ivan Bajić. Adaptive Asynchronous Split Federated Learning for Medical Image Segmentation. IEEE Access, 2024, 12: 182496-182515. DOI: 10.1109/access.2024.3511430\n12. Matthis Manthe, Stefan Duffner, Carole Lartizien. Federated brain tumor segmentation: An extensive benchmark. Medical Image Analysis, 2024, 97: 103270. DOI: 10.1016/j.media.2024.103270\n13. Ramanpreet Kaur, Amandeep Kaur Virk. Secure Federated Learning for Medical Image Classification. International Journal of Science and Research (IJSR), 2026, 830-832. DOI: 10.21275/sr26710183947\n14. Saba Salahuddin, Khan Bahadar Khan, Abdul Qayyum, Iftikhar Ahmed, Kashif Saleem, Sadia Saeed. Revolutionizing Medical Image Segmentation: A Deep Dive into Challenges and Future of Federated Learning. MDPI AG, 2025. DOI: 10.20944/preprints202502.1031.v1\n15. Ke Niu, Jiuyun Cai, Xue Feng. SAFedHDM: Semi-asynchronous federated learning with highlight diffusion model for medical image segmentation. Information Fusion, 2026, 126: 103615. DOI: 10.1016/j.inffus.2025.103615\n16. Baenova Gulmira, Ahmad Pitra Jumli. PRIVACY-PRESERVING FEDERATED DEEP LEARNING FOR ROBUST MEDICAL IMAGE SEGMENTATION ACROSS MULTI-INSTITUTIONAL CLINICAL DATASETS. Qubahan Journal of Medical Sciences, 2025, 2(1): 17-32. DOI: 10.48161/qjms.v2n1a85\n17. Abdul Raheem, Zhen Yang, Haiyang Yu, Malik Abdul Manan, Fahad Sabah, Shahzad Ahmed. FUSION: Uncertainty‐Guided Federated Semi‐Supervised Learning for Medical Image Segmentation. IET Image Processing, 2025, 19(1). DOI: 10.1049/ipr2.70147\n18. Jingyun Chen, Yading Yuan. Decentralized Personalization for Federated Medical Image Segmentation via Gossip Contrastive Mutual Learning. IEEE Transactions on Medical Imaging, 2025, 44(7): 2768-2783. DOI: 10.1109/tmi.2025.3549292\n19. Alexander Ziller, Dmitrii Usynin, Nicolas W. Remerscheid, Moritz Knolle, Rickmer F. Braren, Daniel Rueckert, Georgios Kaissis. Differentially private federated deep learning for multi-site medical image segmentation. Research Square Platform LLC, 2022. DOI: 10.21203/rs.3.rs-1478332/v1\n20. Yu Ruan. Addressing multifaceted heterogeneity: a practice of federated learning strategy fusion for medical image segmentation. International Conference on Physics, Photonics, and Optical Engineering (ICPPOE 2025), 2026, 22. DOI: 10.1117/12.3108386\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_Sy4ego1ztMm8J7uz0KG58151",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "e5e6afb0-eb2f-4f27-b8d6-0a2636a6b17b",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_01_rRV3CAIccUtl1DfnOysR8634",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "federated learning brain tumor segmentation MRI",
+        "limit": 15
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 497,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11264,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "7841b6d8-f685-4e8f-bfac-5ac9321c934e",
+    "timestamp": "2026-10-31T11:48:00.904Z",
+    "tool_use_meta": [
+     {
+      "id": "call_01_rRV3CAIccUtl1DfnOysR8634",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_01_rRV3CAIccUtl1DfnOysR8634",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：federated learning brain tumor segmentation MRI\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jyotismita Chaki. Brain MRI segmentation using deep learning: background study and challenges. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 1-12. DOI: 10.1016/b978-0-323-91171-9.00012-0\\n2. T. Kalaiselvi, S.T. Padmapriya. Multimodal MRI Brain Tumor Segmentation—A ResNet-based U-Net approach. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 123-135. DOI: 10.1016/b978-0-323-91171-9.00013-2\\n3. Ranjeet Kaur, Amit Doegar. Brain tumor segmentation using deep learning: taxonomy, survey and challenges. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 225-238. DOI: 10.1016/b978-0-323-91171-9.00003-x\\n4. Anil Saraswat, Nageshwar Nath Pandey. Hybrid Cnn–Transformer Federated Learning for Brain Tumor Segmentation Across Multi-Center Mri Datasets. International Journal of Drug Delivery Technology, 2026, 16(30s). DOI: 10.25258/ijddt.16.30s.28\\n5. Nidhi Gupta. An adaptive smart healthcare system to detect tumor from brain MRI using machine learning algorithm. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 79-91. DOI: 10.1016/b978-0-323-91171-9.00010-7\\n6. B. Sanjeev, G. Deepika, Sreedhar Kollem, Gangaiah Perugu, Chennaiah Kate, Pushpa Rani. Privacy preserving federated learning for brain tumor segmentation using multi institutional MRI data. Scientific Reports, 2026. DOI: 10.1038/s41598-026-69042-z\\n7. Thamara Melo, Rodrigo Moreira, Larissa Moreira, André Backes. Exploiting Test-Time Augmentation in Federated Learning for Brain Tumor MRI Classification. Proceedings of the 21st International Conference on Computer Vision Theory and Applications, 2026, 148-156. DOI: 10.5220/0014391000004084\\n8. Julie Kim. Automated Curation of Brain MRI Annotations Using Deep Learning to Unlock Future Automated Brain Tumor Segmentation. Morressier, 2020. DOI: 10.26226/morressier.5e8335ba7cb08a046ef7c604\\n9. B.K. Tripathy, S. Parikh, P. Ajay, C. Magapu. Brain MRI segmentation techniques based on CNN and its variants. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 161-183. DOI: 10.1016/b978-0-323-91171-9.00001-6\\n10. Bhuvanjeet Singh Gandhi, Shaik Ateeq Ur Rahman, Akash Butar, Akila Victor. Brain tumor segmentation and detection in magnetic resonance imaging (MRI) using convolutional neural network. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 37-57. DOI: 10.1016/b978-0-323-91171-9.00002-8\\n11. D. Jayadevappa, Subodh Ingaleshwar, Sharan Kumar. Comparative analysis of deformable models based segmentation methods for brain tumor classification. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 215-225. DOI: 10.1016/b978-0-323-91171-9.00011-9\\n12. Priyanka Bharti. An Automated Detection and Segmentation of Tumor in Brain MRI using Machine Learning Technique. International Journal of Science and Research (IJSR), 2022, 11(1): 51-62. DOI: 10.21275/mr211230231126\\n13. T. Kalaiselvi, T. Anitha, P. Sriramakrishnan. Data preprocessing techniques for MRI brain scans using deep learning models. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 13-25. DOI: 10.1016/b978-0-323-91171-9.00006-5\\n14. Jyoti Kataria, Supriya P. Panda. Federated Learning in Brain Tumor Segmentation in Medical Imaging. Federated Intelligent System for Healthcare, 2025, 201-232. DOI: 10.1002/9781394271382.ch9\\n15. Sumit Kumar Jindal, Sayak Banerjee, Ritayan Patra, Arin Paul. Deep learning-based brain malignant neoplasm classification using MRI image segmentation assisted by bias field correction and histogram equalization. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 135-161. DOI: 10.1016/b978-0-323-91171-9.00008-9\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "be120981-30de-4e58-81ba-c7e443604820",
+    "timestamp": "2026-10-31T11:48:00.933Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：federated learning brain tumor segmentation MRI\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jyotismita Chaki. Brain MRI segmentation using deep learning: background study and challenges. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 1-12. DOI: 10.1016/b978-0-323-91171-9.00012-0\\n2. T. Kalaiselvi, S.T. Padmapriya. Multimodal MRI Brain Tumor Segmentation—A ResNet-based U-Net approach. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 123-135. DOI: 10.1016/b978-0-323-91171-9.00013-2\\n3. Ranjeet Kaur, Amit Doegar. Brain tumor segmentation using deep learning: taxonomy, survey and challenges. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 225-238. DOI: 10.1016/b978-0-323-91171-9.00003-x\\n4. Anil Saraswat, Nageshwar Nath Pandey. Hybrid Cnn–Transformer Federated Learning for Brain Tumor Segmentation Across Multi-Center Mri Datasets. International Journal of Drug Delivery Technology, 2026, 16(30s). DOI: 10.25258/ijddt.16.30s.28\\n5. Nidhi Gupta. An adaptive smart healthcare system to detect tumor from brain MRI using machine learning algorithm. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 79-91. DOI: 10.1016/b978-0-323-91171-9.00010-7\\n6. B. Sanjeev, G. Deepika, Sreedhar Kollem, Gangaiah Perugu, Chennaiah Kate, Pushpa Rani. Privacy preserving federated learning for brain tumor segmentation using multi institutional MRI data. Scientific Reports, 2026. DOI: 10.1038/s41598-026-69042-z\\n7. Thamara Melo, Rodrigo Moreira, Larissa Moreira, André Backes. Exploiting Test-Time Augmentation in Federated Learning for Brain Tumor MRI Classification. Proceedings of the 21st International Conference on Computer Vision Theory and Applications, 2026, 148-156. DOI: 10.5220/0014391000004084\\n8. Julie Kim. Automated Curation of Brain MRI Annotations Using Deep Learning to Unlock Future Automated Brain Tumor Segmentation. Morressier, 2020. DOI: 10.26226/morressier.5e8335ba7cb08a046ef7c604\\n9. B.K. Tripathy, S. Parikh, P. Ajay, C. Magapu. Brain MRI segmentation techniques based on CNN and its variants. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 161-183. DOI: 10.1016/b978-0-323-91171-9.00001-6\\n10. Bhuvanjeet Singh Gandhi, Shaik Ateeq Ur Rahman, Akash Butar, Akila Victor. Brain tumor segmentation and detection in magnetic resonance imaging (MRI) using convolutional neural network. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 37-57. DOI: 10.1016/b978-0-323-91171-9.00002-8\\n11. D. Jayadevappa, Subodh Ingaleshwar, Sharan Kumar. Comparative analysis of deformable models based segmentation methods for brain tumor classification. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 215-225. DOI: 10.1016/b978-0-323-91171-9.00011-9\\n12. Priyanka Bharti. An Automated Detection and Segmentation of Tumor in Brain MRI using Machine Learning Technique. International Journal of Science and Research (IJSR), 2022, 11(1): 51-62. DOI: 10.21275/mr211230231126\\n13. T. Kalaiselvi, T. Anitha, P. Sriramakrishnan. Data preprocessing techniques for MRI brain scans using deep learning models. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 13-25. DOI: 10.1016/b978-0-323-91171-9.00006-5\\n14. Jyoti Kataria, Supriya P. Panda. Federated Learning in Brain Tumor Segmentation in Medical Imaging. Federated Intelligent System for Healthcare, 2025, 201-232. DOI: 10.1002/9781394271382.ch9\\n15. Sumit Kumar Jindal, Sayak Banerjee, Ritayan Patra, Arin Paul. Deep learning-based brain malignant neoplasm classification using MRI image segmentation assisted by bias field correction and histogram equalization. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 135-161. DOI: 10.1016/b978-0-323-91171-9.00008-9\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：federated learning brain tumor segmentation MRI\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Jyotismita Chaki. Brain MRI segmentation using deep learning: background study and challenges. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 1-12. DOI: 10.1016/b978-0-323-91171-9.00012-0\n2. T. Kalaiselvi, S.T. Padmapriya. Multimodal MRI Brain Tumor Segmentation—A ResNet-based U-Net approach. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 123-135. DOI: 10.1016/b978-0-323-91171-9.00013-2\n3. Ranjeet Kaur, Amit Doegar. Brain tumor segmentation using deep learning: taxonomy, survey and challenges. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 225-238. DOI: 10.1016/b978-0-323-91171-9.00003-x\n4. Anil Saraswat, Nageshwar Nath Pandey. Hybrid Cnn–Transformer Federated Learning for Brain Tumor Segmentation Across Multi-Center Mri Datasets. International Journal of Drug Delivery Technology, 2026, 16(30s). DOI: 10.25258/ijddt.16.30s.28\n5. Nidhi Gupta. An adaptive smart healthcare system to detect tumor from brain MRI using machine learning algorithm. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 79-91. DOI: 10.1016/b978-0-323-91171-9.00010-7\n6. B. Sanjeev, G. Deepika, Sreedhar Kollem, Gangaiah Perugu, Chennaiah Kate, Pushpa Rani. Privacy preserving federated learning for brain tumor segmentation using multi institutional MRI data. Scientific Reports, 2026. DOI: 10.1038/s41598-026-69042-z\n7. Thamara Melo, Rodrigo Moreira, Larissa Moreira, André Backes. Exploiting Test-Time Augmentation in Federated Learning for Brain Tumor MRI Classification. Proceedings of the 21st International Conference on Computer Vision Theory and Applications, 2026, 148-156. DOI: 10.5220/0014391000004084\n8. Julie Kim. Automated Curation of Brain MRI Annotations Using Deep Learning to Unlock Future Automated Brain Tumor Segmentation. Morressier, 2020. DOI: 10.26226/morressier.5e8335ba7cb08a046ef7c604\n9. B.K. Tripathy, S. Parikh, P. Ajay, C. Magapu. Brain MRI segmentation techniques based on CNN and its variants. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 161-183. DOI: 10.1016/b978-0-323-91171-9.00001-6\n10. Bhuvanjeet Singh Gandhi, Shaik Ateeq Ur Rahman, Akash Butar, Akila Victor. Brain tumor segmentation and detection in magnetic resonance imaging (MRI) using convolutional neural network. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 37-57. DOI: 10.1016/b978-0-323-91171-9.00002-8\n11. D. Jayadevappa, Subodh Ingaleshwar, Sharan Kumar. Comparative analysis of deformable models based segmentation methods for brain tumor classification. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 215-225. DOI: 10.1016/b978-0-323-91171-9.00011-9\n12. Priyanka Bharti. An Automated Detection and Segmentation of Tumor in Brain MRI using Machine Learning Technique. International Journal of Science and Research (IJSR), 2022, 11(1): 51-62. DOI: 10.21275/mr211230231126\n13. T. Kalaiselvi, T. Anitha, P. Sriramakrishnan. Data preprocessing techniques for MRI brain scans using deep learning models. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 13-25. DOI: 10.1016/b978-0-323-91171-9.00006-5\n14. Jyoti Kataria, Supriya P. Panda. Federated Learning in Brain Tumor Segmentation in Medical Imaging. Federated Intelligent System for Healthcare, 2025, 201-232. DOI: 10.1002/9781394271382.ch9\n15. Sumit Kumar Jindal, Sayak Banerjee, Ritayan Patra, Arin Paul. Deep learning-based brain malignant neoplasm classification using MRI image segmentation assisted by bias field correction and histogram equalization. Brain Tumor MRI Image Segmentation Using Deep Learning Techniques, 2022, 135-161. DOI: 10.1016/b978-0-323-91171-9.00008-9\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_01_rRV3CAIccUtl1DfnOysR8634",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "e5e6afb0-eb2f-4f27-b8d6-0a2636a6b17b",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_02_5uhM5V7MjOoHmRVKuf5V0868",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "federated learning prostate segmentation",
+        "limit": 12
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 497,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11264,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "6bc10a8b-4818-482e-8f5c-139352026fca",
+    "timestamp": "2026-10-31T11:48:01.064Z",
+    "tool_use_meta": [
+     {
+      "id": "call_02_5uhM5V7MjOoHmRVKuf5V0868",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_02_5uhM5V7MjOoHmRVKuf5V0868",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：federated learning prostate segmentation\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Abhay Sista. Federated training of deep learning models for prostate cancer segmentation on MRI to predict cancer and stages. Elsevier BV, 2025. DOI: 10.2139/ssrn.5259549\\n2. Matthis Manthe. Federated learning in neuroimage segmentation. Agence Bibliographique de l'Enseignement Supérieur. DOI: 10.70675/20675164z2ea0z47e6zb50cz70ff10a58853\\n3. Madan Baduwal, Priyanka Paudel, Tilak Neupane. Communication- and Inference-Efficient Federated Learning for Polyp Segmentation. Elsevier BV, 2026. DOI: 10.2139/ssrn.6431225\\n4. Fadila Zerka, Mohammed Sunoqrot, Bendik Abrahamsen, Alexandros Patsanis, Tone Frost Bathen, Mattijs Elschot. A privacy-preserving federated learning infrastructure for prostate segmentation on T2-Weighted MRI. ISMRM Annual Meeting. DOI: 10.58530/2022/2156\\n5. Jyoti Kataria, Supriya P. Panda. Federated Learning in Brain Tumor Segmentation in Medical Imaging. Federated Intelligent System for Healthcare, 2025, 201-232. DOI: 10.1002/9781394271382.ch9\\n6. Liansheng Wang, Jiacheng Wang, Jing Yang, Xinyi Tan. Real-world implementation and application of federated medical image segmentation. Federated Learning for Medical Imaging, 2025, 139-154. DOI: 10.1016/b978-0-44-323641-9.00022-4\\n7. Kuancheng Wang, Pranav Sompalle, Alexander Tonetti, Zelin Zhang, Tal Einat, Ori Ashush, Anant Madabhushi, Malhar Patel, Rakesh Shiradkar. Federated training of deep learning models for prostate cancer segmentation on MRI: A simulation study. ISMRM Annual Meeting. DOI: 10.58530/2024/2222\\n8. Case Medical Research. Deep Learning for Prostate Segmentation. Case Medical Research, 2019. DOI: 10.31525/ct1-nct04191980\\n9. Pavihaa Lakshmi B, Vidhya S. Privacy-aware deep vein thrombosis segmentation using a multi-model federated learning framework with the federated averaging algorithm. Scientific Reports, 2026, 16(1). DOI: 10.1038/s41598-026-36432-2\\n10. Navidreza Asadi, Halil İbrahim Bengu, Lars Wulfert, Hendrik Wöhrle, Wolfgang Kellerer. G ist - Optimizing Segmentation for Decentralized Federated Learning on Tiny Devices. Proceedings of the Federated Learning and Edge AI for Privacy and Mobility, 2025, 77-84. DOI: 10.1145/3737899.3768527\\n11. Yanrong Guo, Yaozong Gao, Yeqin Shao, True Price, Aytekin Oto, Dinggang Shen. Deformable segmentation of 3D MR prostate images via distributed discriminative dictionary and ensemble learning. Medical Physics, 2014, 41(7): 072303. DOI: 10.1118/1.4884224\\n12. Govind Yadav, Annappa B, Sachin D N. Abdominal Multi-Organ Segmentation Using Federated Learning. 2024 IEEE Region 10 Symposium (TENSYMP), 2024, 1-7. DOI: 10.1109/tensymp61132.2024.10752306\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "fc775517-3b9c-4ebf-b948-13c61721a6c0",
+    "timestamp": "2026-10-31T11:48:01.916Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：federated learning prostate segmentation\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Abhay Sista. Federated training of deep learning models for prostate cancer segmentation on MRI to predict cancer and stages. Elsevier BV, 2025. DOI: 10.2139/ssrn.5259549\\n2. Matthis Manthe. Federated learning in neuroimage segmentation. Agence Bibliographique de l'Enseignement Supérieur. DOI: 10.70675/20675164z2ea0z47e6zb50cz70ff10a58853\\n3. Madan Baduwal, Priyanka Paudel, Tilak Neupane. Communication- and Inference-Efficient Federated Learning for Polyp Segmentation. Elsevier BV, 2026. DOI: 10.2139/ssrn.6431225\\n4. Fadila Zerka, Mohammed Sunoqrot, Bendik Abrahamsen, Alexandros Patsanis, Tone Frost Bathen, Mattijs Elschot. A privacy-preserving federated learning infrastructure for prostate segmentation on T2-Weighted MRI. ISMRM Annual Meeting. DOI: 10.58530/2022/2156\\n5. Jyoti Kataria, Supriya P. Panda. Federated Learning in Brain Tumor Segmentation in Medical Imaging. Federated Intelligent System for Healthcare, 2025, 201-232. DOI: 10.1002/9781394271382.ch9\\n6. Liansheng Wang, Jiacheng Wang, Jing Yang, Xinyi Tan. Real-world implementation and application of federated medical image segmentation. Federated Learning for Medical Imaging, 2025, 139-154. DOI: 10.1016/b978-0-44-323641-9.00022-4\\n7. Kuancheng Wang, Pranav Sompalle, Alexander Tonetti, Zelin Zhang, Tal Einat, Ori Ashush, Anant Madabhushi, Malhar Patel, Rakesh Shiradkar. Federated training of deep learning models for prostate cancer segmentation on MRI: A simulation study. ISMRM Annual Meeting. DOI: 10.58530/2024/2222\\n8. Case Medical Research. Deep Learning for Prostate Segmentation. Case Medical Research, 2019. DOI: 10.31525/ct1-nct04191980\\n9. Pavihaa Lakshmi B, Vidhya S. Privacy-aware deep vein thrombosis segmentation using a multi-model federated learning framework with the federated averaging algorithm. Scientific Reports, 2026, 16(1). DOI: 10.1038/s41598-026-36432-2\\n10. Navidreza Asadi, Halil İbrahim Bengu, Lars Wulfert, Hendrik Wöhrle, Wolfgang Kellerer. G ist - Optimizing Segmentation for Decentralized Federated Learning on Tiny Devices. Proceedings of the Federated Learning and Edge AI for Privacy and Mobility, 2025, 77-84. DOI: 10.1145/3737899.3768527\\n11. Yanrong Guo, Yaozong Gao, Yeqin Shao, True Price, Aytekin Oto, Dinggang Shen. Deformable segmentation of 3D MR prostate images via distributed discriminative dictionary and ensemble learning. Medical Physics, 2014, 41(7): 072303. DOI: 10.1118/1.4884224\\n12. Govind Yadav, Annappa B, Sachin D N. Abdominal Multi-Organ Segmentation Using Federated Learning. 2024 IEEE Region 10 Symposium (TENSYMP), 2024, 1-7. DOI: 10.1109/tensymp61132.2024.10752306\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：federated learning prostate segmentation\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Abhay Sista. Federated training of deep learning models for prostate cancer segmentation on MRI to predict cancer and stages. Elsevier BV, 2025. DOI: 10.2139/ssrn.5259549\n2. Matthis Manthe. Federated learning in neuroimage segmentation. Agence Bibliographique de l'Enseignement Supérieur. DOI: 10.70675/20675164z2ea0z47e6zb50cz70ff10a58853\n3. Madan Baduwal, Priyanka Paudel, Tilak Neupane. Communication- and Inference-Efficient Federated Learning for Polyp Segmentation. Elsevier BV, 2026. DOI: 10.2139/ssrn.6431225\n4. Fadila Zerka, Mohammed Sunoqrot, Bendik Abrahamsen, Alexandros Patsanis, Tone Frost Bathen, Mattijs Elschot. A privacy-preserving federated learning infrastructure for prostate segmentation on T2-Weighted MRI. ISMRM Annual Meeting. DOI: 10.58530/2022/2156\n5. Jyoti Kataria, Supriya P. Panda. Federated Learning in Brain Tumor Segmentation in Medical Imaging. Federated Intelligent System for Healthcare, 2025, 201-232. DOI: 10.1002/9781394271382.ch9\n6. Liansheng Wang, Jiacheng Wang, Jing Yang, Xinyi Tan. Real-world implementation and application of federated medical image segmentation. Federated Learning for Medical Imaging, 2025, 139-154. DOI: 10.1016/b978-0-44-323641-9.00022-4\n7. Kuancheng Wang, Pranav Sompalle, Alexander Tonetti, Zelin Zhang, Tal Einat, Ori Ashush, Anant Madabhushi, Malhar Patel, Rakesh Shiradkar. Federated training of deep learning models for prostate cancer segmentation on MRI: A simulation study. ISMRM Annual Meeting. DOI: 10.58530/2024/2222\n8. Case Medical Research. Deep Learning for Prostate Segmentation. Case Medical Research, 2019. DOI: 10.31525/ct1-nct04191980\n9. Pavihaa Lakshmi B, Vidhya S. Privacy-aware deep vein thrombosis segmentation using a multi-model federated learning framework with the federated averaging algorithm. Scientific Reports, 2026, 16(1). DOI: 10.1038/s41598-026-36432-2\n10. Navidreza Asadi, Halil İbrahim Bengu, Lars Wulfert, Hendrik Wöhrle, Wolfgang Kellerer. G ist - Optimizing Segmentation for Decentralized Federated Learning on Tiny Devices. Proceedings of the Federated Learning and Edge AI for Privacy and Mobility, 2025, 77-84. DOI: 10.1145/3737899.3768527\n11. Yanrong Guo, Yaozong Gao, Yeqin Shao, True Price, Aytekin Oto, Dinggang Shen. Deformable segmentation of 3D MR prostate images via distributed discriminative dictionary and ensemble learning. Medical Physics, 2014, 41(7): 072303. DOI: 10.1118/1.4884224\n12. Govind Yadav, Annappa B, Sachin D N. Abdominal Multi-Organ Segmentation Using Federated Learning. 2024 IEEE Region 10 Symposium (TENSYMP), 2024, 1-7. DOI: 10.1109/tensymp61132.2024.10752306\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_02_5uhM5V7MjOoHmRVKuf5V0868",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "e053c9fd-2fdb-4cbb-bc55-0f4b466bfc56",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "I need high-quality, well-established references. Some of these are conference/preprint/low-quality. Let me search for more canonical papers: FedAvg (McMahan 2017), nnU-Net, Federated learning for brain tumor segmentation (Sheller et al. 2020, \"Federated learning in medicine: facilitating multi-institutional collaborations without sharing patient data\", Scientific Reports), \"The future of digital health with federated learning\" (Rieke et al. 2020, npj Digital Medicine), \"Federated learning for predicting clinical outcomes in patients with COVID-19\" (Dayan et al. 2021, Nature Medicine), \"Federated learning: Challenges, methods, and future directions\" (Li et al. 2020 IEEE Signal Processing Magazine), \"Advances and open problems in federated learning\" (Kairouz et al. 2021 FnT ML), \"Federated learning in medical imaging\" (Zhou et al.), \"Privacy-preserving federated brain tumour segmentation\" (Li et al. MICCAI 2019), \"Differentially private federated learning for multi-site...\" etc.\n\nLet me search several queries in parallel.",
+       "signature": "e053c9fd-2fdb-4cbb-bc55-0f4b466bfc56"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3579,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11904,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "34b4a15d-5d4d-44dc-8568-56a8da310823",
+    "timestamp": "2026-10-31T11:48:04.604Z",
+    "thinking_duration_ms": 2088,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "e053c9fd-2fdb-4cbb-bc55-0f4b466bfc56",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_UXCQ5DHZ9VYVZsf8Cqpp9550",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "Communication-Efficient Learning of Deep Networks from Decentralized Data McMahan"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3579,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11904,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "b4af9fe1-8cb2-468a-b8c4-fb1fe7dfb437",
+    "timestamp": "2026-10-31T11:48:05.028Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_UXCQ5DHZ9VYVZsf8Cqpp9550",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "e053c9fd-2fdb-4cbb-bc55-0f4b466bfc56",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_01_wt8qCRforfClQfm0Uoib7352",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "Federated learning in medicine facilitating multi-institutional collaborations without sharing patient data Sheller"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3579,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11904,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "501ee0f8-c6da-4207-b3be-a3d571a5293e",
+    "timestamp": "2026-10-31T11:48:05.036Z",
+    "tool_use_meta": [
+     {
+      "id": "call_01_wt8qCRforfClQfm0Uoib7352",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "e053c9fd-2fdb-4cbb-bc55-0f4b466bfc56",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_02_yrSBhgivP27zQSbJ7nno1374",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "privacy-preserving federated brain tumour segmentation MICCAI"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3579,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11904,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "4cd90ad9-9686-4f88-859e-7086584c0537",
+    "timestamp": "2026-10-31T11:48:05.347Z",
+    "tool_use_meta": [
+     {
+      "id": "call_02_yrSBhgivP27zQSbJ7nno1374",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "e053c9fd-2fdb-4cbb-bc55-0f4b466bfc56",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_03_jzn0tOo8ZsOYiZL4mkXc2654",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "federated learning challenges methods future directions Li"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3579,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11904,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "770c9b97-9c70-4fbc-829a-f5b8f76eca6e",
+    "timestamp": "2026-10-31T11:48:05.422Z",
+    "tool_use_meta": [
+     {
+      "id": "call_03_jzn0tOo8ZsOYiZL4mkXc2654",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "e053c9fd-2fdb-4cbb-bc55-0f4b466bfc56",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_04_IEDF1uBLKO7FBt95CwwV9760",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "nnU-Net self-configuring method for deep learning-based biomedical image segmentation"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3579,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11904,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "40acf2ce-0230-4228-9fba-56d7ba78363e",
+    "timestamp": "2026-10-31T11:48:05.616Z",
+    "tool_use_meta": [
+     {
+      "id": "call_04_IEDF1uBLKO7FBt95CwwV9760",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_UXCQ5DHZ9VYVZsf8Cqpp9550",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Communication-Efficient Learning of Deep Networks from Decentralized Data McMahan\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Fateme Fotouhi, Aditya Balu, Zhanhong Jiang, Yasaman Esfandiari, Salman Jahani, Soumik Sarkar. Dominating Set Model Aggregation for communication-efficient decentralized deep learning. Neural Networks, 2024, 171: 25-39. DOI: 10.1016/j.neunet.2023.11.057\\n2. Chenxuan Zhou. Federated Learning for Ubiquitous Artificial Intelligence: Enhancing Deep Learning Models Through Decentralized Data Collaboration. 2025 5th International Conference on Neural Networks, Information and Communication Engineering (NNICE), 2025, 2016-2019. DOI: 10.1109/nnice64954.2025.11064439\\n3. Abdul Wahab Mamond, Majid Kundroo, Taehong Kim. Autoencoder-based decentralized federated learning for efficient communication. Computer Networks, 2025, 272: 111676. DOI: 10.1016/j.comnet.2025.111676\\n4. Eunjeong Jeong. Communication-efficient decentralized learning for intelligent networked systems. Agence Bibliographique de l'Enseignement Supérieur. DOI: 10.70675/bf617b44z43eaz4310zb1bdz5f5779d80456\\n5. Pan Zhou, Qian Lin, Dumitrel Loghin, Beng Chin Ooi, Yuncheng Wu, Hongfang Yu. Communication-efficient Decentralized Machine Learning over Heterogeneous Networks. 2021 IEEE 37th International Conference on Data Engineering (ICDE), 2021, 384-395. DOI: 10.1109/icde51399.2021.00040\\n6. Fateme Fotouhi, Aditya Balu, Zhanhong Jiang, Yasaman Esfandiari, Salman Jahani, Soumik Sarkar. Dominating Set Model Aggregation for Communication-Efficient Decentralized Deep Learning. Elsevier BV, 2023. DOI: 10.2139/ssrn.4431899\\n7. G. Subathra, A. Antonidoss, Bhupesh Kumar Singh. Decentralized Consensus Blockchain and IPFS-Based Data Aggregation for Efficient Data Storage Scheme. Security and Communication Networks, 2022, 2022: 1-13. DOI: 10.1155/2022/3167958\\n8. Jahanvi Dubey, Deepshikha Patel. Enhancing Security in IoT Networks by Applying Deep Learning Approaches for Accurate and Efficient Botnet Detection. 2025 International Conference on Data, Energy and Communication Networks (DECoN), 2025, 1-6. DOI: 10.1109/decon67170.2025.11447625\\n9. Luca Barbieri, Stefano Savazzi, Monica Nicoli. A Layer Selection Optimizer for Communication-Efficient Decentralized Federated Deep Learning. IEEE Access, 2023, 11: 22155-22173. DOI: 10.1109/access.2023.3251571\\n10. Vijayanand Selvaraj. Energy-Efficient Deep Learning Pipelines for Edge-Enabled Data Science Applications in IoT Networks. 2025 IEEE 9th International Conference on Information and Communication Technology (CICT), 2025, 1-6. DOI: 10.1109/cict67193.2025.11398896\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "b844fb33-2986-4051-b7ae-bfeb5e611053",
+    "timestamp": "2026-10-31T11:48:06.016Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Communication-Efficient Learning of Deep Networks from Decentralized Data McMahan\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Fateme Fotouhi, Aditya Balu, Zhanhong Jiang, Yasaman Esfandiari, Salman Jahani, Soumik Sarkar. Dominating Set Model Aggregation for communication-efficient decentralized deep learning. Neural Networks, 2024, 171: 25-39. DOI: 10.1016/j.neunet.2023.11.057\\n2. Chenxuan Zhou. Federated Learning for Ubiquitous Artificial Intelligence: Enhancing Deep Learning Models Through Decentralized Data Collaboration. 2025 5th International Conference on Neural Networks, Information and Communication Engineering (NNICE), 2025, 2016-2019. DOI: 10.1109/nnice64954.2025.11064439\\n3. Abdul Wahab Mamond, Majid Kundroo, Taehong Kim. Autoencoder-based decentralized federated learning for efficient communication. Computer Networks, 2025, 272: 111676. DOI: 10.1016/j.comnet.2025.111676\\n4. Eunjeong Jeong. Communication-efficient decentralized learning for intelligent networked systems. Agence Bibliographique de l'Enseignement Supérieur. DOI: 10.70675/bf617b44z43eaz4310zb1bdz5f5779d80456\\n5. Pan Zhou, Qian Lin, Dumitrel Loghin, Beng Chin Ooi, Yuncheng Wu, Hongfang Yu. Communication-efficient Decentralized Machine Learning over Heterogeneous Networks. 2021 IEEE 37th International Conference on Data Engineering (ICDE), 2021, 384-395. DOI: 10.1109/icde51399.2021.00040\\n6. Fateme Fotouhi, Aditya Balu, Zhanhong Jiang, Yasaman Esfandiari, Salman Jahani, Soumik Sarkar. Dominating Set Model Aggregation for Communication-Efficient Decentralized Deep Learning. Elsevier BV, 2023. DOI: 10.2139/ssrn.4431899\\n7. G. Subathra, A. Antonidoss, Bhupesh Kumar Singh. Decentralized Consensus Blockchain and IPFS-Based Data Aggregation for Efficient Data Storage Scheme. Security and Communication Networks, 2022, 2022: 1-13. DOI: 10.1155/2022/3167958\\n8. Jahanvi Dubey, Deepshikha Patel. Enhancing Security in IoT Networks by Applying Deep Learning Approaches for Accurate and Efficient Botnet Detection. 2025 International Conference on Data, Energy and Communication Networks (DECoN), 2025, 1-6. DOI: 10.1109/decon67170.2025.11447625\\n9. Luca Barbieri, Stefano Savazzi, Monica Nicoli. A Layer Selection Optimizer for Communication-Efficient Decentralized Federated Deep Learning. IEEE Access, 2023, 11: 22155-22173. DOI: 10.1109/access.2023.3251571\\n10. Vijayanand Selvaraj. Energy-Efficient Deep Learning Pipelines for Edge-Enabled Data Science Applications in IoT Networks. 2025 IEEE 9th International Conference on Information and Communication Technology (CICT), 2025, 1-6. DOI: 10.1109/cict67193.2025.11398896\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Communication-Efficient Learning of Deep Networks from Decentralized Data McMahan\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Fateme Fotouhi, Aditya Balu, Zhanhong Jiang, Yasaman Esfandiari, Salman Jahani, Soumik Sarkar. Dominating Set Model Aggregation for communication-efficient decentralized deep learning. Neural Networks, 2024, 171: 25-39. DOI: 10.1016/j.neunet.2023.11.057\n2. Chenxuan Zhou. Federated Learning for Ubiquitous Artificial Intelligence: Enhancing Deep Learning Models Through Decentralized Data Collaboration. 2025 5th International Conference on Neural Networks, Information and Communication Engineering (NNICE), 2025, 2016-2019. DOI: 10.1109/nnice64954.2025.11064439\n3. Abdul Wahab Mamond, Majid Kundroo, Taehong Kim. Autoencoder-based decentralized federated learning for efficient communication. Computer Networks, 2025, 272: 111676. DOI: 10.1016/j.comnet.2025.111676\n4. Eunjeong Jeong. Communication-efficient decentralized learning for intelligent networked systems. Agence Bibliographique de l'Enseignement Supérieur. DOI: 10.70675/bf617b44z43eaz4310zb1bdz5f5779d80456\n5. Pan Zhou, Qian Lin, Dumitrel Loghin, Beng Chin Ooi, Yuncheng Wu, Hongfang Yu. Communication-efficient Decentralized Machine Learning over Heterogeneous Networks. 2021 IEEE 37th International Conference on Data Engineering (ICDE), 2021, 384-395. DOI: 10.1109/icde51399.2021.00040\n6. Fateme Fotouhi, Aditya Balu, Zhanhong Jiang, Yasaman Esfandiari, Salman Jahani, Soumik Sarkar. Dominating Set Model Aggregation for Communication-Efficient Decentralized Deep Learning. Elsevier BV, 2023. DOI: 10.2139/ssrn.4431899\n7. G. Subathra, A. Antonidoss, Bhupesh Kumar Singh. Decentralized Consensus Blockchain and IPFS-Based Data Aggregation for Efficient Data Storage Scheme. Security and Communication Networks, 2022, 2022: 1-13. DOI: 10.1155/2022/3167958\n8. Jahanvi Dubey, Deepshikha Patel. Enhancing Security in IoT Networks by Applying Deep Learning Approaches for Accurate and Efficient Botnet Detection. 2025 International Conference on Data, Energy and Communication Networks (DECoN), 2025, 1-6. DOI: 10.1109/decon67170.2025.11447625\n9. Luca Barbieri, Stefano Savazzi, Monica Nicoli. A Layer Selection Optimizer for Communication-Efficient Decentralized Federated Deep Learning. IEEE Access, 2023, 11: 22155-22173. DOI: 10.1109/access.2023.3251571\n10. Vijayanand Selvaraj. Energy-Efficient Deep Learning Pipelines for Edge-Enabled Data Science Applications in IoT Networks. 2025 IEEE 9th International Conference on Information and Communication Technology (CICT), 2025, 1-6. DOI: 10.1109/cict67193.2025.11398896\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_UXCQ5DHZ9VYVZsf8Cqpp9550",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_01_wt8qCRforfClQfm0Uoib7352",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Federated learning in medicine facilitating multi-institutional collaborations without sharing patient data Sheller\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Micah J. Sheller, Brandon Edwards, G. Anthony Reina, Jason Martin, Sarthak Pati, Aikaterini Kotrotsou, Mikhail Milchenko, Weilin Xu, Daniel Marcus, Rivka R. Colen, Spyridon Bakas. Federated learning in medicine: facilitating multi-institutional collaborations without sharing patient data. Scientific Reports, 2020, 10(1). DOI: 10.1038/s41598-020-69250-1\\n2. Micah Sheller, Brandon Edwards, G Anthony Reina, Jason Martin, Spyridon Bakas. NIMG-68. FEDERATED LEARNING IN NEURO-ONCOLOGY FOR MULTI-INSTITUTIONAL COLLABORATIONS WITHOUT SHARING PATIENT DATA. Neuro-Oncology, 2019, 21(Supplement_6): vi176-vi177. DOI: 10.1093/neuonc/noz175.737\\n3. Olivier Elemento. Multi-Hospital Electronic Health Record Foundation Models Without Data Sharing: A Comparison of Federated Learning and Inference-Time Ensembling. openRxiv, 2026. DOI: 10.64898/2026.04.24.26351702\\n4. Simon Wagner, Stefan Brüggenwirth. Federated Learning for Radar Systems - Sharing Knowledge without sharing Data. 2024 International Radar Conference (RADAR), 2024, 1-5. DOI: 10.1109/radar58436.2024.10994111\\n5. Achmad Ginanjar, Xue Li, Priyanka Singh, Wen Hua. Learning from Tabular Data Silos without Data Sharing: A Contrastive Federated Learning Approach. Elsevier BV, 2025. DOI: 10.2139/ssrn.5799977\\n6. Vivekananda Reddy Chittireddy. Federated Learning Infrastructure for Privacy-Friendly Healthcare Analytics: Facilitating Multi-Institutional Clinical Research. European Modern Studies Journal, 2025, 9(5): 501-520. DOI: 10.59573/emsj.9(5).2025.46\\n7. Micah J. Sheller, G. Anthony Reina, Brandon Edwards, Jason Martin, Spyridon Bakas. Multi-institutional Deep Learning Modeling Without Sharing Patient Data: A Feasibility Study on Brain Tumor Segmentation. Lecture Notes in Computer Science, 2019, 92-104. DOI: 10.1007/978-3-030-11723-8_9\\n8. Amol Diwakar Agade, Samta Balpande. Federated Learning Approaches for Cross-Institutional Threat Detection Without Data Sharing Collaborative ML models for Financial Cybersecurity that Preserve Privacy. 2026 International Conference on Intelligent and Sustainable AI Systems (ICOSAAS), 2026, 1243-1249. DOI: 10.1109/icosaas68663.2026.11649224\\n9. Anja Campmans, Mina Alishahi, Vahideh Moghtadaiee. Learning Without Sharing: A Comparative Study of Federated Learning Models for Healthcare. Proceedings of the 22nd International Conference on Security and Cryptography, 2025, 735-740. DOI: 10.5220/0013635000003979\\n10. Zsolt Kovács, Katalin Szabo, Gabor Nagy. Federated Learning for Cross-Institutional Phytochemical Discovery: Collaborative Model Development Without Centralized Sensitive Data Sharing. International Journal of Pharmaceutical And Phytopharmacological Research, 2026, 16(3): 100-116. DOI: 10.51847/y0yunxq0gg\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "e5cf0a4f-5218-4c30-8b59-cbf79f221841",
+    "timestamp": "2026-10-31T11:48:06.643Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Federated learning in medicine facilitating multi-institutional collaborations without sharing patient data Sheller\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Micah J. Sheller, Brandon Edwards, G. Anthony Reina, Jason Martin, Sarthak Pati, Aikaterini Kotrotsou, Mikhail Milchenko, Weilin Xu, Daniel Marcus, Rivka R. Colen, Spyridon Bakas. Federated learning in medicine: facilitating multi-institutional collaborations without sharing patient data. Scientific Reports, 2020, 10(1). DOI: 10.1038/s41598-020-69250-1\\n2. Micah Sheller, Brandon Edwards, G Anthony Reina, Jason Martin, Spyridon Bakas. NIMG-68. FEDERATED LEARNING IN NEURO-ONCOLOGY FOR MULTI-INSTITUTIONAL COLLABORATIONS WITHOUT SHARING PATIENT DATA. Neuro-Oncology, 2019, 21(Supplement_6): vi176-vi177. DOI: 10.1093/neuonc/noz175.737\\n3. Olivier Elemento. Multi-Hospital Electronic Health Record Foundation Models Without Data Sharing: A Comparison of Federated Learning and Inference-Time Ensembling. openRxiv, 2026. DOI: 10.64898/2026.04.24.26351702\\n4. Simon Wagner, Stefan Brüggenwirth. Federated Learning for Radar Systems - Sharing Knowledge without sharing Data. 2024 International Radar Conference (RADAR), 2024, 1-5. DOI: 10.1109/radar58436.2024.10994111\\n5. Achmad Ginanjar, Xue Li, Priyanka Singh, Wen Hua. Learning from Tabular Data Silos without Data Sharing: A Contrastive Federated Learning Approach. Elsevier BV, 2025. DOI: 10.2139/ssrn.5799977\\n6. Vivekananda Reddy Chittireddy. Federated Learning Infrastructure for Privacy-Friendly Healthcare Analytics: Facilitating Multi-Institutional Clinical Research. European Modern Studies Journal, 2025, 9(5): 501-520. DOI: 10.59573/emsj.9(5).2025.46\\n7. Micah J. Sheller, G. Anthony Reina, Brandon Edwards, Jason Martin, Spyridon Bakas. Multi-institutional Deep Learning Modeling Without Sharing Patient Data: A Feasibility Study on Brain Tumor Segmentation. Lecture Notes in Computer Science, 2019, 92-104. DOI: 10.1007/978-3-030-11723-8_9\\n8. Amol Diwakar Agade, Samta Balpande. Federated Learning Approaches for Cross-Institutional Threat Detection Without Data Sharing Collaborative ML models for Financial Cybersecurity that Preserve Privacy. 2026 International Conference on Intelligent and Sustainable AI Systems (ICOSAAS), 2026, 1243-1249. DOI: 10.1109/icosaas68663.2026.11649224\\n9. Anja Campmans, Mina Alishahi, Vahideh Moghtadaiee. Learning Without Sharing: A Comparative Study of Federated Learning Models for Healthcare. Proceedings of the 22nd International Conference on Security and Cryptography, 2025, 735-740. DOI: 10.5220/0013635000003979\\n10. Zsolt Kovács, Katalin Szabo, Gabor Nagy. Federated Learning for Cross-Institutional Phytochemical Discovery: Collaborative Model Development Without Centralized Sensitive Data Sharing. International Journal of Pharmaceutical And Phytopharmacological Research, 2026, 16(3): 100-116. DOI: 10.51847/y0yunxq0gg\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Federated learning in medicine facilitating multi-institutional collaborations without sharing patient data Sheller\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Micah J. Sheller, Brandon Edwards, G. Anthony Reina, Jason Martin, Sarthak Pati, Aikaterini Kotrotsou, Mikhail Milchenko, Weilin Xu, Daniel Marcus, Rivka R. Colen, Spyridon Bakas. Federated learning in medicine: facilitating multi-institutional collaborations without sharing patient data. Scientific Reports, 2020, 10(1). DOI: 10.1038/s41598-020-69250-1\n2. Micah Sheller, Brandon Edwards, G Anthony Reina, Jason Martin, Spyridon Bakas. NIMG-68. FEDERATED LEARNING IN NEURO-ONCOLOGY FOR MULTI-INSTITUTIONAL COLLABORATIONS WITHOUT SHARING PATIENT DATA. Neuro-Oncology, 2019, 21(Supplement_6): vi176-vi177. DOI: 10.1093/neuonc/noz175.737\n3. Olivier Elemento. Multi-Hospital Electronic Health Record Foundation Models Without Data Sharing: A Comparison of Federated Learning and Inference-Time Ensembling. openRxiv, 2026. DOI: 10.64898/2026.04.24.26351702\n4. Simon Wagner, Stefan Brüggenwirth. Federated Learning for Radar Systems - Sharing Knowledge without sharing Data. 2024 International Radar Conference (RADAR), 2024, 1-5. DOI: 10.1109/radar58436.2024.10994111\n5. Achmad Ginanjar, Xue Li, Priyanka Singh, Wen Hua. Learning from Tabular Data Silos without Data Sharing: A Contrastive Federated Learning Approach. Elsevier BV, 2025. DOI: 10.2139/ssrn.5799977\n6. Vivekananda Reddy Chittireddy. Federated Learning Infrastructure for Privacy-Friendly Healthcare Analytics: Facilitating Multi-Institutional Clinical Research. European Modern Studies Journal, 2025, 9(5): 501-520. DOI: 10.59573/emsj.9(5).2025.46\n7. Micah J. Sheller, G. Anthony Reina, Brandon Edwards, Jason Martin, Spyridon Bakas. Multi-institutional Deep Learning Modeling Without Sharing Patient Data: A Feasibility Study on Brain Tumor Segmentation. Lecture Notes in Computer Science, 2019, 92-104. DOI: 10.1007/978-3-030-11723-8_9\n8. Amol Diwakar Agade, Samta Balpande. Federated Learning Approaches for Cross-Institutional Threat Detection Without Data Sharing Collaborative ML models for Financial Cybersecurity that Preserve Privacy. 2026 International Conference on Intelligent and Sustainable AI Systems (ICOSAAS), 2026, 1243-1249. DOI: 10.1109/icosaas68663.2026.11649224\n9. Anja Campmans, Mina Alishahi, Vahideh Moghtadaiee. Learning Without Sharing: A Comparative Study of Federated Learning Models for Healthcare. Proceedings of the 22nd International Conference on Security and Cryptography, 2025, 735-740. DOI: 10.5220/0013635000003979\n10. Zsolt Kovács, Katalin Szabo, Gabor Nagy. Federated Learning for Cross-Institutional Phytochemical Discovery: Collaborative Model Development Without Centralized Sensitive Data Sharing. International Journal of Pharmaceutical And Phytopharmacological Research, 2026, 16(3): 100-116. DOI: 10.51847/y0yunxq0gg\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_01_wt8qCRforfClQfm0Uoib7352",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_02_yrSBhgivP27zQSbJ7nno1374",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：privacy-preserving federated brain tumour segmentation MICCAI\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Nabeel R. Al-Milli. Federated Learning for Privacy-Preserving Brain Tumour Detection Using MRI and Convolutional Neural Networks (Preprint). JMIR Publications Inc., 2025. DOI: 10.2196/preprints.80757\\n2. Mohammad Aman Ullah Khan. Privacy-Preserving Federated Brain Tumor Segmentation using nnU-Net and Swin-UNETR across Multiple Institutions. Elsevier BV, 2025. DOI: 10.2139/ssrn.5922122\\n3. Nabeel R. Al-Milli. Federated Learning for Privacy-Preserving Brain Tumour Detection Using MRI and Convolutional Neural Networks (Preprint). JMIR AI, 2025. DOI: 10.2196/80757\\n4. Wenqi Li, Fausto Milletarì, Daguang Xu, Nicola Rieke, Jonny Hancox, Wentao Zhu, Maximilian Baust, Yan Cheng, Sébastien Ourselin, M. Jorge Cardoso, Andrew Feng. Privacy-Preserving Federated Brain Tumour Segmentation. Lecture Notes in Computer Science, 2019, 133-141. DOI: 10.1007/978-3-030-32692-0_16\\n5. Parth Bhatnagar, Manjit Sodhi, Gururaj H.L, Sanjeet Kaur. Fed-Brain: Privacy-Preserving Brain Tumour Classification Using Federated Learning. Proceedings of the 2025 8th International Conference on Information Science and Systems, 2025, 36-42. DOI: 10.1145/3803722.3803728\\n6. B. Sanjeev, G. Deepika, Sreedhar Kollem, Gangaiah Perugu, Chennaiah Kate, Pushpa Rani. Privacy preserving federated learning for brain tumor segmentation using multi institutional MRI data. Scientific Reports, 2026. DOI: 10.1038/s41598-026-69042-z\\n7. Md. Mahmodul Hasan, Mohammad Motiur Rahman. Privacy-preserving polyp segmentation using federated learning with differential privacy. Smart Health, 2025, 36: 100551. DOI: 10.1016/j.smhl.2025.100551\\n8. Anik Sen, Swee-Huay Heng, Shing-Chiang Tan. Privacy-Preserving Federated Learning for MRI-Based Brain Tumour Detection Using Xception CNN. 2026 International Conference on Advances in Artificial Intelligence and Machine Learning (AAIML), 2026, 124-129. DOI: 10.1109/aaiml67890.2026.11498205\\n9. Gowtham Vinjamuri, Suvendu Chandan Nayak, Rekha Sahu, Raj Mani Shukla, Tapadhir Das. Decentralized Privacy-Preserving Federated Learning for Ultrasonic Nerve Image Segmentation. Institute of Electrical and Electronics Engineers (IEEE), 2024. DOI: 10.36227/techrxiv.171625903.35448876/v1\\n10. Andrea Protani, Riccardo Taiello, Marc Van Den Bosch, Luigi Serio. Federated Transformer-GNN for Privacy-Preserving Brain Tumor Localization with Modality-Level Explainability. Proceedings of the 19th International Joint Conference on Biomedical Engineering Systems and Technologies, 2026, 820-828. DOI: 10.5220/0014706700004070\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "9151d00b-046a-488b-a93f-4cbf8784f75d",
+    "timestamp": "2026-10-31T11:48:07.444Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：privacy-preserving federated brain tumour segmentation MICCAI\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Nabeel R. Al-Milli. Federated Learning for Privacy-Preserving Brain Tumour Detection Using MRI and Convolutional Neural Networks (Preprint). JMIR Publications Inc., 2025. DOI: 10.2196/preprints.80757\\n2. Mohammad Aman Ullah Khan. Privacy-Preserving Federated Brain Tumor Segmentation using nnU-Net and Swin-UNETR across Multiple Institutions. Elsevier BV, 2025. DOI: 10.2139/ssrn.5922122\\n3. Nabeel R. Al-Milli. Federated Learning for Privacy-Preserving Brain Tumour Detection Using MRI and Convolutional Neural Networks (Preprint). JMIR AI, 2025. DOI: 10.2196/80757\\n4. Wenqi Li, Fausto Milletarì, Daguang Xu, Nicola Rieke, Jonny Hancox, Wentao Zhu, Maximilian Baust, Yan Cheng, Sébastien Ourselin, M. Jorge Cardoso, Andrew Feng. Privacy-Preserving Federated Brain Tumour Segmentation. Lecture Notes in Computer Science, 2019, 133-141. DOI: 10.1007/978-3-030-32692-0_16\\n5. Parth Bhatnagar, Manjit Sodhi, Gururaj H.L, Sanjeet Kaur. Fed-Brain: Privacy-Preserving Brain Tumour Classification Using Federated Learning. Proceedings of the 2025 8th International Conference on Information Science and Systems, 2025, 36-42. DOI: 10.1145/3803722.3803728\\n6. B. Sanjeev, G. Deepika, Sreedhar Kollem, Gangaiah Perugu, Chennaiah Kate, Pushpa Rani. Privacy preserving federated learning for brain tumor segmentation using multi institutional MRI data. Scientific Reports, 2026. DOI: 10.1038/s41598-026-69042-z\\n7. Md. Mahmodul Hasan, Mohammad Motiur Rahman. Privacy-preserving polyp segmentation using federated learning with differential privacy. Smart Health, 2025, 36: 100551. DOI: 10.1016/j.smhl.2025.100551\\n8. Anik Sen, Swee-Huay Heng, Shing-Chiang Tan. Privacy-Preserving Federated Learning for MRI-Based Brain Tumour Detection Using Xception CNN. 2026 International Conference on Advances in Artificial Intelligence and Machine Learning (AAIML), 2026, 124-129. DOI: 10.1109/aaiml67890.2026.11498205\\n9. Gowtham Vinjamuri, Suvendu Chandan Nayak, Rekha Sahu, Raj Mani Shukla, Tapadhir Das. Decentralized Privacy-Preserving Federated Learning for Ultrasonic Nerve Image Segmentation. Institute of Electrical and Electronics Engineers (IEEE), 2024. DOI: 10.36227/techrxiv.171625903.35448876/v1\\n10. Andrea Protani, Riccardo Taiello, Marc Van Den Bosch, Luigi Serio. Federated Transformer-GNN for Privacy-Preserving Brain Tumor Localization with Modality-Level Explainability. Proceedings of the 19th International Joint Conference on Biomedical Engineering Systems and Technologies, 2026, 820-828. DOI: 10.5220/0014706700004070\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：privacy-preserving federated brain tumour segmentation MICCAI\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Nabeel R. Al-Milli. Federated Learning for Privacy-Preserving Brain Tumour Detection Using MRI and Convolutional Neural Networks (Preprint). JMIR Publications Inc., 2025. DOI: 10.2196/preprints.80757\n2. Mohammad Aman Ullah Khan. Privacy-Preserving Federated Brain Tumor Segmentation using nnU-Net and Swin-UNETR across Multiple Institutions. Elsevier BV, 2025. DOI: 10.2139/ssrn.5922122\n3. Nabeel R. Al-Milli. Federated Learning for Privacy-Preserving Brain Tumour Detection Using MRI and Convolutional Neural Networks (Preprint). JMIR AI, 2025. DOI: 10.2196/80757\n4. Wenqi Li, Fausto Milletarì, Daguang Xu, Nicola Rieke, Jonny Hancox, Wentao Zhu, Maximilian Baust, Yan Cheng, Sébastien Ourselin, M. Jorge Cardoso, Andrew Feng. Privacy-Preserving Federated Brain Tumour Segmentation. Lecture Notes in Computer Science, 2019, 133-141. DOI: 10.1007/978-3-030-32692-0_16\n5. Parth Bhatnagar, Manjit Sodhi, Gururaj H.L, Sanjeet Kaur. Fed-Brain: Privacy-Preserving Brain Tumour Classification Using Federated Learning. Proceedings of the 2025 8th International Conference on Information Science and Systems, 2025, 36-42. DOI: 10.1145/3803722.3803728\n6. B. Sanjeev, G. Deepika, Sreedhar Kollem, Gangaiah Perugu, Chennaiah Kate, Pushpa Rani. Privacy preserving federated learning for brain tumor segmentation using multi institutional MRI data. Scientific Reports, 2026. DOI: 10.1038/s41598-026-69042-z\n7. Md. Mahmodul Hasan, Mohammad Motiur Rahman. Privacy-preserving polyp segmentation using federated learning with differential privacy. Smart Health, 2025, 36: 100551. DOI: 10.1016/j.smhl.2025.100551\n8. Anik Sen, Swee-Huay Heng, Shing-Chiang Tan. Privacy-Preserving Federated Learning for MRI-Based Brain Tumour Detection Using Xception CNN. 2026 International Conference on Advances in Artificial Intelligence and Machine Learning (AAIML), 2026, 124-129. DOI: 10.1109/aaiml67890.2026.11498205\n9. Gowtham Vinjamuri, Suvendu Chandan Nayak, Rekha Sahu, Raj Mani Shukla, Tapadhir Das. Decentralized Privacy-Preserving Federated Learning for Ultrasonic Nerve Image Segmentation. Institute of Electrical and Electronics Engineers (IEEE), 2024. DOI: 10.36227/techrxiv.171625903.35448876/v1\n10. Andrea Protani, Riccardo Taiello, Marc Van Den Bosch, Luigi Serio. Federated Transformer-GNN for Privacy-Preserving Brain Tumor Localization with Modality-Level Explainability. Proceedings of the 19th International Joint Conference on Biomedical Engineering Systems and Technologies, 2026, 820-828. DOI: 10.5220/0014706700004070\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_02_yrSBhgivP27zQSbJ7nno1374",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_03_jzn0tOo8ZsOYiZL4mkXc2654",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：federated learning challenges methods future directions Li\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Yamini Kannan. Federated Learning in Cybersecurity: Applications, Challenges, and Future Directions. International Journal of Science and Research (IJSR), 2024, 13(7): 617-622. DOI: 10.21275/mr24706174710\\n2. Arwa Badhib, Suhair Alshehri, Asma Cherif. IoT Authentication in Federated Learning: Methods, Challenges, and Future Directions. Sensors, 2025, 25(24): 7619. DOI: 10.3390/s25247619\\n3. Shaveta x. Federated Learning in Edge Computing Environments: Opportunities, Challenges, and Future Directions. International Journal of Science and Research (IJSR), 2024, 13(9): 275-278. DOI: 10.21275/es24903163414\\n4. A. Shubha, A. Kanagaraj. Federated Learning Applications, Challenges & Future Directions – A review. Elsevier BV, 2026. DOI: 10.2139/ssrn.6498116\\n5. Tian Li, Anit Kumar Sahu, Ameet Talwalkar, Virginia Smith. Federated Learning: Challenges, Methods, and Future Directions. IEEE Signal Processing Magazine, 2020, 37(3): 50-60. DOI: 10.1109/msp.2020.2975749\\n6. Rimsha Saeed, Hassaan  Khaliq Qureshi, Junaid Qadir, Syed  Ali Haider. Federated Learning for Cyber Threat Intelligence: A Comprehensive Survey of Methods, Challenges, and Future Directions. Elsevier BV, 2026. DOI: 10.2139/ssrn.7207445\\n7. Pushpa Singh, Murari Kumar Singh, Rajnesh Singh, Narendra Singh. Federated Learning: Challenges, Methods, and Future Directions. EAI/Springer Innovations in Communication and Computing, 2022, 199-214. DOI: 10.1007/978-3-030-85559-8_13\\n8. Xiaoying Yang. Federated Learning-Based Face Recognition: Methods, Challenges and Future Prospects. Proceedings of the 1st International Conference on Engineering Management, Information Technology and Intelligence, 2024, 569-573. DOI: 10.5220/0012959400004508\\n9. Yi Liu, Xingliang Yuan, Zehui Xiong, Jiawen Kang, Xiaofei Wang, Dusit Niyato. Federated learning for 6G communications: Challenges, methods, and future directions. China Communications, 2020, 17(9): 105-118. DOI: 10.23919/jcc.2020.09.009\\n10. Lina Ge, Haiao Li, Xiao Wang, Zhe Wang. A review of secure federated learning: Privacy leakage threats, protection technologies, challenges and future directions. Neurocomputing, 2023, 561: 126897. DOI: 10.1016/j.neucom.2023.126897\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "57f7b22b-a168-4b82-aa67-92bbf138ec5a",
+    "timestamp": "2026-10-31T11:48:08.744Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：federated learning challenges methods future directions Li\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Yamini Kannan. Federated Learning in Cybersecurity: Applications, Challenges, and Future Directions. International Journal of Science and Research (IJSR), 2024, 13(7): 617-622. DOI: 10.21275/mr24706174710\\n2. Arwa Badhib, Suhair Alshehri, Asma Cherif. IoT Authentication in Federated Learning: Methods, Challenges, and Future Directions. Sensors, 2025, 25(24): 7619. DOI: 10.3390/s25247619\\n3. Shaveta x. Federated Learning in Edge Computing Environments: Opportunities, Challenges, and Future Directions. International Journal of Science and Research (IJSR), 2024, 13(9): 275-278. DOI: 10.21275/es24903163414\\n4. A. Shubha, A. Kanagaraj. Federated Learning Applications, Challenges & Future Directions – A review. Elsevier BV, 2026. DOI: 10.2139/ssrn.6498116\\n5. Tian Li, Anit Kumar Sahu, Ameet Talwalkar, Virginia Smith. Federated Learning: Challenges, Methods, and Future Directions. IEEE Signal Processing Magazine, 2020, 37(3): 50-60. DOI: 10.1109/msp.2020.2975749\\n6. Rimsha Saeed, Hassaan  Khaliq Qureshi, Junaid Qadir, Syed  Ali Haider. Federated Learning for Cyber Threat Intelligence: A Comprehensive Survey of Methods, Challenges, and Future Directions. Elsevier BV, 2026. DOI: 10.2139/ssrn.7207445\\n7. Pushpa Singh, Murari Kumar Singh, Rajnesh Singh, Narendra Singh. Federated Learning: Challenges, Methods, and Future Directions. EAI/Springer Innovations in Communication and Computing, 2022, 199-214. DOI: 10.1007/978-3-030-85559-8_13\\n8. Xiaoying Yang. Federated Learning-Based Face Recognition: Methods, Challenges and Future Prospects. Proceedings of the 1st International Conference on Engineering Management, Information Technology and Intelligence, 2024, 569-573. DOI: 10.5220/0012959400004508\\n9. Yi Liu, Xingliang Yuan, Zehui Xiong, Jiawen Kang, Xiaofei Wang, Dusit Niyato. Federated learning for 6G communications: Challenges, methods, and future directions. China Communications, 2020, 17(9): 105-118. DOI: 10.23919/jcc.2020.09.009\\n10. Lina Ge, Haiao Li, Xiao Wang, Zhe Wang. A review of secure federated learning: Privacy leakage threats, protection technologies, challenges and future directions. Neurocomputing, 2023, 561: 126897. DOI: 10.1016/j.neucom.2023.126897\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：federated learning challenges methods future directions Li\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Yamini Kannan. Federated Learning in Cybersecurity: Applications, Challenges, and Future Directions. International Journal of Science and Research (IJSR), 2024, 13(7): 617-622. DOI: 10.21275/mr24706174710\n2. Arwa Badhib, Suhair Alshehri, Asma Cherif. IoT Authentication in Federated Learning: Methods, Challenges, and Future Directions. Sensors, 2025, 25(24): 7619. DOI: 10.3390/s25247619\n3. Shaveta x. Federated Learning in Edge Computing Environments: Opportunities, Challenges, and Future Directions. International Journal of Science and Research (IJSR), 2024, 13(9): 275-278. DOI: 10.21275/es24903163414\n4. A. Shubha, A. Kanagaraj. Federated Learning Applications, Challenges & Future Directions – A review. Elsevier BV, 2026. DOI: 10.2139/ssrn.6498116\n5. Tian Li, Anit Kumar Sahu, Ameet Talwalkar, Virginia Smith. Federated Learning: Challenges, Methods, and Future Directions. IEEE Signal Processing Magazine, 2020, 37(3): 50-60. DOI: 10.1109/msp.2020.2975749\n6. Rimsha Saeed, Hassaan  Khaliq Qureshi, Junaid Qadir, Syed  Ali Haider. Federated Learning for Cyber Threat Intelligence: A Comprehensive Survey of Methods, Challenges, and Future Directions. Elsevier BV, 2026. DOI: 10.2139/ssrn.7207445\n7. Pushpa Singh, Murari Kumar Singh, Rajnesh Singh, Narendra Singh. Federated Learning: Challenges, Methods, and Future Directions. EAI/Springer Innovations in Communication and Computing, 2022, 199-214. DOI: 10.1007/978-3-030-85559-8_13\n8. Xiaoying Yang. Federated Learning-Based Face Recognition: Methods, Challenges and Future Prospects. Proceedings of the 1st International Conference on Engineering Management, Information Technology and Intelligence, 2024, 569-573. DOI: 10.5220/0012959400004508\n9. Yi Liu, Xingliang Yuan, Zehui Xiong, Jiawen Kang, Xiaofei Wang, Dusit Niyato. Federated learning for 6G communications: Challenges, methods, and future directions. China Communications, 2020, 17(9): 105-118. DOI: 10.23919/jcc.2020.09.009\n10. Lina Ge, Haiao Li, Xiao Wang, Zhe Wang. A review of secure federated learning: Privacy leakage threats, protection technologies, challenges and future directions. Neurocomputing, 2023, 561: 126897. DOI: 10.1016/j.neucom.2023.126897\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_03_jzn0tOo8ZsOYiZL4mkXc2654",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_04_IEDF1uBLKO7FBt95CwwV9760",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：nnU-Net self-configuring method for deep learning-based biomedical image segmentation\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Fabian Isensee, Paul F. Jaeger, Simon A. A. Kohl, Jens Petersen, Klaus H. Maier-Hein. nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 2020, 18(2): 203-211. DOI: 10.1038/s41592-020-01008-z\\n2. Yangsean Choi, Jooin Bang, Sang-Yeon Kim, Minkook Seo, Jinhee Jang. Deep learning–based multimodal segmentation of oropharyngeal squamous cell carcinoma on CT and MRI using self-configuring nnU-Net. European Radiology, 2024, 34(8): 5389-5400. DOI: 10.1007/s00330-024-10585-y\\n3. Kabir Bagai, Alexander Song, Melanie Leguizamon, Abigail Dubois, Colin McKnight, Ciaran Considine, Paula Trujillo, Daniel Claassen, Manus Donahue, Kilian Hett. Multi-contrast deep-learning segmentation of the choroid plexus using self-configuring nnU-Net. ISMRM Annual Meeting. DOI: 10.58530/2025/4305\\n4. Jingyi Wu. Enhancing NnU-Net for Improved Medical Image Segmentation: A Comparative Study with TotalSegmentator. Proceedings of the 2nd International Conference on Data Analysis and Machine Learning, 2024, 246-251. DOI: 10.5220/0013515100004619\\n5. Guorong Wang, Bingbing Yang, Xiaoxia Qu, Jian Guo, Yongheng Luo, Xiaoquan Xu, Feiyun Wu, Xiaoxue Fan, Yang Hou, Song Tian, Sicong Huang, Junfang Xian. Fully automated segmentation and volumetric measurement of ocular adnexal lymphoma by deep learning-based self-configuring nnU-net on multi-sequence MRI: a multi-center study. Neuroradiology, 2024, 66(10): 1781-1791. DOI: 10.1007/s00234-024-03429-5\\n6. Guorong Wang, Bingbing Yang, Xiaoxia Qu, Jian Guo, Yongheng Luo, Xiaoquan Xu, Feiyun Wu, Xiaoxue Fan, Yang Hou, Song Tian, Sicong Huang, Junfang Xian. Correction to: Fully automated segmentation and volumetric measurement of ocular adnexal lymphoma by deep learning-based self-configuring nnU-net on multi-sequence MRI: a multi-center study. Neuroradiology, 2024, 66(10): 1793-1793. DOI: 10.1007/s00234-024-03437-5\\n7. Kamalpreet Kaur, Renu Dhir. Deep learning based hybrid ghost-net for metaspread chromosome image segmentation. Biomedical Signal Processing and Control, 2024, 95: 106298. DOI: 10.1016/j.bspc.2024.106298\\n8. Gang Lin. Segmentation of Cardiac MRI Images Based on nnU-Net. 2023 Asia-Pacific Conference on Image Processing, Electronics and Computers (IPEC), 2023, 103-110. DOI: 10.1109/ipec57296.2023.00026\\n9. Jiahua Zhu, Ziteng Liu, Wenpeng Gao, Yili Fu. CotepRes-Net: An efficient U-Net based deep learning method of liver segmentation from Computed Tomography images. Biomedical Signal Processing and Control, 2024, 88: 105660. DOI: 10.1016/j.bspc.2023.105660\\n10. Amirmohammad Soltaninejad, Daryoush Shahbazi-Gahrouei, Mahdie Soltaninejad, Amir Khorasani, Simin Hemati. Clinical Reliability and Failure-Risk Analysis of Deep Learning– Based Postoperative Glioblastoma Segmentation for Radiotherapy: A Multi-Metric Evaluation Using nnU-Net. Springer Science and Business Media LLC, 2026. DOI: 10.21203/rs.3.rs-10245900/v1\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "d774365d-04d5-4c56-b4f1-99edd6b1ea9a",
+    "timestamp": "2026-10-31T11:48:10.726Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：nnU-Net self-configuring method for deep learning-based biomedical image segmentation\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Fabian Isensee, Paul F. Jaeger, Simon A. A. Kohl, Jens Petersen, Klaus H. Maier-Hein. nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 2020, 18(2): 203-211. DOI: 10.1038/s41592-020-01008-z\\n2. Yangsean Choi, Jooin Bang, Sang-Yeon Kim, Minkook Seo, Jinhee Jang. Deep learning–based multimodal segmentation of oropharyngeal squamous cell carcinoma on CT and MRI using self-configuring nnU-Net. European Radiology, 2024, 34(8): 5389-5400. DOI: 10.1007/s00330-024-10585-y\\n3. Kabir Bagai, Alexander Song, Melanie Leguizamon, Abigail Dubois, Colin McKnight, Ciaran Considine, Paula Trujillo, Daniel Claassen, Manus Donahue, Kilian Hett. Multi-contrast deep-learning segmentation of the choroid plexus using self-configuring nnU-Net. ISMRM Annual Meeting. DOI: 10.58530/2025/4305\\n4. Jingyi Wu. Enhancing NnU-Net for Improved Medical Image Segmentation: A Comparative Study with TotalSegmentator. Proceedings of the 2nd International Conference on Data Analysis and Machine Learning, 2024, 246-251. DOI: 10.5220/0013515100004619\\n5. Guorong Wang, Bingbing Yang, Xiaoxia Qu, Jian Guo, Yongheng Luo, Xiaoquan Xu, Feiyun Wu, Xiaoxue Fan, Yang Hou, Song Tian, Sicong Huang, Junfang Xian. Fully automated segmentation and volumetric measurement of ocular adnexal lymphoma by deep learning-based self-configuring nnU-net on multi-sequence MRI: a multi-center study. Neuroradiology, 2024, 66(10): 1781-1791. DOI: 10.1007/s00234-024-03429-5\\n6. Guorong Wang, Bingbing Yang, Xiaoxia Qu, Jian Guo, Yongheng Luo, Xiaoquan Xu, Feiyun Wu, Xiaoxue Fan, Yang Hou, Song Tian, Sicong Huang, Junfang Xian. Correction to: Fully automated segmentation and volumetric measurement of ocular adnexal lymphoma by deep learning-based self-configuring nnU-net on multi-sequence MRI: a multi-center study. Neuroradiology, 2024, 66(10): 1793-1793. DOI: 10.1007/s00234-024-03437-5\\n7. Kamalpreet Kaur, Renu Dhir. Deep learning based hybrid ghost-net for metaspread chromosome image segmentation. Biomedical Signal Processing and Control, 2024, 95: 106298. DOI: 10.1016/j.bspc.2024.106298\\n8. Gang Lin. Segmentation of Cardiac MRI Images Based on nnU-Net. 2023 Asia-Pacific Conference on Image Processing, Electronics and Computers (IPEC), 2023, 103-110. DOI: 10.1109/ipec57296.2023.00026\\n9. Jiahua Zhu, Ziteng Liu, Wenpeng Gao, Yili Fu. CotepRes-Net: An efficient U-Net based deep learning method of liver segmentation from Computed Tomography images. Biomedical Signal Processing and Control, 2024, 88: 105660. DOI: 10.1016/j.bspc.2023.105660\\n10. Amirmohammad Soltaninejad, Daryoush Shahbazi-Gahrouei, Mahdie Soltaninejad, Amir Khorasani, Simin Hemati. Clinical Reliability and Failure-Risk Analysis of Deep Learning– Based Postoperative Glioblastoma Segmentation for Radiotherapy: A Multi-Metric Evaluation Using nnU-Net. Springer Science and Business Media LLC, 2026. DOI: 10.21203/rs.3.rs-10245900/v1\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：nnU-Net self-configuring method for deep learning-based biomedical image segmentation\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Fabian Isensee, Paul F. Jaeger, Simon A. A. Kohl, Jens Petersen, Klaus H. Maier-Hein. nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 2020, 18(2): 203-211. DOI: 10.1038/s41592-020-01008-z\n2. Yangsean Choi, Jooin Bang, Sang-Yeon Kim, Minkook Seo, Jinhee Jang. Deep learning–based multimodal segmentation of oropharyngeal squamous cell carcinoma on CT and MRI using self-configuring nnU-Net. European Radiology, 2024, 34(8): 5389-5400. DOI: 10.1007/s00330-024-10585-y\n3. Kabir Bagai, Alexander Song, Melanie Leguizamon, Abigail Dubois, Colin McKnight, Ciaran Considine, Paula Trujillo, Daniel Claassen, Manus Donahue, Kilian Hett. Multi-contrast deep-learning segmentation of the choroid plexus using self-configuring nnU-Net. ISMRM Annual Meeting. DOI: 10.58530/2025/4305\n4. Jingyi Wu. Enhancing NnU-Net for Improved Medical Image Segmentation: A Comparative Study with TotalSegmentator. Proceedings of the 2nd International Conference on Data Analysis and Machine Learning, 2024, 246-251. DOI: 10.5220/0013515100004619\n5. Guorong Wang, Bingbing Yang, Xiaoxia Qu, Jian Guo, Yongheng Luo, Xiaoquan Xu, Feiyun Wu, Xiaoxue Fan, Yang Hou, Song Tian, Sicong Huang, Junfang Xian. Fully automated segmentation and volumetric measurement of ocular adnexal lymphoma by deep learning-based self-configuring nnU-net on multi-sequence MRI: a multi-center study. Neuroradiology, 2024, 66(10): 1781-1791. DOI: 10.1007/s00234-024-03429-5\n6. Guorong Wang, Bingbing Yang, Xiaoxia Qu, Jian Guo, Yongheng Luo, Xiaoquan Xu, Feiyun Wu, Xiaoxue Fan, Yang Hou, Song Tian, Sicong Huang, Junfang Xian. Correction to: Fully automated segmentation and volumetric measurement of ocular adnexal lymphoma by deep learning-based self-configuring nnU-net on multi-sequence MRI: a multi-center study. Neuroradiology, 2024, 66(10): 1793-1793. DOI: 10.1007/s00234-024-03437-5\n7. Kamalpreet Kaur, Renu Dhir. Deep learning based hybrid ghost-net for metaspread chromosome image segmentation. Biomedical Signal Processing and Control, 2024, 95: 106298. DOI: 10.1016/j.bspc.2024.106298\n8. Gang Lin. Segmentation of Cardiac MRI Images Based on nnU-Net. 2023 Asia-Pacific Conference on Image Processing, Electronics and Computers (IPEC), 2023, 103-110. DOI: 10.1109/ipec57296.2023.00026\n9. Jiahua Zhu, Ziteng Liu, Wenpeng Gao, Yili Fu. CotepRes-Net: An efficient U-Net based deep learning method of liver segmentation from Computed Tomography images. Biomedical Signal Processing and Control, 2024, 88: 105660. DOI: 10.1016/j.bspc.2023.105660\n10. Amirmohammad Soltaninejad, Daryoush Shahbazi-Gahrouei, Mahdie Soltaninejad, Amir Khorasani, Simin Hemati. Clinical Reliability and Failure-Risk Analysis of Deep Learning– Based Postoperative Glioblastoma Segmentation for Radiotherapy: A Multi-Metric Evaluation Using nnU-Net. Springer Science and Business Media LLC, 2026. DOI: 10.21203/rs.3.rs-10245900/v1\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_04_IEDF1uBLKO7FBt95CwwV9760",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "ccccd211-0f0d-4b26-9bc2-89fa4d8eb3ed",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "The search for McMahan didn't find it (Crossref). I could still include it if I verify it. Let me search other canonical works. Also need \"Federated learning for predicting clinical outcomes in patients with COVID-19\" (Dayan 2021, Nature Medicine), \"The future of digital health with federated learning\" (Rieke 2020 npj Digital Medicine), \"Advances and Open Problems in Federated Learning\" (Kairouz), and maybe \"Federated learning: a privacy-preserving approach...\" Also \"FedDG: Federated domain generalization\", \"Federated semi-supervised learning\". Also \"Personalized federated learning\".\n\nLet me also find a reference on heterogeneity / non-IID, and one on differential privacy. And maybe manthe benchmark already found (good — Medical Image Analysis 2024, 97:103270).\n\nLet me search these in parallel.",
+       "signature": "ccccd211-0f0d-4b26-9bc2-89fa4d8eb3ed"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 4218,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16000,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "af2fb418-6e72-4c8d-9daa-825963dc8d61",
+    "timestamp": "2026-10-31T11:48:13.101Z",
+    "thinking_duration_ms": 1780,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "ccccd211-0f0d-4b26-9bc2-89fa4d8eb3ed",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_vnUaoqBZEkLEel17ZI6t6849",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 8,
+        "query": "Federated learning for predicting clinical outcomes in patients with COVID-19 Dayan Nature Medicine"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 4218,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16000,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "33e8d0c1-0cd2-4a31-9e2a-7ffa0d044386",
+    "timestamp": "2026-10-31T11:48:13.309Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_vnUaoqBZEkLEel17ZI6t6849",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "ccccd211-0f0d-4b26-9bc2-89fa4d8eb3ed",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_01_UedxeTa2xytj7JLmQDyr7261",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 8,
+        "query": "The future of digital health with federated learning Rieke npj Digital Medicine"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 4218,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16000,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "11e6e0e9-0942-4ded-a8cd-77b34f3bd151",
+    "timestamp": "2026-10-31T11:48:13.501Z",
+    "tool_use_meta": [
+     {
+      "id": "call_01_UedxeTa2xytj7JLmQDyr7261",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "ccccd211-0f0d-4b26-9bc2-89fa4d8eb3ed",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_02_RnrghLnWsbInZCE727nK4680",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 8,
+        "query": "Advances and open problems in federated learning Kairouz"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 4218,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16000,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "1ac8994f-a503-46ee-acdf-c4ae52a24a98",
+    "timestamp": "2026-10-31T11:48:13.697Z",
+    "tool_use_meta": [
+     {
+      "id": "call_02_RnrghLnWsbInZCE727nK4680",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "ccccd211-0f0d-4b26-9bc2-89fa4d8eb3ed",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_03_qip6QEOjld4BGyCkvDNQ2639",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "federated learning domain generalization segmentation FedDG"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 4218,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16000,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "6742fa6e-bd7c-427a-9c9d-0b329440c3b9",
+    "timestamp": "2026-10-31T11:48:13.891Z",
+    "tool_use_meta": [
+     {
+      "id": "call_03_qip6QEOjld4BGyCkvDNQ2639",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "ccccd211-0f0d-4b26-9bc2-89fa4d8eb3ed",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_04_bAPF6W91jMhtvlF7NIJP1133",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 10,
+        "query": "federated semi-supervised learning medical image segmentation"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 4218,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16000,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "8b18ceab-c2a2-4fdc-8d76-0b12b7166a0e",
+    "timestamp": "2026-10-31T11:48:14.031Z",
+    "tool_use_meta": [
+     {
+      "id": "call_04_bAPF6W91jMhtvlF7NIJP1133",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_vnUaoqBZEkLEel17ZI6t6849",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Federated learning for predicting clinical outcomes in patients with COVID-19 Dayan Nature Medicine\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Arturas Ziemys. Predicting clinical outcomes and hospitalization stay of hospitalized COVID-19 patients by using Deep Learning methods. openRxiv, 2022. DOI: 10.1101/2022.01.28.22270040\\n2. Riccardo Giorgino, Filippo Migliorini. Clinical Features of COVID-19 in Elderly Patients: Tools for Predicting Outcomes Are Needed. Journal of Clinical Medicine, 2022, 11(24): 7505. DOI: 10.3390/jcm11247505\\n3. Patrick Smeele. Neurofilament light in predicting clinical outcomes in critically Ill COVID-19 patients.. Acute critical care, 2023, PA2296. DOI: 10.1183/13993003.congress-2023.pa2296\\n4. Kaida Cai, Zhengyan Wang, Xiaofang Yang, Wenzhi Fu, Xin Zhao. Predicting Clinical Outcomes in COVID-19 and Pneumonia Patients: A Machine Learning Approach. Viruses, 2024, 16(10): 1624. DOI: 10.3390/v16101624\\n5. Xavier Corbella. Predicting adverse outcomes in patients with COVID-19: just an epidemiological debate or a valuable clinical approach?. European Journal of Internal Medicine, 2021, 94: 22-24. DOI: 10.1016/j.ejim.2021.10.019\\n6. A.C. Canto, P. Molina, I. Aguilar, D. Patron, J. Varon. The Prognostic Value of PaO2/FiO2 Ratio in Predicting Clinical Outcomes in COVID-19 Patients. B40. COVID-19 EPIDEMIOLOGY IN 2024, 2024, A3487-A3487. DOI: 10.1164/ajrccm-conference.2024.209.1_meetingabstracts.a3487\\n7. Máté Rottler. Improving clinical outcomes in critically ill COVID-19 patients. University of Szeged. DOI: 10.14232/phd.12666\\n8. Jennifer Abbasi. Predicting COVID-19 Outcomes in Emergency Department Patients. JAMA, 2021, 325(6): 522. DOI: 10.1001/jama.2021.0227\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "e0688048-8092-4969-831b-5d72179aa93a",
+    "timestamp": "2026-10-31T11:48:14.067Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Federated learning for predicting clinical outcomes in patients with COVID-19 Dayan Nature Medicine\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Arturas Ziemys. Predicting clinical outcomes and hospitalization stay of hospitalized COVID-19 patients by using Deep Learning methods. openRxiv, 2022. DOI: 10.1101/2022.01.28.22270040\\n2. Riccardo Giorgino, Filippo Migliorini. Clinical Features of COVID-19 in Elderly Patients: Tools for Predicting Outcomes Are Needed. Journal of Clinical Medicine, 2022, 11(24): 7505. DOI: 10.3390/jcm11247505\\n3. Patrick Smeele. Neurofilament light in predicting clinical outcomes in critically Ill COVID-19 patients.. Acute critical care, 2023, PA2296. DOI: 10.1183/13993003.congress-2023.pa2296\\n4. Kaida Cai, Zhengyan Wang, Xiaofang Yang, Wenzhi Fu, Xin Zhao. Predicting Clinical Outcomes in COVID-19 and Pneumonia Patients: A Machine Learning Approach. Viruses, 2024, 16(10): 1624. DOI: 10.3390/v16101624\\n5. Xavier Corbella. Predicting adverse outcomes in patients with COVID-19: just an epidemiological debate or a valuable clinical approach?. European Journal of Internal Medicine, 2021, 94: 22-24. DOI: 10.1016/j.ejim.2021.10.019\\n6. A.C. Canto, P. Molina, I. Aguilar, D. Patron, J. Varon. The Prognostic Value of PaO2/FiO2 Ratio in Predicting Clinical Outcomes in COVID-19 Patients. B40. COVID-19 EPIDEMIOLOGY IN 2024, 2024, A3487-A3487. DOI: 10.1164/ajrccm-conference.2024.209.1_meetingabstracts.a3487\\n7. Máté Rottler. Improving clinical outcomes in critically ill COVID-19 patients. University of Szeged. DOI: 10.14232/phd.12666\\n8. Jennifer Abbasi. Predicting COVID-19 Outcomes in Emergency Department Patients. JAMA, 2021, 325(6): 522. DOI: 10.1001/jama.2021.0227\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Federated learning for predicting clinical outcomes in patients with COVID-19 Dayan Nature Medicine\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Arturas Ziemys. Predicting clinical outcomes and hospitalization stay of hospitalized COVID-19 patients by using Deep Learning methods. openRxiv, 2022. DOI: 10.1101/2022.01.28.22270040\n2. Riccardo Giorgino, Filippo Migliorini. Clinical Features of COVID-19 in Elderly Patients: Tools for Predicting Outcomes Are Needed. Journal of Clinical Medicine, 2022, 11(24): 7505. DOI: 10.3390/jcm11247505\n3. Patrick Smeele. Neurofilament light in predicting clinical outcomes in critically Ill COVID-19 patients.. Acute critical care, 2023, PA2296. DOI: 10.1183/13993003.congress-2023.pa2296\n4. Kaida Cai, Zhengyan Wang, Xiaofang Yang, Wenzhi Fu, Xin Zhao. Predicting Clinical Outcomes in COVID-19 and Pneumonia Patients: A Machine Learning Approach. Viruses, 2024, 16(10): 1624. DOI: 10.3390/v16101624\n5. Xavier Corbella. Predicting adverse outcomes in patients with COVID-19: just an epidemiological debate or a valuable clinical approach?. European Journal of Internal Medicine, 2021, 94: 22-24. DOI: 10.1016/j.ejim.2021.10.019\n6. A.C. Canto, P. Molina, I. Aguilar, D. Patron, J. Varon. The Prognostic Value of PaO2/FiO2 Ratio in Predicting Clinical Outcomes in COVID-19 Patients. B40. COVID-19 EPIDEMIOLOGY IN 2024, 2024, A3487-A3487. DOI: 10.1164/ajrccm-conference.2024.209.1_meetingabstracts.a3487\n7. Máté Rottler. Improving clinical outcomes in critically ill COVID-19 patients. University of Szeged. DOI: 10.14232/phd.12666\n8. Jennifer Abbasi. Predicting COVID-19 Outcomes in Emergency Department Patients. JAMA, 2021, 325(6): 522. DOI: 10.1001/jama.2021.0227\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_vnUaoqBZEkLEel17ZI6t6849",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_01_UedxeTa2xytj7JLmQDyr7261",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：The future of digital health with federated learning Rieke npj Digital Medicine\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Nicola Rieke, Jonny Hancox, Wenqi Li, Fausto Milletarì, Holger R. Roth, Shadi Albarqouni, Spyridon Bakas, Mathieu N. Galtier, Bennett A. Landman, Klaus Maier-Hein, Sébastien Ourselin, Micah Sheller, Ronald M. Summers, Andrew Trask, Daguang Xu, Maximilian Baust, M. Jorge Cardoso. The future of digital health with federated learning. npj Digital Medicine, 2020, 3(1). DOI: 10.1038/s41746-020-00323-1\\n2. Raissa Souza, Emma A. M. Stanley, Erik Y. Ohara, Richard Camicioli, Oury Monchi, Zahinoor Ismail, Matthias Wilms, Nils D. Forkert. Combining federated learning and travelling model boosts performance and opens opportunities for digital health equity. npj Digital Medicine, 2026, 9(1). DOI: 10.1038/s41746-026-02483-y\\n3. Deven McGraw, Kenneth D. Mandl. Privacy protections to encourage use of health-relevant digital data in a learning health system. npj Digital Medicine, 2021, 4(1). DOI: 10.1038/s41746-020-00362-8\\n4. Cong Cong, Yang Song, Antonio Di Ieva, Angela Chou, Anthony J. Gill, Enrico Coiera, Sidong Liu. Flexible and scalable federated learning with deep feature prompts for digital pathology. npj Digital Medicine, 2026, 9(1). DOI: 10.1038/s41746-026-02710-6\\n5. Changqin Quan, Zhonglue Chen, Kang Ren, Zhiwei Luo. FedOcw: optimized federated learning for cross-lingual speech-based Parkinson’s disease detection. npj Digital Medicine, 2025, 8(1). DOI: 10.1038/s41746-025-01763-3\\n6. John Torous, Honor Hsin. Empowering the digital therapeutic relationship: virtual clinics for digital health interventions. npj Digital Medicine, 2018, 1(1). DOI: 10.1038/s41746-018-0028-2\\n7. Marzyeh Ghassemi, Shakir Mohamed. Machine learning and health need better values. npj Digital Medicine, 2022, 5(1). DOI: 10.1038/s41746-022-00595-9\\n8. Bruce R. Schatz. Population measurement for health systems. npj Digital Medicine, 2018, 1(1). DOI: 10.1038/s41746-017-0004-2\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "9fdd0cfe-8966-44e9-ae49-4b63c69efbc5",
+    "timestamp": "2026-10-31T11:48:15.959Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：The future of digital health with federated learning Rieke npj Digital Medicine\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Nicola Rieke, Jonny Hancox, Wenqi Li, Fausto Milletarì, Holger R. Roth, Shadi Albarqouni, Spyridon Bakas, Mathieu N. Galtier, Bennett A. Landman, Klaus Maier-Hein, Sébastien Ourselin, Micah Sheller, Ronald M. Summers, Andrew Trask, Daguang Xu, Maximilian Baust, M. Jorge Cardoso. The future of digital health with federated learning. npj Digital Medicine, 2020, 3(1). DOI: 10.1038/s41746-020-00323-1\\n2. Raissa Souza, Emma A. M. Stanley, Erik Y. Ohara, Richard Camicioli, Oury Monchi, Zahinoor Ismail, Matthias Wilms, Nils D. Forkert. Combining federated learning and travelling model boosts performance and opens opportunities for digital health equity. npj Digital Medicine, 2026, 9(1). DOI: 10.1038/s41746-026-02483-y\\n3. Deven McGraw, Kenneth D. Mandl. Privacy protections to encourage use of health-relevant digital data in a learning health system. npj Digital Medicine, 2021, 4(1). DOI: 10.1038/s41746-020-00362-8\\n4. Cong Cong, Yang Song, Antonio Di Ieva, Angela Chou, Anthony J. Gill, Enrico Coiera, Sidong Liu. Flexible and scalable federated learning with deep feature prompts for digital pathology. npj Digital Medicine, 2026, 9(1). DOI: 10.1038/s41746-026-02710-6\\n5. Changqin Quan, Zhonglue Chen, Kang Ren, Zhiwei Luo. FedOcw: optimized federated learning for cross-lingual speech-based Parkinson’s disease detection. npj Digital Medicine, 2025, 8(1). DOI: 10.1038/s41746-025-01763-3\\n6. John Torous, Honor Hsin. Empowering the digital therapeutic relationship: virtual clinics for digital health interventions. npj Digital Medicine, 2018, 1(1). DOI: 10.1038/s41746-018-0028-2\\n7. Marzyeh Ghassemi, Shakir Mohamed. Machine learning and health need better values. npj Digital Medicine, 2022, 5(1). DOI: 10.1038/s41746-022-00595-9\\n8. Bruce R. Schatz. Population measurement for health systems. npj Digital Medicine, 2018, 1(1). DOI: 10.1038/s41746-017-0004-2\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：The future of digital health with federated learning Rieke npj Digital Medicine\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Nicola Rieke, Jonny Hancox, Wenqi Li, Fausto Milletarì, Holger R. Roth, Shadi Albarqouni, Spyridon Bakas, Mathieu N. Galtier, Bennett A. Landman, Klaus Maier-Hein, Sébastien Ourselin, Micah Sheller, Ronald M. Summers, Andrew Trask, Daguang Xu, Maximilian Baust, M. Jorge Cardoso. The future of digital health with federated learning. npj Digital Medicine, 2020, 3(1). DOI: 10.1038/s41746-020-00323-1\n2. Raissa Souza, Emma A. M. Stanley, Erik Y. Ohara, Richard Camicioli, Oury Monchi, Zahinoor Ismail, Matthias Wilms, Nils D. Forkert. Combining federated learning and travelling model boosts performance and opens opportunities for digital health equity. npj Digital Medicine, 2026, 9(1). DOI: 10.1038/s41746-026-02483-y\n3. Deven McGraw, Kenneth D. Mandl. Privacy protections to encourage use of health-relevant digital data in a learning health system. npj Digital Medicine, 2021, 4(1). DOI: 10.1038/s41746-020-00362-8\n4. Cong Cong, Yang Song, Antonio Di Ieva, Angela Chou, Anthony J. Gill, Enrico Coiera, Sidong Liu. Flexible and scalable federated learning with deep feature prompts for digital pathology. npj Digital Medicine, 2026, 9(1). DOI: 10.1038/s41746-026-02710-6\n5. Changqin Quan, Zhonglue Chen, Kang Ren, Zhiwei Luo. FedOcw: optimized federated learning for cross-lingual speech-based Parkinson’s disease detection. npj Digital Medicine, 2025, 8(1). DOI: 10.1038/s41746-025-01763-3\n6. John Torous, Honor Hsin. Empowering the digital therapeutic relationship: virtual clinics for digital health interventions. npj Digital Medicine, 2018, 1(1). DOI: 10.1038/s41746-018-0028-2\n7. Marzyeh Ghassemi, Shakir Mohamed. Machine learning and health need better values. npj Digital Medicine, 2022, 5(1). DOI: 10.1038/s41746-022-00595-9\n8. Bruce R. Schatz. Population measurement for health systems. npj Digital Medicine, 2018, 1(1). DOI: 10.1038/s41746-017-0004-2\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_01_UedxeTa2xytj7JLmQDyr7261",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_02_RnrghLnWsbInZCE727nK4680",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Advances and open problems in federated learning Kairouz\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Peter Kairouz, H. Brendan McMahan. Advances and Open Problems in Federated Learning. Foundations and Trends® in Machine Learning, 2021, 14(1-2): 1-210. DOI: 10.1561/2200000083\\n2. Canh T. Dinh, Tung T. Vu, Nguyen H. Tran. Personalized federated learning: theory and open problems. Federated Learning, 2024, 125-141. DOI: 10.1016/b978-0-44-319037-7.00010-7\\n3. Soroush Ziaeinejad, Saeed Samet. Federated learning with context-aware client collaboration: Challenges, advances, and open problems. Information Fusion, 2026, 136: 104446. DOI: 10.1016/j.inffus.2026.104446\\n4. Kallista Bonawitz, Peter Kairouz, Brendan McMahan, Daniel Ramage. Chapter 8 Private Federated Learning. Differential Privacy in Artificial Intelligence: From Theory to Practice, 2025. DOI: 10.1561/9781638284772.ch8\\n5. Jingfeng Wu, Wennan Zhu, Peter Kairouz, Vladimir Braverman. Private Federated Frequency Estimation: Adapting to the Hardness of the Instance. Advances in Neural Information Processing Systems 36, 2023, 28892-28909. DOI: 10.52202/075280-1258\\n6. Kallista Bonawitz, Peter Kairouz, Brendan Mcmahan, Daniel Ramage. Federated learning and privacy. Communications of the ACM, 2022, 65(4): 90-97. DOI: 10.1145/3500240\\n7. Kallista Bonawitz, Peter Kairouz, Brendan McMahan, Daniel Ramage. Private Federated Learning. Differential Privacy in Artificial Intelligence, 2025, 287-314. DOI: 10.1561/978-1-63828-477-220251011\\n8. Kallista Bonawitz, Peter Kairouz, Brendan McMahan, Daniel Ramage. Federated Learning and Privacy. Queue, 2021, 19(5): 87-114. DOI: 10.1145/3494834.3500240\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "f47c2cda-77f5-424e-a4a4-45bd21fee317",
+    "timestamp": "2026-10-31T11:48:17.179Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Advances and open problems in federated learning Kairouz\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Peter Kairouz, H. Brendan McMahan. Advances and Open Problems in Federated Learning. Foundations and Trends® in Machine Learning, 2021, 14(1-2): 1-210. DOI: 10.1561/2200000083\\n2. Canh T. Dinh, Tung T. Vu, Nguyen H. Tran. Personalized federated learning: theory and open problems. Federated Learning, 2024, 125-141. DOI: 10.1016/b978-0-44-319037-7.00010-7\\n3. Soroush Ziaeinejad, Saeed Samet. Federated learning with context-aware client collaboration: Challenges, advances, and open problems. Information Fusion, 2026, 136: 104446. DOI: 10.1016/j.inffus.2026.104446\\n4. Kallista Bonawitz, Peter Kairouz, Brendan McMahan, Daniel Ramage. Chapter 8 Private Federated Learning. Differential Privacy in Artificial Intelligence: From Theory to Practice, 2025. DOI: 10.1561/9781638284772.ch8\\n5. Jingfeng Wu, Wennan Zhu, Peter Kairouz, Vladimir Braverman. Private Federated Frequency Estimation: Adapting to the Hardness of the Instance. Advances in Neural Information Processing Systems 36, 2023, 28892-28909. DOI: 10.52202/075280-1258\\n6. Kallista Bonawitz, Peter Kairouz, Brendan Mcmahan, Daniel Ramage. Federated learning and privacy. Communications of the ACM, 2022, 65(4): 90-97. DOI: 10.1145/3500240\\n7. Kallista Bonawitz, Peter Kairouz, Brendan McMahan, Daniel Ramage. Private Federated Learning. Differential Privacy in Artificial Intelligence, 2025, 287-314. DOI: 10.1561/978-1-63828-477-220251011\\n8. Kallista Bonawitz, Peter Kairouz, Brendan McMahan, Daniel Ramage. Federated Learning and Privacy. Queue, 2021, 19(5): 87-114. DOI: 10.1145/3494834.3500240\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Advances and open problems in federated learning Kairouz\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Peter Kairouz, H. Brendan McMahan. Advances and Open Problems in Federated Learning. Foundations and Trends® in Machine Learning, 2021, 14(1-2): 1-210. DOI: 10.1561/2200000083\n2. Canh T. Dinh, Tung T. Vu, Nguyen H. Tran. Personalized federated learning: theory and open problems. Federated Learning, 2024, 125-141. DOI: 10.1016/b978-0-44-319037-7.00010-7\n3. Soroush Ziaeinejad, Saeed Samet. Federated learning with context-aware client collaboration: Challenges, advances, and open problems. Information Fusion, 2026, 136: 104446. DOI: 10.1016/j.inffus.2026.104446\n4. Kallista Bonawitz, Peter Kairouz, Brendan McMahan, Daniel Ramage. Chapter 8 Private Federated Learning. Differential Privacy in Artificial Intelligence: From Theory to Practice, 2025. DOI: 10.1561/9781638284772.ch8\n5. Jingfeng Wu, Wennan Zhu, Peter Kairouz, Vladimir Braverman. Private Federated Frequency Estimation: Adapting to the Hardness of the Instance. Advances in Neural Information Processing Systems 36, 2023, 28892-28909. DOI: 10.52202/075280-1258\n6. Kallista Bonawitz, Peter Kairouz, Brendan Mcmahan, Daniel Ramage. Federated learning and privacy. Communications of the ACM, 2022, 65(4): 90-97. DOI: 10.1145/3500240\n7. Kallista Bonawitz, Peter Kairouz, Brendan McMahan, Daniel Ramage. Private Federated Learning. Differential Privacy in Artificial Intelligence, 2025, 287-314. DOI: 10.1561/978-1-63828-477-220251011\n8. Kallista Bonawitz, Peter Kairouz, Brendan McMahan, Daniel Ramage. Federated Learning and Privacy. Queue, 2021, 19(5): 87-114. DOI: 10.1145/3494834.3500240\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_02_RnrghLnWsbInZCE727nK4680",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_03_qip6QEOjld4BGyCkvDNQ2639",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：federated learning domain generalization segmentation FedDG\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Quande Liu, Cheng Chen, Jing Qin, Qi Dou, Pheng-Ann Heng. FedDG: Federated Domain Generalization on Medical Image Segmentation via Episodic Learning in Continuous Frequency Space. 2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021, 1013-1023. DOI: 10.1109/cvpr46437.2021.00107\\n2. Ahmed Radwan, Mahmoud Soliman, Omar Abdelaziz, Mohamed Shehata. FedDG-MoE: Test-Time Mixture-of-Experts Fusion for Federated Domain Generalization. 2025 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW), 2025, 1802-1811. DOI: 10.1109/cvprw67362.2025.00169\\n3. Haoyuan Liang, Xinyu Zhang, Shilei Cao, Guowen Li, Juepeng Zheng. TTA-FedDG: Leveraging Test-Time Adaptation to Address Federated Domain Generalization. Proceedings of the AAAI Conference on Artificial Intelligence, 2025, 39(18): 18658-18666. DOI: 10.1609/aaai.v39i18.34053\\n4. Yuan Liu, Zhe Qu, Shu Wang, Chengchao Shen, Yixiong Liang, Jianxin Wang. Personalized Federated Learning with Domain Generalization. Elsevier BV, 2023. DOI: 10.2139/ssrn.4612992\\n5. Titinunt KITRUNGROTSAKUL, Yen-Wei Chen. Dafed: Domain-Aware Federated Learning with Latent Distribution Alignment for Cross-Center Generalization. Elsevier BV, 2025. DOI: 10.2139/ssrn.5234309\\n6. V. Srinivasan, Gunaseelan Namperumal, Lavanya Shanmugam, Ranjeet Kumar, Manish Tomar, Bhargav Kumar Konidena. Federated Learning for Multi Institutional Pancreatic Tumor Segmentation with Robust Domain Generalization. 2026 International Conference on Visual Analytics and Data Visualization (ICVADV), 2026, 252-258. DOI: 10.1109/icvadv67766.2026.11469826\\n7. Omar Abdelaziz, Mahmoud Soliman, Ahmed Radwan, Ahmed Elgazwy, Mohamed S. Shehata. FedDG-MoE-NF: Prototypical Normalizing Flow Networks for Federated Domain Generalization. Lecture Notes in Computer Science, 2026, 349-363. DOI: 10.1007/978-3-032-31335-5_24\\n8. Yan Wang, Xiaoyu Shi, Hong Xie, Jinyang He, Mingsheng Shang. Dual Debiasing Learning for Single-Source Federated Domain Generalization under Data Imbalance. Elsevier BV, 2025. DOI: 10.2139/ssrn.5774586\\n9. Yan Wang, Xiaoyu Shi, Xie Hong, Jinyang He, Mingsheng Shang. Dual Debiasing Learning for Single-Source Federated Domain Generalization under Data Imbalance. Elsevier BV, 2026. DOI: 10.2139/ssrn.6532604\\n10. Hongyi Pan, Debesh Jha, Koushik Biswas, Ulas Bagci. Frequency-Based Federated Domain Generalization for Polyp Segmentation. ICASSP 2025 - 2025 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 2025, 1-5. DOI: 10.1109/icassp49660.2025.10889662\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "41ffc83d-caeb-4da6-be4e-f443920f2805",
+    "timestamp": "2026-10-31T11:48:18.036Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：federated learning domain generalization segmentation FedDG\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Quande Liu, Cheng Chen, Jing Qin, Qi Dou, Pheng-Ann Heng. FedDG: Federated Domain Generalization on Medical Image Segmentation via Episodic Learning in Continuous Frequency Space. 2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021, 1013-1023. DOI: 10.1109/cvpr46437.2021.00107\\n2. Ahmed Radwan, Mahmoud Soliman, Omar Abdelaziz, Mohamed Shehata. FedDG-MoE: Test-Time Mixture-of-Experts Fusion for Federated Domain Generalization. 2025 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW), 2025, 1802-1811. DOI: 10.1109/cvprw67362.2025.00169\\n3. Haoyuan Liang, Xinyu Zhang, Shilei Cao, Guowen Li, Juepeng Zheng. TTA-FedDG: Leveraging Test-Time Adaptation to Address Federated Domain Generalization. Proceedings of the AAAI Conference on Artificial Intelligence, 2025, 39(18): 18658-18666. DOI: 10.1609/aaai.v39i18.34053\\n4. Yuan Liu, Zhe Qu, Shu Wang, Chengchao Shen, Yixiong Liang, Jianxin Wang. Personalized Federated Learning with Domain Generalization. Elsevier BV, 2023. DOI: 10.2139/ssrn.4612992\\n5. Titinunt KITRUNGROTSAKUL, Yen-Wei Chen. Dafed: Domain-Aware Federated Learning with Latent Distribution Alignment for Cross-Center Generalization. Elsevier BV, 2025. DOI: 10.2139/ssrn.5234309\\n6. V. Srinivasan, Gunaseelan Namperumal, Lavanya Shanmugam, Ranjeet Kumar, Manish Tomar, Bhargav Kumar Konidena. Federated Learning for Multi Institutional Pancreatic Tumor Segmentation with Robust Domain Generalization. 2026 International Conference on Visual Analytics and Data Visualization (ICVADV), 2026, 252-258. DOI: 10.1109/icvadv67766.2026.11469826\\n7. Omar Abdelaziz, Mahmoud Soliman, Ahmed Radwan, Ahmed Elgazwy, Mohamed S. Shehata. FedDG-MoE-NF: Prototypical Normalizing Flow Networks for Federated Domain Generalization. Lecture Notes in Computer Science, 2026, 349-363. DOI: 10.1007/978-3-032-31335-5_24\\n8. Yan Wang, Xiaoyu Shi, Hong Xie, Jinyang He, Mingsheng Shang. Dual Debiasing Learning for Single-Source Federated Domain Generalization under Data Imbalance. Elsevier BV, 2025. DOI: 10.2139/ssrn.5774586\\n9. Yan Wang, Xiaoyu Shi, Xie Hong, Jinyang He, Mingsheng Shang. Dual Debiasing Learning for Single-Source Federated Domain Generalization under Data Imbalance. Elsevier BV, 2026. DOI: 10.2139/ssrn.6532604\\n10. Hongyi Pan, Debesh Jha, Koushik Biswas, Ulas Bagci. Frequency-Based Federated Domain Generalization for Polyp Segmentation. ICASSP 2025 - 2025 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 2025, 1-5. DOI: 10.1109/icassp49660.2025.10889662\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：federated learning domain generalization segmentation FedDG\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Quande Liu, Cheng Chen, Jing Qin, Qi Dou, Pheng-Ann Heng. FedDG: Federated Domain Generalization on Medical Image Segmentation via Episodic Learning in Continuous Frequency Space. 2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021, 1013-1023. DOI: 10.1109/cvpr46437.2021.00107\n2. Ahmed Radwan, Mahmoud Soliman, Omar Abdelaziz, Mohamed Shehata. FedDG-MoE: Test-Time Mixture-of-Experts Fusion for Federated Domain Generalization. 2025 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW), 2025, 1802-1811. DOI: 10.1109/cvprw67362.2025.00169\n3. Haoyuan Liang, Xinyu Zhang, Shilei Cao, Guowen Li, Juepeng Zheng. TTA-FedDG: Leveraging Test-Time Adaptation to Address Federated Domain Generalization. Proceedings of the AAAI Conference on Artificial Intelligence, 2025, 39(18): 18658-18666. DOI: 10.1609/aaai.v39i18.34053\n4. Yuan Liu, Zhe Qu, Shu Wang, Chengchao Shen, Yixiong Liang, Jianxin Wang. Personalized Federated Learning with Domain Generalization. Elsevier BV, 2023. DOI: 10.2139/ssrn.4612992\n5. Titinunt KITRUNGROTSAKUL, Yen-Wei Chen. Dafed: Domain-Aware Federated Learning with Latent Distribution Alignment for Cross-Center Generalization. Elsevier BV, 2025. DOI: 10.2139/ssrn.5234309\n6. V. Srinivasan, Gunaseelan Namperumal, Lavanya Shanmugam, Ranjeet Kumar, Manish Tomar, Bhargav Kumar Konidena. Federated Learning for Multi Institutional Pancreatic Tumor Segmentation with Robust Domain Generalization. 2026 International Conference on Visual Analytics and Data Visualization (ICVADV), 2026, 252-258. DOI: 10.1109/icvadv67766.2026.11469826\n7. Omar Abdelaziz, Mahmoud Soliman, Ahmed Radwan, Ahmed Elgazwy, Mohamed S. Shehata. FedDG-MoE-NF: Prototypical Normalizing Flow Networks for Federated Domain Generalization. Lecture Notes in Computer Science, 2026, 349-363. DOI: 10.1007/978-3-032-31335-5_24\n8. Yan Wang, Xiaoyu Shi, Hong Xie, Jinyang He, Mingsheng Shang. Dual Debiasing Learning for Single-Source Federated Domain Generalization under Data Imbalance. Elsevier BV, 2025. DOI: 10.2139/ssrn.5774586\n9. Yan Wang, Xiaoyu Shi, Xie Hong, Jinyang He, Mingsheng Shang. Dual Debiasing Learning for Single-Source Federated Domain Generalization under Data Imbalance. Elsevier BV, 2026. DOI: 10.2139/ssrn.6532604\n10. Hongyi Pan, Debesh Jha, Koushik Biswas, Ulas Bagci. Frequency-Based Federated Domain Generalization for Polyp Segmentation. ICASSP 2025 - 2025 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 2025, 1-5. DOI: 10.1109/icassp49660.2025.10889662\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_03_qip6QEOjld4BGyCkvDNQ2639",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_04_bAPF6W91jMhtvlF7NIJP1133",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：federated semi-supervised learning medical image segmentation\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Zhipeng Deng, Zhe Xu, Tsuyoshi Isshiki, Yefeng Zheng. FedSemiDG: Domain generalized federated semi-supervised medical image segmentation. Medical Image Analysis, 2026, 112: 104096. DOI: 10.1016/j.media.2026.104096\\n2. Krishna Chaitanya, Ender Konukoglu. Contrastive learning for unsupervised representation and semi-supervised learning for medical image segmentation. Less-supervised Segmentation with CNNs, 2026, 117-146. DOI: 10.1016/b978-0-32-395674-1.00013-5\\n3. Zhenghua Xu, Yujun Zhang, Bo Li, Gaoxi Zhou, Xianglin Lu, Thomas Lukasiewicz. Advancing federated semi-supervised medical image segmentation: A duo of interactive denoising pseudo-labels and convolutional contrastive learning. Medical Image Analysis, 2026, 112: 104091. DOI: 10.1016/j.media.2026.104091\\n4. Chenxi Huang. Combining Contrastive Learning and Shape Awareness for Semi-Supervised Medical Image Segmentation. Elsevier BV, 2023. DOI: 10.2139/ssrn.4474900\\n5. Abdul Raheem, Zhen Yang, Haiyang Yu, Malik Abdul Manan, Fahad Sabah, Shahzad Ahmed. FUSION: Uncertainty‐Guided Federated Semi‐Supervised Learning for Medical Image Segmentation. IET Image Processing, 2025, 19(1). DOI: 10.1049/ipr2.70147\\n6. Yuxi Ma, Jiacheng Wang, Jing Yang, Liansheng Wang. Model-Heterogeneous Semi-Supervised Federated Learning for Medical Image Segmentation. IEEE Transactions on Medical Imaging, 2024, 43(5): 1804-1815. DOI: 10.1109/tmi.2023.3348982\\n7. Xiurui Guo, Kai Sun, Yuanjie Zheng. Multi-Scale Consistency Adversarial Learning for Semi-Supervised 3d Medical Image Segmentation. Elsevier BV, 2024. DOI: 10.2139/ssrn.4844506\\n8. Sahar Nasirihaghighi, Negin Ghamsarian, Yiping Li, Marcel Breeuwer, Raphael Sznitman, Klaus Schoeffmann. SAM-FED: SAM-Guided Federated Semi-Supervised Learning for Medical Image Segmentation. 2026 IEEE 23rd International Symposium on Biomedical Imaging (ISBI), 2026, 1-5. DOI: 10.1109/isbi61048.2026.11515518\\n9. Huisi Wu, Baiming Zhang, Cheng Chen, Jing Qin. Federated Semi-Supervised Medical Image Segmentation via Prototype-Based Pseudo-Labeling and Contrastive Learning. IEEE Transactions on Medical Imaging, 2024, 43(2): 649-661. DOI: 10.1109/tmi.2023.3314430\\n10. Qianying Liu, Xiao Gu, Paul Henderson, Hang Dai, Fani Deligianni. Certainty-Guided Cross Contrastive Learning for Semi-Supervised Medical Image Segmentation. Institute of Electrical and Electronics Engineers (IEEE), 2024. DOI: 10.36227/techrxiv.172469505.55267498/v1\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "543424c0-318b-4104-ab24-c5ee3aa76026",
+    "timestamp": "2026-10-31T11:48:18.061Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：federated semi-supervised learning medical image segmentation\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Zhipeng Deng, Zhe Xu, Tsuyoshi Isshiki, Yefeng Zheng. FedSemiDG: Domain generalized federated semi-supervised medical image segmentation. Medical Image Analysis, 2026, 112: 104096. DOI: 10.1016/j.media.2026.104096\\n2. Krishna Chaitanya, Ender Konukoglu. Contrastive learning for unsupervised representation and semi-supervised learning for medical image segmentation. Less-supervised Segmentation with CNNs, 2026, 117-146. DOI: 10.1016/b978-0-32-395674-1.00013-5\\n3. Zhenghua Xu, Yujun Zhang, Bo Li, Gaoxi Zhou, Xianglin Lu, Thomas Lukasiewicz. Advancing federated semi-supervised medical image segmentation: A duo of interactive denoising pseudo-labels and convolutional contrastive learning. Medical Image Analysis, 2026, 112: 104091. DOI: 10.1016/j.media.2026.104091\\n4. Chenxi Huang. Combining Contrastive Learning and Shape Awareness for Semi-Supervised Medical Image Segmentation. Elsevier BV, 2023. DOI: 10.2139/ssrn.4474900\\n5. Abdul Raheem, Zhen Yang, Haiyang Yu, Malik Abdul Manan, Fahad Sabah, Shahzad Ahmed. FUSION: Uncertainty‐Guided Federated Semi‐Supervised Learning for Medical Image Segmentation. IET Image Processing, 2025, 19(1). DOI: 10.1049/ipr2.70147\\n6. Yuxi Ma, Jiacheng Wang, Jing Yang, Liansheng Wang. Model-Heterogeneous Semi-Supervised Federated Learning for Medical Image Segmentation. IEEE Transactions on Medical Imaging, 2024, 43(5): 1804-1815. DOI: 10.1109/tmi.2023.3348982\\n7. Xiurui Guo, Kai Sun, Yuanjie Zheng. Multi-Scale Consistency Adversarial Learning for Semi-Supervised 3d Medical Image Segmentation. Elsevier BV, 2024. DOI: 10.2139/ssrn.4844506\\n8. Sahar Nasirihaghighi, Negin Ghamsarian, Yiping Li, Marcel Breeuwer, Raphael Sznitman, Klaus Schoeffmann. SAM-FED: SAM-Guided Federated Semi-Supervised Learning for Medical Image Segmentation. 2026 IEEE 23rd International Symposium on Biomedical Imaging (ISBI), 2026, 1-5. DOI: 10.1109/isbi61048.2026.11515518\\n9. Huisi Wu, Baiming Zhang, Cheng Chen, Jing Qin. Federated Semi-Supervised Medical Image Segmentation via Prototype-Based Pseudo-Labeling and Contrastive Learning. IEEE Transactions on Medical Imaging, 2024, 43(2): 649-661. DOI: 10.1109/tmi.2023.3314430\\n10. Qianying Liu, Xiao Gu, Paul Henderson, Hang Dai, Fani Deligianni. Certainty-Guided Cross Contrastive Learning for Semi-Supervised Medical Image Segmentation. Institute of Electrical and Electronics Engineers (IEEE), 2024. DOI: 10.36227/techrxiv.172469505.55267498/v1\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：federated semi-supervised learning medical image segmentation\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Zhipeng Deng, Zhe Xu, Tsuyoshi Isshiki, Yefeng Zheng. FedSemiDG: Domain generalized federated semi-supervised medical image segmentation. Medical Image Analysis, 2026, 112: 104096. DOI: 10.1016/j.media.2026.104096\n2. Krishna Chaitanya, Ender Konukoglu. Contrastive learning for unsupervised representation and semi-supervised learning for medical image segmentation. Less-supervised Segmentation with CNNs, 2026, 117-146. DOI: 10.1016/b978-0-32-395674-1.00013-5\n3. Zhenghua Xu, Yujun Zhang, Bo Li, Gaoxi Zhou, Xianglin Lu, Thomas Lukasiewicz. Advancing federated semi-supervised medical image segmentation: A duo of interactive denoising pseudo-labels and convolutional contrastive learning. Medical Image Analysis, 2026, 112: 104091. DOI: 10.1016/j.media.2026.104091\n4. Chenxi Huang. Combining Contrastive Learning and Shape Awareness for Semi-Supervised Medical Image Segmentation. Elsevier BV, 2023. DOI: 10.2139/ssrn.4474900\n5. Abdul Raheem, Zhen Yang, Haiyang Yu, Malik Abdul Manan, Fahad Sabah, Shahzad Ahmed. FUSION: Uncertainty‐Guided Federated Semi‐Supervised Learning for Medical Image Segmentation. IET Image Processing, 2025, 19(1). DOI: 10.1049/ipr2.70147\n6. Yuxi Ma, Jiacheng Wang, Jing Yang, Liansheng Wang. Model-Heterogeneous Semi-Supervised Federated Learning for Medical Image Segmentation. IEEE Transactions on Medical Imaging, 2024, 43(5): 1804-1815. DOI: 10.1109/tmi.2023.3348982\n7. Xiurui Guo, Kai Sun, Yuanjie Zheng. Multi-Scale Consistency Adversarial Learning for Semi-Supervised 3d Medical Image Segmentation. Elsevier BV, 2024. DOI: 10.2139/ssrn.4844506\n8. Sahar Nasirihaghighi, Negin Ghamsarian, Yiping Li, Marcel Breeuwer, Raphael Sznitman, Klaus Schoeffmann. SAM-FED: SAM-Guided Federated Semi-Supervised Learning for Medical Image Segmentation. 2026 IEEE 23rd International Symposium on Biomedical Imaging (ISBI), 2026, 1-5. DOI: 10.1109/isbi61048.2026.11515518\n9. Huisi Wu, Baiming Zhang, Cheng Chen, Jing Qin. Federated Semi-Supervised Medical Image Segmentation via Prototype-Based Pseudo-Labeling and Contrastive Learning. IEEE Transactions on Medical Imaging, 2024, 43(2): 649-661. DOI: 10.1109/tmi.2023.3314430\n10. Qianying Liu, Xiao Gu, Paul Henderson, Hang Dai, Fani Deligianni. Certainty-Guided Cross Contrastive Learning for Semi-Supervised Medical Image Segmentation. Institute of Electrical and Electronics Engineers (IEEE), 2024. DOI: 10.36227/techrxiv.172469505.55267498/v1\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_04_bAPF6W91jMhtvlF7NIJP1133",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "04edcbf7-a4f6-4c79-831f-21a31d84b82a",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "I have plenty of solid references now. Let me pick 10, all real, high quality, and directly relevant. Candidate list:\n\n1. McMahan et al. 2017 FedAvg — need to verify. Crossref may not have PMLR. The verify tool uses multiple sources; it might find it. Alternatively use Kairouz 2021 and Li 2020. I'll skip McMahan to be safe, or include it and see verify result. Actually the review would benefit from FedAvg. Let me try verification later. Risk: verify may fail due to DOI absence (PMLR has no DOI; commonly cited without DOI, but user requires DOI). So skip McMahan.\n\nChosen 10:\n1. Rieke et al. 2020, npj Digital Medicine 3(1), DOI 10.1038/s41746-020-00323-1 — but need article number 119? Crossref gave no pages. Hmm, npj Digital Medicine article number 119. Crossref metadata didn't include page. The user wants 卷期页码. I might need to supply \"3(1):119\". Verify may complain. Let me check via verify later. Could use \"3(1): 119\".\n2. Sheller et al. 2020, Scientific Reports 10(1):12598, DOI 10.1038/s41598-020-69250-1. Crossref didn't give page. Actual article number 12598. I recall that. Verify will tell.\n3. Li et al. 2019, MICCAI LNCS 11769:133-141, DOI 10.1007/978-3-030-32692-0_16.\n4. Manthe, Duffner, Lartizien 2024, Medical Image Analysis 97:103270, DOI 10.1016/j.media.2024.103270.\n5. Liu et al. 2021 FedDG CVPR pp. 1013-1023, DOI 10.1109/cvpr46437.2021.00107.\n6. Wu et al. 2024, IEEE TMI 43(2):649-661, DOI 10.1109/tmi.2023.3314430.\n7. Ma et al. 2024, IEEE TMI 43(5):1804-1815, DOI 10.1109/tmi.2023.3348982.\n8. Chen & Yuan 2025, IEEE TMI 44(7):2768-2783, DOI 10.1109/tmi.2025.3549292.\n9. Li, Sahu, Talwalkar, Smith 2020, IEEE Signal Processing Magazine 37(3):50-60, DOI 10.1109/msp.2020.2975749.\n10. Kairouz et al. 2021, FnT ML 14(1-2):1-210, DOI 10.1561/2200000083.\n11. Isensee et al. 2020 nnU-Net, Nature Methods 18(2):203-211, DOI 10.1038/s41592-020-01008-z — good for backbone.\n\nThat's 11 candidates; need 10. I'll include nnU-Net as the segmentation backbone reference, maybe drop Kairouz. Let me pick:\n\n1. Rieke 2020\n2. Sheller 2020\n3. Li 2019 MICCAI\n4. Manthe 2024\n5. Liu FedDG 2021\n6. Wu 2024 TMI\n7. Ma 2024 TMI\n8. Chen & Yuan 2025 TMI\n9. Isensee 2021 nnU-Net\n10. Li 2020 IEEE SPM (challenges)\n\nKairouz could replace Li 2020, but Li 2020 is fine.\n\nNeed full author lists — Crossref gave them. For Sheller 2020 there are 11 authors; Rieke has 17. Fine.\n\nI need to double check page numbers. Crossref may give article-number as page for some. Let me use verify_references with the full list. The verify tool likely checks DOI/title/authors/year and reports missing page numbers. Let me construct and verify.\n\nAlso I need to write ~600 Chinese characters/words? \"约600字\" means about 600 Chinese characters. A review of 600 characters is short but okay — maybe 600-700 characters. Actually \"600 字\" typically means Chinese characters. I'll aim for ~650-750 characters. Hmm, with 10 references, the body should be about 600 characters. That's a compact review but doable. Maybe ~700 characters.\n\nLet me first verify references. I'll write the list in GB/T-ish format with [1] numbering.\n\nFor Rieke 2020, pages: npj Digital Medicine volume 3, article 119. Format: 3(1): 119.\nSheller 2020: Scientific Reports 10(1): 12598.\nLi 2019: LNCS 11769: 133-141.\nManthe 2024: 97: 103270.\nFedDG CVPR 2021: 1013-1023.\nWu 2024: 43(2): 649-661.\nMa 2024: 43(5): 1804-1815.\nChen 2025: 44(7): 2768-2783.\nIsensee 2021: Nature Methods 18(2): 203-211.\nLi 2020: 37(3): 50-60.\n\nLet me verify.",
+       "signature": "04edcbf7-a4f6-4c79-831f-21a31d84b82a"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3619,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 20608,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "e00cbab4-b93d-42cc-812e-9e3aa6dad00f",
+    "timestamp": "2026-10-31T11:48:24.854Z",
+    "thinking_duration_ms": 6185,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "04edcbf7-a4f6-4c79-831f-21a31d84b82a",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "text",
+       "text": "已找到足够的真实文献。现在核查这份候选清单的题录细节。"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3619,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 20608,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "afc3914c-6309-4f67-a31a-3d2cfeea1c87",
+    "timestamp": "2026-10-31T11:48:25.027Z"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "04edcbf7-a4f6-4c79-831f-21a31d84b82a",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_b6TwlLID4fvl5B7RRwgH5002",
+       "name": "mcp__citeguard__verify_references",
+       "input": {
+        "text": "[1] Nicola Rieke, Jonny Hancox, Wenqi Li, Fausto Milletarì, Holger R. Roth, Shadi Albarqouni, Spyridon Bakas, Mathieu N. Galtier, Bennett A. Landman, Klaus Maier-Hein, Sébastien Ourselin, Micah Sheller, Ronald M. Summers, Andrew Trask, Daguang Xu, Maximilian Baust, M. Jorge Cardoso. The future of digital health with federated learning. npj Digital Medicine, 2020, 3(1): 119. DOI: 10.1038/s41746-020-00323-1\n[2] Micah J. Sheller, Brandon Edwards, G. Anthony Reina, Jason Martin, Sarthak Pati, Aikaterini Kotrotsou, Mikhail Milchenko, Weilin Xu, Daniel Marcus, Rivka R. Colen, Spyridon Bakas. Federated learning in medicine: facilitating multi-institutional collaborations without sharing patient data. Scientific Reports, 2020, 10(1): 12598. DOI: 10.1038/s41598-020-69250-1\n[3] Wenqi Li, Fausto Milletarì, Daguang Xu, Nicola Rieke, Jonny Hancox, Wentao Zhu, Maximilian Baust, Yan Cheng, Sébastien Ourselin, M. Jorge Cardoso, Andrew Feng. Privacy-Preserving Federated Brain Tumour Segmentation. Lecture Notes in Computer Science, 2019, 11769: 133-141. DOI: 10.1007/978-3-030-32692-0_16\n[4] Matthis Manthe, Stefan Duffner, Carole Lartizien. Federated brain tumor segmentation: An extensive benchmark. Medical Image Analysis, 2024, 97: 103270. DOI: 10.1016/j.media.2024.103270\n[5] Quande Liu, Cheng Chen, Jing Qin, Qi Dou, Pheng-Ann Heng. FedDG: Federated Domain Generalization on Medical Image Segmentation via Episodic Learning in Continuous Frequency Space. 2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021, 1013-1023. DOI: 10.1109/cvpr46437.2021.00107\n[6] Huisi Wu, Baiming Zhang, Cheng Chen, Jing Qin. Federated Semi-Supervised Medical Image Segmentation via Prototype-Based Pseudo-Labeling and Contrastive Learning. IEEE Transactions on Medical Imaging, 2024, 43(2): 649-661. DOI: 10.1109/tmi.2023.3314430\n[7] Yuxi Ma, Jiacheng Wang, Jing Yang, Liansheng Wang. Model-Heterogeneous Semi-Supervised Federated Learning for Medical Image Segmentation. IEEE Transactions on Medical Imaging, 2024, 43(5): 1804-1815. DOI: 10.1109/tmi.2023.3348982\n[8] Jingyun Chen, Yading Yuan. Decentralized Personalization for Federated Medical Image Segmentation via Gossip Contrastive Mutual Learning. IEEE Transactions on Medical Imaging, 2025, 44(7): 2768-2783. DOI: 10.1109/tmi.2025.3549292\n[9] Fabian Isensee, Paul F. Jaeger, Simon A. A. Kohl, Jens Petersen, Klaus H. Maier-Hein. nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 2021, 18(2): 203-211. DOI: 10.1038/s41592-020-01008-z\n[10] Tian Li, Anit Kumar Sahu, Ameet Talwalkar, Virginia Smith. Federated Learning: Challenges, Methods, and Future Directions. IEEE Signal Processing Magazine, 2020, 37(3): 50-60. DOI: 10.1109/msp.2020.2975749"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 3619,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 20608,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "e7deaadb-a5e2-49ad-aa41-a500b8957623",
+    "timestamp": "2026-10-31T11:48:28.112Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_b6TwlLID4fvl5B7RRwgH5002",
+      "display_name": "Verify References",
+      "server_display_name": "citeguard",
+      "tool_name": "verify_references"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_b6TwlLID4fvl5B7RRwgH5002",
+       "type": "tool_result",
+       "content": "{\"result\":\"## CiteGuard 核查报告\\n\\n共 10 条：✅ 10　⚠️ 0　❌ 0　❓ 0\\n\\n### [1] ✅ VERIFIED　《The future of digital health with federated learning》\\n\\n\\n### [2] ✅ VERIFIED　《Federated learning in medicine: facilitating multi-institutional collaborations without sharing patient data》\\n\\n\\n### [3] ✅ VERIFIED　《Privacy-Preserving Federated Brain Tumour Segmentation》\\n\\n\\n### [4] ✅ VERIFIED　《Federated brain tumor segmentation: An extensive benchmark》\\n\\n\\n### [5] ✅ VERIFIED　《FedDG: Federated Domain Generalization on Medical Image Segmentation via Episodic Learning in Continuous Frequency Space》\\n\\n\\n### [6] ✅ VERIFIED　《Federated Semi-Supervised Medical Image Segmentation via Prototype-Based Pseudo-Labeling and Contrastive Learning》\\n\\n\\n### [7] ✅ VERIFIED　《Model-Heterogeneous Semi-Supervised Federated Learning for Medical Image Segmentation》\\n\\n\\n### [8] ✅ VERIFIED　《Decentralized Personalization for Federated Medical Image Segmentation via Gossip Contrastive Mutual Learning》\\n\\n\\n### [9] ✅ VERIFIED　《nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation》\\n\\n\\n### [10] ✅ VERIFIED　《Federated Learning: Challenges, Methods, and Future Directions》\\n\\n\\n全部通过核查（❓ 条目除外），可以输出终稿。\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "07f8ff7d-cee5-47c3-aaca-aee4106b4631",
+    "timestamp": "2026-10-31T11:48:28.516Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## CiteGuard 核查报告\\n\\n共 10 条：✅ 10　⚠️ 0　❌ 0　❓ 0\\n\\n### [1] ✅ VERIFIED　《The future of digital health with federated learning》\\n\\n\\n### [2] ✅ VERIFIED　《Federated learning in medicine: facilitating multi-institutional collaborations without sharing patient data》\\n\\n\\n### [3] ✅ VERIFIED　《Privacy-Preserving Federated Brain Tumour Segmentation》\\n\\n\\n### [4] ✅ VERIFIED　《Federated brain tumor segmentation: An extensive benchmark》\\n\\n\\n### [5] ✅ VERIFIED　《FedDG: Federated Domain Generalization on Medical Image Segmentation via Episodic Learning in Continuous Frequency Space》\\n\\n\\n### [6] ✅ VERIFIED　《Federated Semi-Supervised Medical Image Segmentation via Prototype-Based Pseudo-Labeling and Contrastive Learning》\\n\\n\\n### [7] ✅ VERIFIED　《Model-Heterogeneous Semi-Supervised Federated Learning for Medical Image Segmentation》\\n\\n\\n### [8] ✅ VERIFIED　《Decentralized Personalization for Federated Medical Image Segmentation via Gossip Contrastive Mutual Learning》\\n\\n\\n### [9] ✅ VERIFIED　《nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation》\\n\\n\\n### [10] ✅ VERIFIED　《Federated Learning: Challenges, Methods, and Future Directions》\\n\\n\\n全部通过核查（❓ 条目除外），可以输出终稿。\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## CiteGuard 核查报告\n\n共 10 条：✅ 10　⚠️ 0　❌ 0　❓ 0\n\n### [1] ✅ VERIFIED　《The future of digital health with federated learning》\n\n\n### [2] ✅ VERIFIED　《Federated learning in medicine: facilitating multi-institutional collaborations without sharing patient data》\n\n\n### [3] ✅ VERIFIED　《Privacy-Preserving Federated Brain Tumour Segmentation》\n\n\n### [4] ✅ VERIFIED　《Federated brain tumor segmentation: An extensive benchmark》\n\n\n### [5] ✅ VERIFIED　《FedDG: Federated Domain Generalization on Medical Image Segmentation via Episodic Learning in Continuous Frequency Space》\n\n\n### [6] ✅ VERIFIED　《Federated Semi-Supervised Medical Image Segmentation via Prototype-Based Pseudo-Labeling and Contrastive Learning》\n\n\n### [7] ✅ VERIFIED　《Model-Heterogeneous Semi-Supervised Federated Learning for Medical Image Segmentation》\n\n\n### [8] ✅ VERIFIED　《Decentralized Personalization for Federated Medical Image Segmentation via Gossip Contrastive Mutual Learning》\n\n\n### [9] ✅ VERIFIED　《nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation》\n\n\n### [10] ✅ VERIFIED　《Federated Learning: Challenges, Methods, and Future Directions》\n\n\n全部通过核查（❓ 条目除外），可以输出终稿。\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_b6TwlLID4fvl5B7RRwgH5002",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "8ca1aefd-ffa5-4fd3-85cb-d5e50d113918",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "All 10 verified. Now write the review in Chinese, ~600 characters. Need citations [1]-[10] in the text.\n\nLet me draft ~650-750 Chinese characters.\n\nContent structure:\n- 引言：医学影像分割依赖大样本，多中心数据因隐私法规不能共享；联邦学习（FL）让各方在本地训练、只交换模型参数。\n- 技术路线：以 nnU-Net 为常用骨干[9]；FedAvg 类聚合。早期可行性：Sheller 在 BraTS 多机构验证[2]；Li 等隐私保护脑肿瘤分割[3]；Manthe 等系统基准[4]。\n- 挑战：非独立同分布/域偏移 → FedDG 频域情景学习[5]；半监督场景（标注稀缺）→ 原型伪标签对比学习[6]、模型异构半监督[7]；个性化 → gossip 对比互学习[8]。\n- 安全与隐私：参数仍可能泄露，需差分隐私/安全聚合；通信开销、客户端漂移；评估标准不统一。\n- 展望：与自监督/基础模型结合、跨模态、临床落地与监管。\n- 结论。\n\nNeed ~600 字. Let me count roughly. Chinese characters ~700. Fine.\n\nReferences format: the user wants full authors, title, venue, year, volume/issue/pages, DOI. I'll present as numbered list with all authors.\n\nLet me write it. Use markdown headings.\n\nBody draft:\n\n# 联邦学习用于医学影像分割：进展与挑战\n\n医学影像分割是... \n\nLet me write and count approximately.\n\nParagraph 1 (~130 chars):\n医学影像分割是疾病诊断、治疗规划与疗效评估的基础环节。深度学习模型的性能高度依赖大规模、多中心标注数据，但患者影像受隐私法规与机构政策约束，难以集中共享。联邦学习（federated learning, FL）通过\"数据不动、模型动\"的范式，让各机构在本地训练、仅上传模型更新并由服务器聚合，为跨机构协作提供了可行路径[1]。\n\nParagraph 2 (~170):\n在分割任务中，nnU-Net 因其自配置能力成为常用骨干[9]。早期可行性研究具有里程碑意义：Sheller 等人在 BraTS 上验证了多机构联邦训练可在不共享数据的前提下接近集中式训练的性能[2]；Li 等人进一步引入隐私保护机制，实现了脑肿瘤的联邦分割[3]。Manthe 等人则对联邦脑肿瘤分割进行了迄今较系统的基准评测，揭示了数据异质性对性能的显著影响[4]。\n\nParagraph 3 (~180):\n数据异质性是核心难题。不同中心的扫描仪、成像协议与人群分布造成非独立同分布（non-IID）与域偏移，简单加权平均易导致客户端漂移。为此，Liu 等人提出 FedDG，在连续频域中做情景学习以提升跨中心泛化[5]。标注稀缺时，Wu 等人利用原型伪标签与对比学习实现联邦半监督分割[6]；Ma 等人则放宽所有客户端均有标注的假设，研究模型异构下的半监督联邦学习[7]。针对个性化需求，Chen 与 Yuan 通过 gossip 对比互学习实现去中心化个性化[8]。\n\nParagraph 4 (~150):\n尽管如此，联邦学习在医学影像分割中仍面临挑战：梯度与参数仍可能泄露隐私，需结合差分隐私与安全聚合；通信开销与掉队者问题制约扩展性；评估协议与数据集划分尚不统一，结果可比性有限[10]。未来可与自监督预训练、视觉基础模型及跨模态学习结合，并在真实临床工作流中验证其鲁棒性与合规性。\n\nConclusion (~50):\n总体而言，联邦学习为医学影像分割的跨机构协作提供了兼顾隐私与性能的技术框架，但从基准研究走向临床部署仍需在异质性建模、隐私保障与工程可扩展性上持续突破。\n\nTotal ~680 characters. Good.\n\nNote: paragraph about challenges cites [10] Li et al. challenges. Good.\n\nNow references. Ensure all authors listed. For [1] 17 authors. Fine.\n\nI should be careful: statement \"Sheller 等人在 BraTS 上验证了...接近集中式训练的性能\" — accurate: Sheller 2020 showed federated models nearly as good as pooled data on BraTS. Yes.\n\n\"Li 等人进一步引入隐私保护机制\" — Li 2019 Privacy-Preserving Federated Brain Tumour Segmentation used differential privacy. Yes.\n\nManthe benchmark — extensive benchmark of federated brain tumor segmentation. Yes.\n\nFedDG — episodic learning in continuous frequency space. Yes.\n\nWu 2024 — prototype-based pseudo-labeling and contrastive learning for federated semi-supervised segmentation. Yes.\n\nMa 2024 — model-heterogeneous semi-supervised FL. Yes.\n\nChen & Yuan 2025 — decentralized personalization via gossip contrastive mutual learning. Yes.\n\nnnU-Net — self-configuring. Yes.\n\nNow format references with volume(issue): pages. For [1] 3(1): 119. [2] 10(1): 12598. [3] LNCS 11769: 133-141 — volume only, no issue. [9] 18(2):203-211. Good.\n\nNeed to note DOIs as https://doi.org/... or \"DOI:\". User said includes DOI. I'll use DOI: 10....\n\nWrite final answer. Since references verified, maybe add a brief note that references were verified via CiteGuard? Could mention briefly at end. Not necessary but reassuring. I'll add one short line.\n\nWord count: ~600 字. Let me deliver.",
+       "signature": "8ca1aefd-ffa5-4fd3-85cb-d5e50d113918"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 378,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 26368,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "1f4bb699-174a-4401-a520-62a9b8221939",
+    "timestamp": "2026-10-31T11:48:37.549Z",
+    "thinking_duration_ms": 8380,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "8ca1aefd-ffa5-4fd3-85cb-d5e50d113918",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "text",
+       "text": "# 联邦学习用于医学影像分割：进展与挑战\n\n医学影像分割是疾病诊断、治疗规划与疗效评估的基础环节。深度学习模型的性能高度依赖大规模、多中心的标注数据，但患者影像受隐私法规与机构政策的约束，难以集中共享。联邦学习（federated learning, FL）采用“数据不动、模型动”的范式：各机构在本地训练，仅上传模型更新，由服务器聚合，为跨机构协作提供了可行路径[1]。\n\n在分割任务中，nnU-Net 凭借自配置能力成为常用的骨干网络[9]。早期可行性研究具有里程碑意义：Sheller 等人在 BraTS 上验证了多机构联邦训练可在不共享数据的前提下取得接近集中式训练的性能[2]；Li 等人进一步引入隐私保护机制，实现了脑肿瘤的联邦分割[3]。Manthe 等人则对联邦脑肿瘤分割开展了较为系统的基准评测，揭示了数据异质性对性能的显著影响[4]。\n\n数据异质性是核心难题。不同中心的扫描仪、成像协议与人群分布造成非独立同分布（non-IID）与域偏移，简单的加权平均容易引发客户端漂移。为此，Liu 等人提出 FedDG，在连续频域中开展情景学习，以提升跨中心泛化能力[5]。在标注稀缺时，Wu 等人利用原型伪标签与对比学习实现联邦半监督分割[6]；Ma 等人则放宽“所有客户端均有标注”的假设，研究模型异构条件下的半监督联邦学习[7]。针对个性化需求，Chen 与 Yuan 通过 gossip 对比互学习实现去中心化个性化[8]。\n\n尽管如此，联邦学习在医学影像分割中仍面临挑战：梯度与模型参数仍可能泄露隐私，需要结合差分隐私与安全聚合；通信开销与掉队者问题制约了可扩展性；评估协议与数据划分尚不统一，结果可比性有限[10]。未来可与自监督预训练、视觉基础模型及跨模态学习结合，并在真实临床工作流中验证其鲁棒性与合规性。\n\n总体而言，联邦学习为医学影像分割的跨机构协作提供了兼顾隐私与性能的技术框架，但从基准研究走向临床部署，仍需在异质性建模、隐私保障与工程可扩展性上持续突破。\n\n## 参考文献\n\n[1] Nicola Rieke, Jonny Hancox, Wenqi Li, Fausto Milletarì, Holger R. Roth, Shadi Albarqouni, Spyridon Bakas, Mathieu N. Galtier, Bennett A. Landman, Klaus Maier-Hein, Sébastien Ourselin, Micah Sheller, Ronald M. Summers, Andrew Trask, Daguang Xu, Maximilian Baust, M. Jorge Cardoso. The future of digital health with federated learning. npj Digital Medicine, 2020, 3(1): 119. DOI: 10.1038/s41746-020-00323-1\n\n[2] Micah J. Sheller, Brandon Edwards, G. Anthony Reina, Jason Martin, Sarthak Pati, Aikaterini Kotrotsou, Mikhail Milchenko, Weilin Xu, Daniel Marcus, Rivka R. Colen, Spyridon Bakas. Federated learning in medicine: facilitating multi-institutional collaborations without sharing patient data. Scientific Reports, 2020, 10(1): 12598. DOI: 10.1038/s41598-020-69250-1\n\n[3] Wenqi Li, Fausto Milletarì, Daguang Xu, Nicola Rieke, Jonny Hancox, Wentao Zhu, Maximilian Baust, Yan Cheng, Sébastien Ourselin, M. Jorge Cardoso, Andrew Feng. Privacy-Preserving Federated Brain Tumour Segmentation. Lecture Notes in Computer Science, 2019, 11769: 133-141. DOI: 10.1007/978-3-030-32692-0_16\n\n[4] Matthis Manthe, Stefan Duffner, Carole Lartizien. Federated brain tumor segmentation: An extensive benchmark. Medical Image Analysis, 2024, 97: 103270. DOI: 10.1016/j.media.2024.103270\n\n[5] Quande Liu, Cheng Chen, Jing Qin, Qi Dou, Pheng-Ann Heng. FedDG: Federated Domain Generalization on Medical Image Segmentation via Episodic Learning in Continuous Frequency Space. 2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021, 1013-1023. DOI: 10.1109/cvpr46437.2021.00107\n\n[6] Huisi Wu, Baiming Zhang, Cheng Chen, Jing Qin. Federated Semi-Supervised Medical Image Segmentation via Prototype-Based Pseudo-Labeling and Contrastive Learning. IEEE Transactions on Medical Imaging, 2024, 43(2): 649-661. DOI: 10.1109/tmi.2023.3314430\n\n[7] Yuxi Ma, Jiacheng Wang, Jing Yang, Liansheng Wang. Model-Heterogeneous Semi-Supervised Federated Learning for Medical Image Segmentation. IEEE Transactions on Medical Imaging, 2024, 43(5): 1804-1815. DOI: 10.1109/tmi.2023.3348982\n\n[8] Jingyun Chen, Yading Yuan. Decentralized Personalization for Federated Medical Image Segmentation via Gossip Contrastive Mutual Learning. IEEE Transactions on Medical Imaging, 2025, 44(7): 2768-2783. DOI: 10.1109/tmi.2025.3549292\n\n[9] Fabian Isensee, Paul F. Jaeger, Simon A. A. Kohl, Jens Petersen, Klaus H. Maier-Hein. nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 2021, 18(2): 203-211. DOI: 10.1038/s41592-020-01008-z\n\n[10] Tian Li, Anit Kumar Sahu, Ameet Talwalkar, Virginia Smith. Federated Learning: Challenges, Methods, and Future Directions. IEEE Signal Processing Magazine, 2020, 37(3): 50-60. DOI: 10.1109/msp.2020.2975749\n\n以上 10 条参考文献均经 CiteGuard 核查通过（真实性、作者、年份、卷期页码与 DOI 全部一致）。"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 378,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 26368,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "uuid": "dc391053-77ea-47ad-9884-849502c1d55d",
+    "timestamp": "2026-10-31T11:48:42.696Z"
+   },
+   {
+    "duration_api_ms": 34772,
+    "stop_reason": "end_turn",
+    "session_id": "8a152f51-3c1e-4386-aee9-510f58b86aed",
+    "total_cost_usd": 0.316692,
+    "usage": {
+     "input_tokens": 23464,
+     "cache_creation_input_tokens": 0,
+     "cache_read_input_tokens": 86144,
+     "output_tokens": 6252,
+     "output_tokens_details": {
+      "thinking_tokens": 0
+     },
+     "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+     },
+     "service_tier": "standard",
+     "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+     },
+     "inference_geo": "",
+     "iterations": [],
+     "speed": "standard",
+     "fallback_credit": null
+    },
+    "modelUsage": {
+     "deepseek-flash": {
+      "inputTokens": 23464,
+      "outputTokens": 6252,
+      "cacheReadInputTokens": 86144,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.316692,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "deepseek-flash",
+      "provider": "firstParty",
+      "costBasis": "unknown"
+     }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+     "spawned": 0,
+     "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+     },
+     "started_in_background": 0,
+     "max_depth": 0,
+     "spawned_by_subagents": 0,
+     "completed": 0,
+     "failed": 0,
+     "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+     },
+     "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+     },
+     "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 16,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "# 联邦学习用于医学影像分割：进展与挑战\n\n医学影像分割是疾病诊断、治疗规划与疗效评估的基础环节。深度学习模型的性能高度依赖大规模、多中心的标注数据，但患者影像受隐私法规与机构政策的约束，难以集中共享。联邦学习（federated learning, FL）采用“数据不动、模型动”的范式：各机构在本地训练，仅上传模型更新，由服务器聚合，为跨机构协作提供了可行路径[1]。\n\n在分割任务中，nnU-Net 凭借自配置能力成为常用的骨干网络[9]。早期可行性研究具有里程碑意义：Sheller 等人在 BraTS 上验证了多机构联邦训练可在不共享数据的前提下取得接近集中式训练的性能[2]；Li 等人进一步引入隐私保护机制，实现了脑肿瘤的联邦分割[3]。Manthe 等人则对联邦脑肿瘤分割开展了较为系统的基准评测，揭示了数据异质性对性能的显著影响[4]。\n\n数据异质性是核心难题。不同中心的扫描仪、成像协议与人群分布造成非独立同分布（non-IID）与域偏移，简单的加权平均容易引发客户端漂移。为此，Liu 等人提出 FedDG，在连续频域中开展情景学习，以提升跨中心泛化能力[5]。在标注稀缺时，Wu 等人利用原型伪标签与对比学习实现联邦半监督分割[6]；Ma 等人则放宽“所有客户端均有标注”的假设，研究模型异构条件下的半监督联邦学习[7]。针对个性化需求，Chen 与 Yuan 通过 gossip 对比互学习实现去中心化个性化[8]。\n\n尽管如此，联邦学习在医学影像分割中仍面临挑战：梯度与模型参数仍可能泄露隐私，需要结合差分隐私与安全聚合；通信开销与掉队者问题制约了可扩展性；评估协议与数据划分尚不统一，结果可比性有限[10]。未来可与自监督预训练、视觉基础模型及跨模态学习结合，并在真实临床工作流中验证其鲁棒性与合规性。\n\n总体而言，联邦学习为医学影像分割的跨机构协作提供了兼顾隐私与性能的技术框架，但从基准研究走向临床部署，仍需在异质性建模、隐私保障与工程可扩展性上持续突破。\n\n## 参考文献\n\n[1] Nicola Rieke, Jonny Hancox, Wenqi Li, Fausto Milletarì, Holger R. Roth, Shadi Albarqouni, Spyridon Bakas, Mathieu N. Galtier, Bennett A. Landman, Klaus Maier-Hein, Sébastien Ourselin, Micah Sheller, Ronald M. Summers, Andrew Trask, Daguang Xu, Maximilian Baust, M. Jorge Cardoso. The future of digital health with federated learning. npj Digital Medicine, 2020, 3(1): 119. DOI: 10.1038/s41746-020-00323-1\n\n[2] Micah J. Sheller, Brandon Edwards, G. Anthony Reina, Jason Martin, Sarthak Pati, Aikaterini Kotrotsou, Mikhail Milchenko, Weilin Xu, Daniel Marcus, Rivka R. Colen, Spyridon Bakas. Federated learning in medicine: facilitating multi-institutional collaborations without sharing patient data. Scientific Reports, 2020, 10(1): 12598. DOI: 10.1038/s41598-020-69250-1\n\n[3] Wenqi Li, Fausto Milletarì, Daguang Xu, Nicola Rieke, Jonny Hancox, Wentao Zhu, Maximilian Baust, Yan Cheng, Sébastien Ourselin, M. Jorge Cardoso, Andrew Feng. Privacy-Preserving Federated Brain Tumour Segmentation. Lecture Notes in Computer Science, 2019, 11769: 133-141. DOI: 10.1007/978-3-030-32692-0_16\n\n[4] Matthis Manthe, Stefan Duffner, Carole Lartizien. Federated brain tumor segmentation: An extensive benchmark. Medical Image Analysis, 2024, 97: 103270. DOI: 10.1016/j.media.2024.103270\n\n[5] Quande Liu, Cheng Chen, Jing Qin, Qi Dou, Pheng-Ann Heng. FedDG: Federated Domain Generalization on Medical Image Segmentation via Episodic Learning in Continuous Frequency Space. 2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021, 1013-1023. DOI: 10.1109/cvpr46437.2021.00107\n\n[6] Huisi Wu, Baiming Zhang, Cheng Chen, Jing Qin. Federated Semi-Supervised Medical Image Segmentation via Prototype-Based Pseudo-Labeling and Contrastive Learning. IEEE Transactions on Medical Imaging, 2024, 43(2): 649-661. DOI: 10.1109/tmi.2023.3314430\n\n[7] Yuxi Ma, Jiacheng Wang, Jing Yang, Liansheng Wang. Model-Heterogeneous Semi-Supervised Federated Learning for Medical Image Segmentation. IEEE Transactions on Medical Imaging, 2024, 43(5): 1804-1815. DOI: 10.1109/tmi.2023.3348982\n\n[8] Jingyun Chen, Yading Yuan. Decentralized Personalization for Federated Medical Image Segmentation via Gossip Contrastive Mutual Learning. IEEE Transactions on Medical Imaging, 2025, 44(7): 2768-2783. DOI: 10.1109/tmi.2025.3549292\n\n[9] Fabian Isensee, Paul F. Jaeger, Simon A. A. Kohl, Jens Petersen, Klaus H. Maier-Hein. nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature Methods, 2021, 18(2): 203-211. DOI: 10.1038/s41592-020-01008-z\n\n[10] Tian Li, Anit Kumar Sahu, Ameet Talwalkar, Virginia Smith. Federated Learning: Challenges, Methods, and Future Directions. IEEE Signal Processing Magazine, 2020, 37(3): 50-60. DOI: 10.1109/msp.2020.2975749\n\n以上 10 条参考文献均经 CiteGuard 核查通过（真实性、作者、年份、卷期页码与 DOI 全部一致）。",
+    "ttft_ms": 1888,
+    "type": "result",
+    "duration_ms": 45349,
+    "uuid": "cbd7786c-1f42-4946-80e5-586c22bf3fc3",
+    "ttft_stream_ms": 1093,
+    "time_to_request_ms": 170,
+    "first_content_frame_ms": 1095,
+    "time_to_request_from_spawn_ms": 1279729,
+    "warm_spare_claimed": false,
+    "flag_fetch_kick": "started_after_init_empty",
+    "time_origin_ms": 1793447275906.883,
+    "queued_turn_count": 0,
+    "result_index": 0,
+    "model_usage_since_last_result": {
+     "deepseek-flash": {
+      "inputTokens": 23464,
+      "outputTokens": 6252,
+      "cacheReadInputTokens": 86144,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.316692,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "deepseek-flash",
+      "provider": "firstParty",
+      "costBasis": "unknown"
+     }
+    }
+   }
+  ]
+ },
+ "error": null
+}

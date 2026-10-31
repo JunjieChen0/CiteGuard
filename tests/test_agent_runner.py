@@ -1,3 +1,4 @@
+import json
 import subprocess
 from pathlib import Path
 
@@ -118,3 +119,75 @@ def test_run_agent_raises_on_nonzero_exit(monkeypatch, tmp_path: Path):
 
     with pytest.raises(RuntimeError, match="boom"):
         agent_runner.run_agent("x", workdir=tmp_path)
+
+
+def test_build_command_adds_allowed_tools():
+    cmd = build_command("claude.exe", model="m", mcp_config=None, allowed_tools=["mcp__citeguard__search_papers", "Skill"])
+    assert cmd[cmd.index("--allowedTools") + 1] == "mcp__citeguard__search_papers,Skill"
+    assert "--allowedTools" not in build_command("claude.exe", model="m", mcp_config=None)
+
+
+def test_install_skill_copies_into_project_skills_dir(tmp_path: Path):
+    skill = tmp_path / "src" / "citeguard"
+    skill.mkdir(parents=True)
+    (skill / "SKILL.md").write_text("---\nname: citeguard\n---\n", encoding="utf-8")
+    workdir = tmp_path / "work"
+    workdir.mkdir()
+
+    agent_runner.install_skill(skill, workdir)
+
+    assert (workdir / ".claude" / "skills" / "citeguard" / "SKILL.md").read_text(encoding="utf-8").startswith("---")
+
+
+def test_write_citeguard_mcp_config(tmp_path: Path):
+    path = agent_runner.write_citeguard_mcp_config(tmp_path / "mcp.json", cache_dir=tmp_path / "cache")
+    server = json.loads(path.read_text(encoding="utf-8"))["mcpServers"]["citeguard"]
+    assert server["command"].endswith("citeguard-mcp")
+    assert server["env"] == {"CITEGUARD_CACHE_DIR": str(tmp_path / "cache")}
+
+
+def test_run_agent_with_skill_and_tools(monkeypatch, tmp_path: Path):
+    completed = subprocess.CompletedProcess([], 0, stdout='{"result": "ok"}', stderr="")
+    calls = _patch_runtime(monkeypatch, tmp_path, completed)
+    skill = tmp_path / "skill" / "citeguard"
+    skill.mkdir(parents=True)
+    (skill / "SKILL.md").write_text("x", encoding="utf-8")
+    workdir = tmp_path / "w"
+    workdir.mkdir()
+
+    agent_runner.run_agent("p", workdir=workdir, allowed_tools=["Skill"], skill_dir=skill)
+
+    assert "--allowedTools" in calls["cmd"]
+    assert (workdir / ".claude" / "skills" / "citeguard" / "SKILL.md").exists()
+
+
+def test_build_command_stream_json_needs_verbose():
+    cmd = build_command("claude.exe", model="m", mcp_config=None, stream=True)
+    assert cmd[cmd.index("--output-format") + 1] == "stream-json"
+    assert "--verbose" in cmd
+
+
+def test_parse_stream_output_returns_result_with_transcript():
+    lines = [
+        '{"type": "system", "subtype": "init"}',
+        '{"type": "assistant", "message": {"content": [{"type": "tool_use", "name": "mcp__citeguard__search_papers"}]}}',
+        "",
+        '{"type": "result", "result": "终稿", "num_turns": 3}',
+    ]
+    parsed = agent_runner.parse_stream_output("\n".join(lines))
+    assert parsed["result"] == "终稿" and parsed["num_turns"] == 3
+    assert len(parsed["transcript"]) == 3
+    assert agent_runner.tool_calls(parsed) == ["mcp__citeguard__search_papers"]
+
+
+def test_parse_stream_output_without_result_raises():
+    with pytest.raises(RuntimeError, match="result"):
+        agent_runner.parse_stream_output('{"type": "assistant"}')
+
+
+def test_parse_stream_output_drops_thinking_progress_events():
+    lines = ['{"type": "system", "subtype": "thinking_tokens", "message": "..."}',
+             '{"type": "system", "subtype": "init"}',
+             '{"type": "result", "result": "ok"}']
+    parsed = agent_runner.parse_stream_output("\n".join(lines))
+    assert [e.get("subtype") for e in parsed["transcript"]] == ["init", None]

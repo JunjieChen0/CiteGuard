@@ -1,0 +1,1875 @@
+{
+ "slug": "nerf-urban",
+ "topic": "神经辐射场用于大规模城市场景重建",
+ "kind": "niche",
+ "condition": "S-noskill",
+ "run": 1,
+ "prompt": "用中文写一篇约 600 字的综述，主题是：神经辐射场用于大规模城市场景重建。文末列出 10 条英文参考文献，每条包含全部作者、标题、会议/期刊、年份、卷期页码、DOI。",
+ "timestamp": "2026-10-31T11:49:33.076465+00:00",
+ "elapsed_s": 50,
+ "response": {
+  "duration_api_ms": 39384,
+  "stop_reason": "end_turn",
+  "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+  "total_cost_usd": 0.32611,
+  "usage": {
+   "input_tokens": 18377,
+   "cache_creation_input_tokens": 0,
+   "cache_read_input_tokens": 99200,
+   "output_tokens": 7385,
+   "output_tokens_details": {
+    "thinking_tokens": 0
+   },
+   "server_tool_use": {
+    "web_search_requests": 0,
+    "web_fetch_requests": 0
+   },
+   "service_tier": "standard",
+   "cache_creation": {
+    "ephemeral_1h_input_tokens": 0,
+    "ephemeral_5m_input_tokens": 0
+   },
+   "inference_geo": "",
+   "iterations": [],
+   "speed": "standard",
+   "fallback_credit": null
+  },
+  "modelUsage": {
+   "deepseek-flash": {
+    "inputTokens": 18377,
+    "outputTokens": 7385,
+    "cacheReadInputTokens": 99200,
+    "cacheCreationInputTokens": 0,
+    "webSearchRequests": 0,
+    "costUSD": 0.32611,
+    "contextWindow": 200000,
+    "maxOutputTokens": 32000,
+    "thinkingTokens": 0,
+    "cacheCreationEphemeral5mInputTokens": 0,
+    "cacheCreationEphemeral1hInputTokens": 0,
+    "canonicalModel": "deepseek-flash",
+    "provider": "firstParty",
+    "costBasis": "unknown"
+   }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subagent_stats": {
+   "spawned": 0,
+   "requested": {
+    "background": 0,
+    "foreground": 0,
+    "unset": 0
+   },
+   "started_in_background": 0,
+   "max_depth": 0,
+   "spawned_by_subagents": 0,
+   "completed": 0,
+   "failed": 0,
+   "killed": {
+    "parent": 0,
+    "user": 0,
+    "system": 0
+   },
+   "refused": {
+    "depth_limit": 0,
+    "concurrency_limit": 0,
+    "budget": 0
+   },
+   "by_type": {}
+  },
+  "safety_stops": 0,
+  "is_error": false,
+  "num_turns": 16,
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "# 神经辐射场用于大规模城市场景重建\n\n城市级三维重建需要在数十平方公里范围内恢复几何与外观，并支持自由视点漫游。神经辐射场（NeRF）以隐式多层感知机编码密度与颜色，通过体渲染合成新视图，为真实感渲染提供了统一框架[1]。但原始 NeRF 假设场景有界、视角集中，直接用于城市会遇到表示容量不足、训练缓慢与远近尺度差异显著等问题。\n\n针对尺度的扩展主要有三条路线。第一种是场景分区与模型拼接：Block-NeRF 将城市划分为多个区块分别训练，并按视角动态融合外观嵌入，以应对光照变化[3]；Mega-NeRF 面向稀疏航拍视图做空间划分与几何引导采样，实现大规模虚拟飞行[4]。第二种是层次化多尺度表示：BungeeNeRF 由粗到细渐进训练，以统一模型覆盖从卫星到街景的跨尺度细节[6]；Mip-NeRF 360 则通过场景收缩与锥形采样解决无界场景的抗锯齿渲染[2]。第三种是引入显式几何先验：Urban Radiance Fields 联合优化激光雷达深度与语义分割，提升街区几何一致性[5]；SUDS 将动态物体分解为独立辐射场，实现无标注的城市动态街景重建[7]。\n\n效率方面，Instant-NGP 的多分辨率哈希编码把训练从数天缩短至分钟级[8]；3D Gaussian Splatting 以显式高斯基元实现实时渲染，正逐渐成为城市级重建的重要替代表示[9]。数据层面，MatrixCity 提供了成对的航拍与街景大规模数据集，为跨尺度评测建立基准[10]。\n\n总体来看，城市级 NeRF 仍在存储开销、动态与光照变化、跨尺度一致性等方面面临挑战，显式表示与数据驱动先验的结合是值得关注的方向。\n\n## 参考文献\n\n[1] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, Ren Ng. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis. In: Computer Vision – ECCV 2020, Lecture Notes in Computer Science, 2020: 405–421. DOI: 10.1007/978-3-030-58452-8_24\n\n[2] Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, Peter Hedman. Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields. CVPR 2022, 2022: 5460–5469. DOI: 10.1109/CVPR52688.2022.00539\n\n[3] Matthew Tancik, Vincent Casser, Xinchen Yan, Sabeek Pradhan, Ben P. Mildenhall, Pratul Srinivasan, Jonathan T. Barron, Henrik Kretzschmar. Block-NeRF: Scalable Large Scene Neural View Synthesis. CVPR 2022, 2022: 8238–8248. DOI: 10.1109/CVPR52688.2022.00807\n\n[4] Haithem Turki, Deva Ramanan, Mahadev Satyanarayanan. Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly-Throughs. CVPR 2022, 2022: 12912–12921. DOI: 10.1109/CVPR52688.2022.01258\n\n[5] Konstantinos Rematas, Andrew Liu, Pratul Srinivasan, Jonathan Barron, Andrea Tagliasacchi, Thomas Funkhouser, Vittorio Ferrari. Urban Radiance Fields. CVPR 2022, 2022: 12922–12932. DOI: 10.1109/CVPR52688.2022.01259\n\n[6] Yuanbo Xiangli, Linning Xu, Xingang Pan, Nanxuan Zhao, Anyi Rao, Christian Theobalt, Bo Dai, Dahua Lin. BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering. ECCV 2022, Lecture Notes in Computer Science, 2022: 106–122. DOI: 10.1007/978-3-031-19824-3_7\n\n[7] Haithem Turki, Jason Y. Zhang, Francesco Ferroni, Deva Ramanan. SUDS: Scalable Urban Dynamic Scenes. CVPR 2023, 2023: 12375–12385. DOI: 10.1109/CVPR52729.2023.01191\n\n[8] Thomas Müller, Alex Evans, Christoph Schied, Alexander Keller. Instant Neural Graphics Primitives with a Multiresolution Hash Encoding. ACM Transactions on Graphics, 2022, 41(4): 1–15. DOI: 10.1145/3528223.3530127\n\n[9] Bernhard Kerbl, Georgios Kopanas, Thomas Leimkuehler, George Drettakis. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics, 2023, 42(4): 1–14. DOI: 10.1145/3592433\n\n[10] Yixuan Li, Lihan Jiang, Linning Xu, Yuanbo Xiangli, Zhenzhi Wang, Dahua Lin, Bo Dai. MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond. ICCV 2023, 2023: 3182–3192. DOI: 10.1109/ICCV51070.2023.00297\n\n*说明：10 条参考文献均已通过 CiteGuard 核查（10/10 通过，无虚构或元数据错误）；正文约 600 字。*",
+  "ttft_ms": 3297,
+  "type": "result",
+  "duration_ms": 48337,
+  "uuid": "7b2248a2-87f2-4afa-8294-8c055bb5af64",
+  "ttft_stream_ms": 1126,
+  "time_to_request_ms": 213,
+  "first_content_frame_ms": 1127,
+  "time_to_request_from_spawn_ms": 1326872,
+  "warm_spare_claimed": false,
+  "flag_fetch_kick": "started_after_init_empty",
+  "time_origin_ms": 1793447322982.889,
+  "queued_turn_count": 0,
+  "result_index": 0,
+  "model_usage_since_last_result": {
+   "deepseek-flash": {
+    "inputTokens": 18377,
+    "outputTokens": 7385,
+    "cacheReadInputTokens": 99200,
+    "cacheCreationInputTokens": 0,
+    "webSearchRequests": 0,
+    "costUSD": 0.32611,
+    "contextWindow": 200000,
+    "maxOutputTokens": 32000,
+    "thinkingTokens": 0,
+    "cacheCreationEphemeral5mInputTokens": 0,
+    "cacheCreationEphemeral1hInputTokens": 0,
+    "canonicalModel": "deepseek-flash",
+    "provider": "firstParty",
+    "costBasis": "unknown"
+   }
+  },
+  "transcript": [
+   {
+    "type": "system",
+    "subtype": "init",
+    "cwd": "/tmp/citeguard-S-noskill-zfe0en9y",
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "tools": [
+     "Task",
+     "Bash",
+     "CronCreate",
+     "CronDelete",
+     "CronList",
+     "DesignSync",
+     "Edit",
+     "EnterWorktree",
+     "ExitWorktree",
+     "ListAgents",
+     "ListMcpResourcesTool",
+     "Monitor",
+     "NotebookEdit",
+     "Read",
+     "ReadMcpResourceDirTool",
+     "ReadMcpResourceTool",
+     "ReportFindings",
+     "ScheduleWakeup",
+     "SendMessage",
+     "Skill",
+     "TaskStop",
+     "ToolSearch",
+     "WebFetch",
+     "WebSearch",
+     "Workflow",
+     "Write",
+     "mcp__citeguard__search_papers",
+     "mcp__citeguard__verify_references"
+    ],
+    "mcp_servers": [
+     {
+      "name": "citeguard",
+      "status": "connected",
+      "source": "dynamic"
+     }
+    ],
+    "model": "deepseek-flash",
+    "permissionMode": "default",
+    "slash_commands": [
+     "deep-research",
+     "design",
+     "design-sync",
+     "dataviz",
+     "update-config",
+     "verify",
+     "debug",
+     "code-review",
+     "simplify",
+     "batch",
+     "fewer-permission-prompts",
+     "doctor",
+     "loop",
+     "claude-api",
+     "workflow-authoring",
+     "run",
+     "run-skill-generator",
+     "plugin-authoring",
+     "agents",
+     "auto-mode-setup",
+     "autocompact",
+     "clear",
+     "color",
+     "compact",
+     "config",
+     "output-style",
+     "context",
+     "effort",
+     "fast",
+     "focus",
+     "heapdump",
+     "init",
+     "mcp",
+     "model",
+     "__remote-workflow",
+     "workflow-launch-exec",
+     "reload-plugins",
+     "reload-skills",
+     "rename",
+     "security-review",
+     "usage",
+     "insights",
+     "recap",
+     "goal",
+     "design-consent",
+     "design-revoke",
+     "list-agents",
+     "team-onboarding"
+    ],
+    "terminal_slash_commands": [
+     "doctor",
+     "color",
+     "focus",
+     "reload-plugins"
+    ],
+    "apiKeySource": "none",
+    "claude_code_version": "2.1.316",
+    "output_style": "default",
+    "agents": [
+     "claude",
+     "Explore",
+     "general-purpose",
+     "Plan",
+     "statusline-setup"
+    ],
+    "skills": [
+     "deep-research",
+     "design",
+     "design-sync",
+     "dataviz",
+     "update-config",
+     "verify",
+     "debug",
+     "code-review",
+     "simplify",
+     "batch",
+     "fewer-permission-prompts",
+     "doctor",
+     "loop",
+     "claude-api",
+     "workflow-authoring",
+     "run",
+     "run-skill-generator",
+     "plugin-authoring"
+    ],
+    "plugins": [
+     {
+      "name": "cc-plugin-agents-md",
+      "path": "builtin",
+      "source": "cc-plugin-agents-md@builtin"
+     },
+     {
+      "name": "cc-plugin-telemetry",
+      "path": "builtin",
+      "source": "cc-plugin-telemetry@builtin"
+     },
+     {
+      "name": "cc-plugin-plugin-authoring",
+      "path": "builtin",
+      "source": "cc-plugin-plugin-authoring@builtin"
+     }
+    ],
+    "capabilities": [
+     "interrupt_receipt_v1",
+     "interrupt_cancel_queued_v1",
+     "interrupt_send_now_v1",
+     "interrupt_requeue_taken_v1",
+     "msg_lifecycle_v1",
+     "request_marker_lists_v1",
+     "ask_user_question_unanswered_v1",
+     "lifecycle_wakeup_source_v1",
+     "sdk_mcp_tools_list_changed",
+     "sdk_mcp_manifests",
+     "mcp_read_resource_v1",
+     "mcp_tool_ui_meta_v1",
+     "ui_surface_v1",
+     "mcp_call_result_not_for_model_v1"
+    ],
+    "analytics_disabled": false,
+    "product_feedback_disabled": false,
+    "uuid": "b93649cc-b62f-4084-bb8d-c280098d9a00",
+    "memory_paths": {
+     "auto": "/home/user/CiteGuard/.claude-runtime/projects/-tmp-citeguard-S-noskill-zfe0en9y/memory/"
+    },
+    "original_cwd": "/tmp/citeguard-S-noskill-zfe0en9y",
+    "additional_directories": [],
+    "messaging_socket_path": "/tmp/cc-socks/2258.sock",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "per_turn_effort_active": false,
+    "ultrathink_available": false,
+    "view_mode": "default"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "802cb97d-be82-46f0-9de0-a1b9707b4f4d",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "The user wants a Chinese review article (~600 characters/words — \"字\" means characters, so ~600 Chinese characters) on neural radiance fields for large-scale urban scene reconstruction, with 10 English references with full metadata and DOIs.\n\nI should use the CiteGuard MCP tools to verify references. Let me load the tool schemas first.\n\nLet me search for papers on NeRF for large-scale urban scenes. Key works:\n- NeRF: Mildenhall et al., ECCV 2020\n- Block-NeRF: Tancik et al., CVPR 2022\n- Mega-NeRF: Turki et al., CVPR 2022\n- Urban Radiance Fields: Rematas et al., CVPR 2022\n- BungeeNeRF: Xiangli et al., ECCV 2022\n- CityNeRF: Lin et al., ICCV 2021\n- Mip-NeRF 360: Barron et al., CVPR 2022\n- Instant-NGP: Müller et al., ACM TOG 2022\n- 3D Gaussian Splatting: Kerbl et al., SIGGRAPH 2023\n- SUDS: Turki et al., CVPR 2023\n- NeRF-W: Martin-Brualla et al., CVPR 2021\n- MatrixCity dataset\n- K-Planes\n\nI need to verify each with correct metadata. Let me use the CiteGuard tools.\n\nLet me load the tool schemas.",
+       "signature": "802cb97d-be82-46f0-9de0-a1b9707b4f4d"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 11176,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "f8d3ace0-78c5-4533-8dbe-396689ecd83b",
+    "timestamp": "2026-10-31T11:48:47.758Z",
+    "thinking_duration_ms": 2170,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "802cb97d-be82-46f0-9de0-a1b9707b4f4d",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_cizGdi0pBEY2VGgHxVUp4772",
+       "name": "ToolSearch",
+       "input": {
+        "query": "select:mcp__citeguard__search_papers,mcp__citeguard__verify_references",
+        "max_results": 5
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 11176,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "7260a6eb-1fe3-45d1-9892-9cea0a98010c",
+    "timestamp": "2026-10-31T11:48:47.951Z"
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "type": "tool_result",
+       "tool_use_id": "call_00_cizGdi0pBEY2VGgHxVUp4772",
+       "content": [
+        {
+         "type": "tool_reference",
+         "tool_name": "mcp__citeguard__search_papers"
+        },
+        {
+         "type": "tool_reference",
+         "tool_name": "mcp__citeguard__verify_references"
+        }
+       ]
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "5b3f2341-278e-4d52-afb7-702d4d8e98e4",
+    "timestamp": "2026-10-31T11:48:47.972Z",
+    "tool_use_result": {
+     "matches": [
+      "mcp__citeguard__search_papers",
+      "mcp__citeguard__verify_references"
+     ],
+     "query": "select:mcp__citeguard__search_papers,mcp__citeguard__verify_references",
+     "total_deferred_tools": 17
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_cizGdi0pBEY2VGgHxVUp4772",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "f97107c4-831c-4463-a25c-53f8c132e32c",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Let me search for key papers to get accurate metadata.",
+       "signature": "f97107c4-831c-4463-a25c-53f8c132e32c"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 443,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11520,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "7ca16e7a-6a58-4b0f-a8be-8ee5b696e313",
+    "timestamp": "2026-10-31T11:48:49.112Z",
+    "thinking_duration_ms": 511,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "f97107c4-831c-4463-a25c-53f8c132e32c",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_KRwvmHX7nqW147HRAE593905",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "Block-NeRF scalable large scene neural view synthesis",
+        "limit": 5
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 443,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11520,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "f104f036-75e3-4fe0-b31d-d30d454139d8",
+    "timestamp": "2026-10-31T11:48:49.288Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_KRwvmHX7nqW147HRAE593905",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_KRwvmHX7nqW147HRAE593905",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Block-NeRF scalable large scene neural view synthesis\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jie Wang, Yu Cheng, Jie Zhu. D-Block NeRF: Depth-Based Scalable Large-Scale Scene View Synthesis. 2026 11th International Conference on Electronic Technology and Information Science (ICETIS), 2026, 539-542. DOI: 10.1109/icetis70504.2026.11633466\\n2. Matthew Tancik, Vincent Casser, Xinchen Yan, Sabeek Pradhan, Ben P. Mildenhall, Pratul Srinivasan, Jonathan T. Barron, Henrik Kretzschmar. Block-NeRF: Scalable Large Scene Neural View Synthesis. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, 8238-8248. DOI: 10.1109/cvpr52688.2022.00807\\n3. Hao He, Yixun Liang, Shishi Xiao, Jierun Chen, Yingcong Chen. CP‐NeRF: Conditionally Parameterized Neural Radiance Fields for Cross‐scene Novel View Synthesis. Computer Graphics Forum, 2023, 42(7). DOI: 10.1111/cgf.14940\\n4. Feihu Bian, Suya Xiong, Ran Yi, Lizhuang Ma. Multi-view stereo-regulated NeRF for urban scene novel view synthesis. The Visual Computer, 2024, 41(1): 243-255. DOI: 10.1007/s00371-024-03321-6\\n5. Susan Liang, Chao Huang, Yapeng Tian, Anurag Kumar, Chenliang Xu. AV-NeRF: Learning Neural Fields for Real-World Audio-Visual Scene Synthesis. Advances in Neural Information Processing Systems 36, 2023, 37472-37490. DOI: 10.52202/075280-1629\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "7ec1206b-49a4-4791-a809-2e5cfcd1b242",
+    "timestamp": "2026-10-31T11:48:49.328Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Block-NeRF scalable large scene neural view synthesis\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jie Wang, Yu Cheng, Jie Zhu. D-Block NeRF: Depth-Based Scalable Large-Scale Scene View Synthesis. 2026 11th International Conference on Electronic Technology and Information Science (ICETIS), 2026, 539-542. DOI: 10.1109/icetis70504.2026.11633466\\n2. Matthew Tancik, Vincent Casser, Xinchen Yan, Sabeek Pradhan, Ben P. Mildenhall, Pratul Srinivasan, Jonathan T. Barron, Henrik Kretzschmar. Block-NeRF: Scalable Large Scene Neural View Synthesis. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, 8238-8248. DOI: 10.1109/cvpr52688.2022.00807\\n3. Hao He, Yixun Liang, Shishi Xiao, Jierun Chen, Yingcong Chen. CP‐NeRF: Conditionally Parameterized Neural Radiance Fields for Cross‐scene Novel View Synthesis. Computer Graphics Forum, 2023, 42(7). DOI: 10.1111/cgf.14940\\n4. Feihu Bian, Suya Xiong, Ran Yi, Lizhuang Ma. Multi-view stereo-regulated NeRF for urban scene novel view synthesis. The Visual Computer, 2024, 41(1): 243-255. DOI: 10.1007/s00371-024-03321-6\\n5. Susan Liang, Chao Huang, Yapeng Tian, Anurag Kumar, Chenliang Xu. AV-NeRF: Learning Neural Fields for Real-World Audio-Visual Scene Synthesis. Advances in Neural Information Processing Systems 36, 2023, 37472-37490. DOI: 10.52202/075280-1629\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Block-NeRF scalable large scene neural view synthesis\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Jie Wang, Yu Cheng, Jie Zhu. D-Block NeRF: Depth-Based Scalable Large-Scale Scene View Synthesis. 2026 11th International Conference on Electronic Technology and Information Science (ICETIS), 2026, 539-542. DOI: 10.1109/icetis70504.2026.11633466\n2. Matthew Tancik, Vincent Casser, Xinchen Yan, Sabeek Pradhan, Ben P. Mildenhall, Pratul Srinivasan, Jonathan T. Barron, Henrik Kretzschmar. Block-NeRF: Scalable Large Scene Neural View Synthesis. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, 8238-8248. DOI: 10.1109/cvpr52688.2022.00807\n3. Hao He, Yixun Liang, Shishi Xiao, Jierun Chen, Yingcong Chen. CP‐NeRF: Conditionally Parameterized Neural Radiance Fields for Cross‐scene Novel View Synthesis. Computer Graphics Forum, 2023, 42(7). DOI: 10.1111/cgf.14940\n4. Feihu Bian, Suya Xiong, Ran Yi, Lizhuang Ma. Multi-view stereo-regulated NeRF for urban scene novel view synthesis. The Visual Computer, 2024, 41(1): 243-255. DOI: 10.1007/s00371-024-03321-6\n5. Susan Liang, Chao Huang, Yapeng Tian, Anurag Kumar, Chenliang Xu. AV-NeRF: Learning Neural Fields for Real-World Audio-Visual Scene Synthesis. Advances in Neural Information Processing Systems 36, 2023, 37472-37490. DOI: 10.52202/075280-1629\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_KRwvmHX7nqW147HRAE593905",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "f97107c4-831c-4463-a25c-53f8c132e32c",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_01_KFCY5AVZuKhcWfEbQ1Wh9071",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "Mega-NeRF scalable large-scale neural radiance fields",
+        "limit": 5
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 443,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11520,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "2e854f04-9d18-4ac3-93c0-0261a4987dee",
+    "timestamp": "2026-10-31T11:48:49.503Z",
+    "tool_use_meta": [
+     {
+      "id": "call_01_KFCY5AVZuKhcWfEbQ1Wh9071",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "f97107c4-831c-4463-a25c-53f8c132e32c",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_02_1JGlu0bgC4nMiOKdtQfT5613",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "Urban Radiance Fields",
+        "limit": 5
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 443,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11520,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "08f4bd16-c69e-4309-9a69-092de4f3b6db",
+    "timestamp": "2026-10-31T11:48:49.660Z",
+    "tool_use_meta": [
+     {
+      "id": "call_02_1JGlu0bgC4nMiOKdtQfT5613",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "f97107c4-831c-4463-a25c-53f8c132e32c",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_03_gVSx10Dij9B0SEcqSqMh2903",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "query": "BungeeNeRF progressive neural radiance field for extreme multi-scale scene rendering",
+        "limit": 5
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 443,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11520,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "a9781183-347e-4a9e-9fd4-977182fea01d",
+    "timestamp": "2026-10-31T11:48:49.879Z",
+    "tool_use_meta": [
+     {
+      "id": "call_03_gVSx10Dij9B0SEcqSqMh2903",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_01_KFCY5AVZuKhcWfEbQ1Wh9071",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Mega-NeRF scalable large-scale neural radiance fields\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Deepika Mahalingam, Ajay Sigatapu, Deep Doshi, Ganesh Sistu. PGT-NeRF: Physics-Guided Thermal Neural Radiance Fields. Proceedings of the 21st International Conference on Computer Vision Theory and Applications, 2026, 216-226. DOI: 10.5220/0014632600004084\\n2. Jiabao Li, Yuqi Li, Ciliang Sun, Chong Wang, Jinhui Xiang. Spec-NeRF: Multi-Spectral Neural Radiance Fields. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.24188235\\n3. Jiabao Li, Yuqi Li, Ciliang Sun, Chong Wang, Jinhui Xiang. Spec-NeRF: Multi-Spectral Neural Radiance Fields. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.24188235.v1\\n4. Chenyu Ge. SAC-NeRF: Adaptive Ray Sampling for Neural Radiance Fields via Soft Actor-Critic Reinforcement Learning. Institute of Electrical and Electronics Engineers (IEEE), 2026. DOI: 10.36227/techrxiv.176800177.72092357/v1\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "bc6e82f0-7e8c-47e0-ad44-25fa88481890",
+    "timestamp": "2026-10-31T11:48:50.596Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Mega-NeRF scalable large-scale neural radiance fields\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Deepika Mahalingam, Ajay Sigatapu, Deep Doshi, Ganesh Sistu. PGT-NeRF: Physics-Guided Thermal Neural Radiance Fields. Proceedings of the 21st International Conference on Computer Vision Theory and Applications, 2026, 216-226. DOI: 10.5220/0014632600004084\\n2. Jiabao Li, Yuqi Li, Ciliang Sun, Chong Wang, Jinhui Xiang. Spec-NeRF: Multi-Spectral Neural Radiance Fields. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.24188235\\n3. Jiabao Li, Yuqi Li, Ciliang Sun, Chong Wang, Jinhui Xiang. Spec-NeRF: Multi-Spectral Neural Radiance Fields. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.24188235.v1\\n4. Chenyu Ge. SAC-NeRF: Adaptive Ray Sampling for Neural Radiance Fields via Soft Actor-Critic Reinforcement Learning. Institute of Electrical and Electronics Engineers (IEEE), 2026. DOI: 10.36227/techrxiv.176800177.72092357/v1\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Mega-NeRF scalable large-scale neural radiance fields\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Deepika Mahalingam, Ajay Sigatapu, Deep Doshi, Ganesh Sistu. PGT-NeRF: Physics-Guided Thermal Neural Radiance Fields. Proceedings of the 21st International Conference on Computer Vision Theory and Applications, 2026, 216-226. DOI: 10.5220/0014632600004084\n2. Jiabao Li, Yuqi Li, Ciliang Sun, Chong Wang, Jinhui Xiang. Spec-NeRF: Multi-Spectral Neural Radiance Fields. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.24188235\n3. Jiabao Li, Yuqi Li, Ciliang Sun, Chong Wang, Jinhui Xiang. Spec-NeRF: Multi-Spectral Neural Radiance Fields. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.24188235.v1\n4. Chenyu Ge. SAC-NeRF: Adaptive Ray Sampling for Neural Radiance Fields via Soft Actor-Critic Reinforcement Learning. Institute of Electrical and Electronics Engineers (IEEE), 2026. DOI: 10.36227/techrxiv.176800177.72092357/v1\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_01_KFCY5AVZuKhcWfEbQ1Wh9071",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_02_1JGlu0bgC4nMiOKdtQfT5613",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Urban Radiance Fields\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jiahui Zhang. Radiance fields for 3D scene representation and rendering. Nanyang Technological University. DOI: 10.32657/10356/200242\\n2. Stavros Diolatzis. Learning radiance fields : from global illumination to generative models. Agence Bibliographique de l'Enseignement Supérieur. DOI: 10.70675/8b66e1d8z5adcz4c22z927az98788bdb07b6\\n3. Christopher D. Hsu, Pratik Chaudhari. Active Scout: Multi-Target Tracking Using Neural Radiance Fields in Dense Urban Environments. 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2024, 10399-10406. DOI: 10.1109/iros58592.2024.10802565\\n4. Konstantinos Rematas, Andrew Liu, Pratul Srinivasan, Jonathan Barron, Andrea Tagliasacchi, Thomas Funkhouser, Vittorio Ferrari. Urban Radiance Fields. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, 12922-12932. DOI: 10.1109/cvpr52688.2022.01259\\n5. Matúš Dopiriak, Jakub Gerec, Juraj Gazda. Reconstruction of Photorealistic 3D Urban Scenes Using Radiance Fields as Digital Twins for Autonomous Driving. Acta Electrotechnica et Informatica, 2024, 24(4): 27-34. DOI: 10.2478/aei-2024-0015\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "16dcb346-01dc-4dc6-b029-60e5a6f17e74",
+    "timestamp": "2026-10-31T11:48:50.620Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Urban Radiance Fields\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jiahui Zhang. Radiance fields for 3D scene representation and rendering. Nanyang Technological University. DOI: 10.32657/10356/200242\\n2. Stavros Diolatzis. Learning radiance fields : from global illumination to generative models. Agence Bibliographique de l'Enseignement Supérieur. DOI: 10.70675/8b66e1d8z5adcz4c22z927az98788bdb07b6\\n3. Christopher D. Hsu, Pratik Chaudhari. Active Scout: Multi-Target Tracking Using Neural Radiance Fields in Dense Urban Environments. 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2024, 10399-10406. DOI: 10.1109/iros58592.2024.10802565\\n4. Konstantinos Rematas, Andrew Liu, Pratul Srinivasan, Jonathan Barron, Andrea Tagliasacchi, Thomas Funkhouser, Vittorio Ferrari. Urban Radiance Fields. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, 12922-12932. DOI: 10.1109/cvpr52688.2022.01259\\n5. Matúš Dopiriak, Jakub Gerec, Juraj Gazda. Reconstruction of Photorealistic 3D Urban Scenes Using Radiance Fields as Digital Twins for Autonomous Driving. Acta Electrotechnica et Informatica, 2024, 24(4): 27-34. DOI: 10.2478/aei-2024-0015\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Urban Radiance Fields\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Jiahui Zhang. Radiance fields for 3D scene representation and rendering. Nanyang Technological University. DOI: 10.32657/10356/200242\n2. Stavros Diolatzis. Learning radiance fields : from global illumination to generative models. Agence Bibliographique de l'Enseignement Supérieur. DOI: 10.70675/8b66e1d8z5adcz4c22z927az98788bdb07b6\n3. Christopher D. Hsu, Pratik Chaudhari. Active Scout: Multi-Target Tracking Using Neural Radiance Fields in Dense Urban Environments. 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2024, 10399-10406. DOI: 10.1109/iros58592.2024.10802565\n4. Konstantinos Rematas, Andrew Liu, Pratul Srinivasan, Jonathan Barron, Andrea Tagliasacchi, Thomas Funkhouser, Vittorio Ferrari. Urban Radiance Fields. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, 12922-12932. DOI: 10.1109/cvpr52688.2022.01259\n5. Matúš Dopiriak, Jakub Gerec, Juraj Gazda. Reconstruction of Photorealistic 3D Urban Scenes Using Radiance Fields as Digital Twins for Autonomous Driving. Acta Electrotechnica et Informatica, 2024, 24(4): 27-34. DOI: 10.2478/aei-2024-0015\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_02_1JGlu0bgC4nMiOKdtQfT5613",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_03_gVSx10Dij9B0SEcqSqMh2903",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：BungeeNeRF progressive neural radiance field for extreme multi-scale scene rendering\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Yuanbo Xiangli, Linning Xu, Xingang Pan, Nanxuan Zhao, Anyi Rao, Christian Theobalt, Bo Dai, Dahua Lin. BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering. Lecture Notes in Computer Science, 2022, 106-122. DOI: 10.1007/978-3-031-19824-3_7\\n2. Mingqi Shao, Feng Xiong, Hang Zhang, Shuang Yang, Mu Xu, Wei Bian, Xueqian Wang. Global-Guided Focal Neural Radiance Field for Large-Scale Scene Rendering. 2025 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV), 2025, 2558-2567. DOI: 10.1109/wacv61041.2025.00254\\n3. Jiaming Gu, Minchao Jiang, Hongsheng Li, Xiaoyuan Lu, Guangming Zhu, Syed Afaq Ali Shah, Liang Zhang, Mohammed Bennamoun. UE4-NeRF:Neural Radiance Field for Real-Time Rendering of Large-Scale Scene. Advances in Neural Information Processing Systems 36, 2023, 59124-59136. DOI: 10.52202/075280-2580\\n4. Jiahui Zhang. Radiance fields for 3D scene representation and rendering. Nanyang Technological University. DOI: 10.32657/10356/200242\\n5. Takuhiro Kaneko. MIMO-NeRF: Fast Neural Rendering with Multi-input Multi-output Neural Radiance Fields. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 3250-3260. DOI: 10.1109/iccv51070.2023.00303\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "7b9d6fe8-5443-4ccd-b7aa-5bfcbe29e66a",
+    "timestamp": "2026-10-31T11:48:52.377Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：BungeeNeRF progressive neural radiance field for extreme multi-scale scene rendering\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Yuanbo Xiangli, Linning Xu, Xingang Pan, Nanxuan Zhao, Anyi Rao, Christian Theobalt, Bo Dai, Dahua Lin. BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering. Lecture Notes in Computer Science, 2022, 106-122. DOI: 10.1007/978-3-031-19824-3_7\\n2. Mingqi Shao, Feng Xiong, Hang Zhang, Shuang Yang, Mu Xu, Wei Bian, Xueqian Wang. Global-Guided Focal Neural Radiance Field for Large-Scale Scene Rendering. 2025 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV), 2025, 2558-2567. DOI: 10.1109/wacv61041.2025.00254\\n3. Jiaming Gu, Minchao Jiang, Hongsheng Li, Xiaoyuan Lu, Guangming Zhu, Syed Afaq Ali Shah, Liang Zhang, Mohammed Bennamoun. UE4-NeRF:Neural Radiance Field for Real-Time Rendering of Large-Scale Scene. Advances in Neural Information Processing Systems 36, 2023, 59124-59136. DOI: 10.52202/075280-2580\\n4. Jiahui Zhang. Radiance fields for 3D scene representation and rendering. Nanyang Technological University. DOI: 10.32657/10356/200242\\n5. Takuhiro Kaneko. MIMO-NeRF: Fast Neural Rendering with Multi-input Multi-output Neural Radiance Fields. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 3250-3260. DOI: 10.1109/iccv51070.2023.00303\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：BungeeNeRF progressive neural radiance field for extreme multi-scale scene rendering\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Yuanbo Xiangli, Linning Xu, Xingang Pan, Nanxuan Zhao, Anyi Rao, Christian Theobalt, Bo Dai, Dahua Lin. BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering. Lecture Notes in Computer Science, 2022, 106-122. DOI: 10.1007/978-3-031-19824-3_7\n2. Mingqi Shao, Feng Xiong, Hang Zhang, Shuang Yang, Mu Xu, Wei Bian, Xueqian Wang. Global-Guided Focal Neural Radiance Field for Large-Scale Scene Rendering. 2025 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV), 2025, 2558-2567. DOI: 10.1109/wacv61041.2025.00254\n3. Jiaming Gu, Minchao Jiang, Hongsheng Li, Xiaoyuan Lu, Guangming Zhu, Syed Afaq Ali Shah, Liang Zhang, Mohammed Bennamoun. UE4-NeRF:Neural Radiance Field for Real-Time Rendering of Large-Scale Scene. Advances in Neural Information Processing Systems 36, 2023, 59124-59136. DOI: 10.52202/075280-2580\n4. Jiahui Zhang. Radiance fields for 3D scene representation and rendering. Nanyang Technological University. DOI: 10.32657/10356/200242\n5. Takuhiro Kaneko. MIMO-NeRF: Fast Neural Rendering with Multi-input Multi-output Neural Radiance Fields. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 3250-3260. DOI: 10.1109/iccv51070.2023.00303\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_03_gVSx10Dij9B0SEcqSqMh2903",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "783cd9d7-2020-4ffb-9654-f1da2ffd1791",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Good. Now let me search for the remaining ones: NeRF original, Instant-NGP, 3D Gaussian Splatting, Mip-NeRF 360, SUDS, CityNeRF, NeRF-W, MatrixCity.\n\nNote the Crossref results may have CVPR page numbers from IEEE which differ from the commonly cited ones. That's fine as long as correct with DOI.\n\nLet me search more.",
+       "signature": "783cd9d7-2020-4ffb-9654-f1da2ffd1791"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1780,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 12160,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "6b1c14c1-68a7-4acb-a118-59c999029100",
+    "timestamp": "2026-10-31T11:48:53.865Z",
+    "thinking_duration_ms": 906,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "783cd9d7-2020-4ffb-9654-f1da2ffd1791",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_DhfPygYKgZ0K069CjH741465",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 5,
+        "query": "NeRF representing scenes as neural radiance fields for view synthesis"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1780,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 12160,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "3195da85-9ec5-4906-b42f-bbeb10f25f45",
+    "timestamp": "2026-10-31T11:48:54.075Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_DhfPygYKgZ0K069CjH741465",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "783cd9d7-2020-4ffb-9654-f1da2ffd1791",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_01_dmOjA1amOANmL2m6IVdV4190",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 5,
+        "query": "Instant neural graphics primitives with a multiresolution hash encoding"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1780,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 12160,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "9b77f8d9-89a0-43a6-9d3b-7b53e21deb12",
+    "timestamp": "2026-10-31T11:48:54.320Z",
+    "tool_use_meta": [
+     {
+      "id": "call_01_dmOjA1amOANmL2m6IVdV4190",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "783cd9d7-2020-4ffb-9654-f1da2ffd1791",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_02_arNZ7Qtqha8vGXYQUplT2837",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 5,
+        "query": "3D Gaussian Splatting for real-time radiance field rendering"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1780,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 12160,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "eceffce3-1534-4b2b-8117-84b70c323de6",
+    "timestamp": "2026-10-31T11:48:54.510Z",
+    "tool_use_meta": [
+     {
+      "id": "call_02_arNZ7Qtqha8vGXYQUplT2837",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_DhfPygYKgZ0K069CjH741465",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：NeRF representing scenes as neural radiance fields for view synthesis\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, Ren Ng. NeRF. Communications of the ACM, 2021, 65(1): 99-106. DOI: 10.1145/3503250\\n2. Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, Ren Ng. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis. Lecture Notes in Computer Science, 2020, 405-421. DOI: 10.1007/978-3-030-58452-8_24\\n3. Jonas Kulhanek, Torsten Sattler. Tetra-NeRF: Representing Neural Radiance Fields Using Tetrahedra. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 18412-18423. DOI: 10.1109/iccv51070.2023.01692\\n4. Youtan Yin, Zhoujie Fu, Fan Yang, Guosheng Lin. Or-Nerf: Object Removing from 3d Scenes Guided by Multiview Segmentation with Neural Radiance Fields. Elsevier BV, 2025. DOI: 10.2139/ssrn.5234774\\n5. Jiahua Dong, Yu-Xiong Wang. ViCA-NeRF: View-Consistency-Aware 3D Editing of Neural Radiance Fields. Advances in Neural Information Processing Systems 36, 2023, 61466-61477. DOI: 10.52202/075280-2686\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "aed56c54-9bd3-4bc0-91b2-713e86585abb",
+    "timestamp": "2026-10-31T11:48:54.635Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：NeRF representing scenes as neural radiance fields for view synthesis\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, Ren Ng. NeRF. Communications of the ACM, 2021, 65(1): 99-106. DOI: 10.1145/3503250\\n2. Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, Ren Ng. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis. Lecture Notes in Computer Science, 2020, 405-421. DOI: 10.1007/978-3-030-58452-8_24\\n3. Jonas Kulhanek, Torsten Sattler. Tetra-NeRF: Representing Neural Radiance Fields Using Tetrahedra. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 18412-18423. DOI: 10.1109/iccv51070.2023.01692\\n4. Youtan Yin, Zhoujie Fu, Fan Yang, Guosheng Lin. Or-Nerf: Object Removing from 3d Scenes Guided by Multiview Segmentation with Neural Radiance Fields. Elsevier BV, 2025. DOI: 10.2139/ssrn.5234774\\n5. Jiahua Dong, Yu-Xiong Wang. ViCA-NeRF: View-Consistency-Aware 3D Editing of Neural Radiance Fields. Advances in Neural Information Processing Systems 36, 2023, 61466-61477. DOI: 10.52202/075280-2686\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：NeRF representing scenes as neural radiance fields for view synthesis\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, Ren Ng. NeRF. Communications of the ACM, 2021, 65(1): 99-106. DOI: 10.1145/3503250\n2. Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, Ren Ng. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis. Lecture Notes in Computer Science, 2020, 405-421. DOI: 10.1007/978-3-030-58452-8_24\n3. Jonas Kulhanek, Torsten Sattler. Tetra-NeRF: Representing Neural Radiance Fields Using Tetrahedra. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 18412-18423. DOI: 10.1109/iccv51070.2023.01692\n4. Youtan Yin, Zhoujie Fu, Fan Yang, Guosheng Lin. Or-Nerf: Object Removing from 3d Scenes Guided by Multiview Segmentation with Neural Radiance Fields. Elsevier BV, 2025. DOI: 10.2139/ssrn.5234774\n5. Jiahua Dong, Yu-Xiong Wang. ViCA-NeRF: View-Consistency-Aware 3D Editing of Neural Radiance Fields. Advances in Neural Information Processing Systems 36, 2023, 61466-61477. DOI: 10.52202/075280-2686\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_DhfPygYKgZ0K069CjH741465",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "783cd9d7-2020-4ffb-9654-f1da2ffd1791",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_03_zmBVLw6wO7BrWmsnpt9S3754",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 5,
+        "query": "SUDS scalable urban dynamic street scene neural rendering"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1780,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 12160,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "767860b6-b806-4cd3-acd3-3de69713cc36",
+    "timestamp": "2026-10-31T11:48:54.722Z",
+    "tool_use_meta": [
+     {
+      "id": "call_03_zmBVLw6wO7BrWmsnpt9S3754",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_01_dmOjA1amOANmL2m6IVdV4190",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Instant neural graphics primitives with a multiresolution hash encoding\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Thomas Müller, Alex Evans, Christoph Schied, Alexander Keller. Instant neural graphics primitives with a multiresolution hash encoding. ACM Transactions on Graphics, 2022, 41(4): 1-15. DOI: 10.1145/3528223.3530127\\n2. Luiz Felipe Ribeiro Correia, Claudio Miceli De Farias. Benchmarking Neural Rendering: Instant Neural Graphics Primitives vs Gaussian Splatting. 2025 28th International Conference on Information Fusion (FUSION), 2025, 1-8. DOI: 10.23919/fusion65864.2025.11123947\\n3. Marilena-Catalina Pupezescu, Valentin Pupezescu. Instant Neural Graphics Primitives Framework and its Emerging Applications in Digitalization of Dental Care. 2022 E-Health and Bioengineering Conference (EHB), 2022, 1-4. DOI: 10.1109/ehb55594.2022.9991437\\n4. Towaki Takikawa, Thomas Müller, Merlin Nimier-David, Alex Evans, Sanja Fidler, Alec Jacobson, Alexander Keller. Compact Neural Graphics Primitives with Learned Hash Probing. SIGGRAPH Asia 2023 Conference Papers, 2023, 1-10. DOI: 10.1145/3610548.3618167\\n5. Minzhe Tang, Dongliang Kou, Mingcheng Li, Lihua Zhang. Robust Signed Distance Fields for Articulated Human Body Reconstruction via Multiresolution Hash Encoding. 2025 International Joint Conference on Neural Networks (IJCNN), 2025, 1-8. DOI: 10.1109/ijcnn64981.2025.11228015\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "86eef0df-9e33-4719-8cd2-498cfc2160a0",
+    "timestamp": "2026-10-31T11:48:55.465Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Instant neural graphics primitives with a multiresolution hash encoding\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Thomas Müller, Alex Evans, Christoph Schied, Alexander Keller. Instant neural graphics primitives with a multiresolution hash encoding. ACM Transactions on Graphics, 2022, 41(4): 1-15. DOI: 10.1145/3528223.3530127\\n2. Luiz Felipe Ribeiro Correia, Claudio Miceli De Farias. Benchmarking Neural Rendering: Instant Neural Graphics Primitives vs Gaussian Splatting. 2025 28th International Conference on Information Fusion (FUSION), 2025, 1-8. DOI: 10.23919/fusion65864.2025.11123947\\n3. Marilena-Catalina Pupezescu, Valentin Pupezescu. Instant Neural Graphics Primitives Framework and its Emerging Applications in Digitalization of Dental Care. 2022 E-Health and Bioengineering Conference (EHB), 2022, 1-4. DOI: 10.1109/ehb55594.2022.9991437\\n4. Towaki Takikawa, Thomas Müller, Merlin Nimier-David, Alex Evans, Sanja Fidler, Alec Jacobson, Alexander Keller. Compact Neural Graphics Primitives with Learned Hash Probing. SIGGRAPH Asia 2023 Conference Papers, 2023, 1-10. DOI: 10.1145/3610548.3618167\\n5. Minzhe Tang, Dongliang Kou, Mingcheng Li, Lihua Zhang. Robust Signed Distance Fields for Articulated Human Body Reconstruction via Multiresolution Hash Encoding. 2025 International Joint Conference on Neural Networks (IJCNN), 2025, 1-8. DOI: 10.1109/ijcnn64981.2025.11228015\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Instant neural graphics primitives with a multiresolution hash encoding\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Thomas Müller, Alex Evans, Christoph Schied, Alexander Keller. Instant neural graphics primitives with a multiresolution hash encoding. ACM Transactions on Graphics, 2022, 41(4): 1-15. DOI: 10.1145/3528223.3530127\n2. Luiz Felipe Ribeiro Correia, Claudio Miceli De Farias. Benchmarking Neural Rendering: Instant Neural Graphics Primitives vs Gaussian Splatting. 2025 28th International Conference on Information Fusion (FUSION), 2025, 1-8. DOI: 10.23919/fusion65864.2025.11123947\n3. Marilena-Catalina Pupezescu, Valentin Pupezescu. Instant Neural Graphics Primitives Framework and its Emerging Applications in Digitalization of Dental Care. 2022 E-Health and Bioengineering Conference (EHB), 2022, 1-4. DOI: 10.1109/ehb55594.2022.9991437\n4. Towaki Takikawa, Thomas Müller, Merlin Nimier-David, Alex Evans, Sanja Fidler, Alec Jacobson, Alexander Keller. Compact Neural Graphics Primitives with Learned Hash Probing. SIGGRAPH Asia 2023 Conference Papers, 2023, 1-10. DOI: 10.1145/3610548.3618167\n5. Minzhe Tang, Dongliang Kou, Mingcheng Li, Lihua Zhang. Robust Signed Distance Fields for Articulated Human Body Reconstruction via Multiresolution Hash Encoding. 2025 International Joint Conference on Neural Networks (IJCNN), 2025, 1-8. DOI: 10.1109/ijcnn64981.2025.11228015\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_01_dmOjA1amOANmL2m6IVdV4190",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_02_arNZ7Qtqha8vGXYQUplT2837",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：3D Gaussian Splatting for real-time radiance field rendering\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Bernhard Kerbl, Georgios Kopanas, Thomas Leimkuehler, George Drettakis. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics, 2023, 42(4): 1-14. DOI: 10.1145/3592433\\n2. Michael Niemeyer, Fabian Manhardt, Marie-Julie Rakotosaona, Michael Oechsle, Daniel Duckworth, Rama Gosula, Keisuke Tateno, John Bates, Dominik Kaeser, Federico Tombari. RadSplat: Radiance Field-Informed Gaussian Splatting for Robust Real- Time Rendering with 900+ FPS. 2025 International Conference on 3D Vision (3DV), 2025, 134-144. DOI: 10.1109/3dv66043.2025.00018\\n3. Lizhe Chen, Yan Hu, Yu Zhang, Yuyao Ge, Haoyu Zhang, Xingquan Cai. Frequency-importance gaussian splatting for real-time lightweight radiance field rendering. Multimedia Tools and Applications, 2024, 83(35): 83377-83401. DOI: 10.1007/s11042-024-18679-x\\n4. Linus Franke, Laura Fink, Marc Stamminger. VR-Splatting: Foveated Radiance Field Rendering via 3D Gaussian Splatting and Neural Points. Proceedings of the ACM on Computer Graphics and Interactive Techniques, 2025, 8(1): 1-21. DOI: 10.1145/3728302\\n5. Yanshan Zhang, Luyao Wang, Yuanzhang Fan. Hybrid Gaussian Representation with Geometry-Guided Constraints for High-Precision 3D Gaussian Splatting Rendering--Hybrid Gaussian Splatting with Geometry Guidance--Adaptive Hybrid Representation and TensoSDF Constraints for High-Accuracy Real-Time 3D Reconstruction and Rendering. Proceedings of the 2026 2nd International Conference on Artificial Intelligence and Computational Intelligence, 2026, 152-156. DOI: 10.1145/3810280.3810302\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "cfd6ebc2-d3be-4b94-bcaa-92afc81b4112",
+    "timestamp": "2026-10-31T11:48:56.293Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：3D Gaussian Splatting for real-time radiance field rendering\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Bernhard Kerbl, Georgios Kopanas, Thomas Leimkuehler, George Drettakis. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics, 2023, 42(4): 1-14. DOI: 10.1145/3592433\\n2. Michael Niemeyer, Fabian Manhardt, Marie-Julie Rakotosaona, Michael Oechsle, Daniel Duckworth, Rama Gosula, Keisuke Tateno, John Bates, Dominik Kaeser, Federico Tombari. RadSplat: Radiance Field-Informed Gaussian Splatting for Robust Real- Time Rendering with 900+ FPS. 2025 International Conference on 3D Vision (3DV), 2025, 134-144. DOI: 10.1109/3dv66043.2025.00018\\n3. Lizhe Chen, Yan Hu, Yu Zhang, Yuyao Ge, Haoyu Zhang, Xingquan Cai. Frequency-importance gaussian splatting for real-time lightweight radiance field rendering. Multimedia Tools and Applications, 2024, 83(35): 83377-83401. DOI: 10.1007/s11042-024-18679-x\\n4. Linus Franke, Laura Fink, Marc Stamminger. VR-Splatting: Foveated Radiance Field Rendering via 3D Gaussian Splatting and Neural Points. Proceedings of the ACM on Computer Graphics and Interactive Techniques, 2025, 8(1): 1-21. DOI: 10.1145/3728302\\n5. Yanshan Zhang, Luyao Wang, Yuanzhang Fan. Hybrid Gaussian Representation with Geometry-Guided Constraints for High-Precision 3D Gaussian Splatting Rendering--Hybrid Gaussian Splatting with Geometry Guidance--Adaptive Hybrid Representation and TensoSDF Constraints for High-Accuracy Real-Time 3D Reconstruction and Rendering. Proceedings of the 2026 2nd International Conference on Artificial Intelligence and Computational Intelligence, 2026, 152-156. DOI: 10.1145/3810280.3810302\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：3D Gaussian Splatting for real-time radiance field rendering\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Bernhard Kerbl, Georgios Kopanas, Thomas Leimkuehler, George Drettakis. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics, 2023, 42(4): 1-14. DOI: 10.1145/3592433\n2. Michael Niemeyer, Fabian Manhardt, Marie-Julie Rakotosaona, Michael Oechsle, Daniel Duckworth, Rama Gosula, Keisuke Tateno, John Bates, Dominik Kaeser, Federico Tombari. RadSplat: Radiance Field-Informed Gaussian Splatting for Robust Real- Time Rendering with 900+ FPS. 2025 International Conference on 3D Vision (3DV), 2025, 134-144. DOI: 10.1109/3dv66043.2025.00018\n3. Lizhe Chen, Yan Hu, Yu Zhang, Yuyao Ge, Haoyu Zhang, Xingquan Cai. Frequency-importance gaussian splatting for real-time lightweight radiance field rendering. Multimedia Tools and Applications, 2024, 83(35): 83377-83401. DOI: 10.1007/s11042-024-18679-x\n4. Linus Franke, Laura Fink, Marc Stamminger. VR-Splatting: Foveated Radiance Field Rendering via 3D Gaussian Splatting and Neural Points. Proceedings of the ACM on Computer Graphics and Interactive Techniques, 2025, 8(1): 1-21. DOI: 10.1145/3728302\n5. Yanshan Zhang, Luyao Wang, Yuanzhang Fan. Hybrid Gaussian Representation with Geometry-Guided Constraints for High-Precision 3D Gaussian Splatting Rendering--Hybrid Gaussian Splatting with Geometry Guidance--Adaptive Hybrid Representation and TensoSDF Constraints for High-Accuracy Real-Time 3D Reconstruction and Rendering. Proceedings of the 2026 2nd International Conference on Artificial Intelligence and Computational Intelligence, 2026, 152-156. DOI: 10.1145/3810280.3810302\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_02_arNZ7Qtqha8vGXYQUplT2837",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_03_zmBVLw6wO7BrWmsnpt9S3754",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：SUDS scalable urban dynamic street scene neural rendering\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Haithem Turki, Jason Y. Zhang, Francesco Ferroni, Deva Ramanan. SUDS: Scalable Urban Dynamic Scenes. 2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2023, 12375-12385. DOI: 10.1109/cvpr52729.2023.01191\\n2. Zhuopeng Li, Jianke Zhu. Point-Based Neural Scene Rendering for Street Views. IEEE Transactions on Intelligent Vehicles, 2024, 9(1): 2740-2752. DOI: 10.1109/tiv.2023.3304347\\n3. Yuheng Yuan, Qiuhong Shen, Xingyi Yang, Xinchao Wang. 1000+ FPS 4D Gaussian Splatting for Dynamic Scene Rendering. Advances in Neural Information Processing Systems 38, 2025, 83135-83153. DOI: 10.52202/085713-2507\\n4. Chun-Tin Wu, Jun-Cheng Chen. 4D Neural Voxel Splatting: Dynamic Scene Rendering with Voxelized Guassian Splatting. 2026 IEEE International Conference on Image Processing (ICIP), 2026, 1-6. DOI: 10.1109/icip61757.2026.11630026\\n5. Hai-Long Qin, Sixian Wang, Guo Lu, Jincheng Dai. Neural Hamiltonian Deformation Fields for Dynamic Scene Rendering. Proceedings of the SIGGRAPH Asia 2025 Conference Papers, 2025, 1-11. DOI: 10.1145/3757377.3764000\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "ce3f7492-5fa2-457b-b667-38d0bbfe42c6",
+    "timestamp": "2026-10-31T11:48:57.437Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：SUDS scalable urban dynamic street scene neural rendering\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Haithem Turki, Jason Y. Zhang, Francesco Ferroni, Deva Ramanan. SUDS: Scalable Urban Dynamic Scenes. 2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2023, 12375-12385. DOI: 10.1109/cvpr52729.2023.01191\\n2. Zhuopeng Li, Jianke Zhu. Point-Based Neural Scene Rendering for Street Views. IEEE Transactions on Intelligent Vehicles, 2024, 9(1): 2740-2752. DOI: 10.1109/tiv.2023.3304347\\n3. Yuheng Yuan, Qiuhong Shen, Xingyi Yang, Xinchao Wang. 1000+ FPS 4D Gaussian Splatting for Dynamic Scene Rendering. Advances in Neural Information Processing Systems 38, 2025, 83135-83153. DOI: 10.52202/085713-2507\\n4. Chun-Tin Wu, Jun-Cheng Chen. 4D Neural Voxel Splatting: Dynamic Scene Rendering with Voxelized Guassian Splatting. 2026 IEEE International Conference on Image Processing (ICIP), 2026, 1-6. DOI: 10.1109/icip61757.2026.11630026\\n5. Hai-Long Qin, Sixian Wang, Guo Lu, Jincheng Dai. Neural Hamiltonian Deformation Fields for Dynamic Scene Rendering. Proceedings of the SIGGRAPH Asia 2025 Conference Papers, 2025, 1-11. DOI: 10.1145/3757377.3764000\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：SUDS scalable urban dynamic street scene neural rendering\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Haithem Turki, Jason Y. Zhang, Francesco Ferroni, Deva Ramanan. SUDS: Scalable Urban Dynamic Scenes. 2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2023, 12375-12385. DOI: 10.1109/cvpr52729.2023.01191\n2. Zhuopeng Li, Jianke Zhu. Point-Based Neural Scene Rendering for Street Views. IEEE Transactions on Intelligent Vehicles, 2024, 9(1): 2740-2752. DOI: 10.1109/tiv.2023.3304347\n3. Yuheng Yuan, Qiuhong Shen, Xingyi Yang, Xinchao Wang. 1000+ FPS 4D Gaussian Splatting for Dynamic Scene Rendering. Advances in Neural Information Processing Systems 38, 2025, 83135-83153. DOI: 10.52202/085713-2507\n4. Chun-Tin Wu, Jun-Cheng Chen. 4D Neural Voxel Splatting: Dynamic Scene Rendering with Voxelized Guassian Splatting. 2026 IEEE International Conference on Image Processing (ICIP), 2026, 1-6. DOI: 10.1109/icip61757.2026.11630026\n5. Hai-Long Qin, Sixian Wang, Guo Lu, Jincheng Dai. Neural Hamiltonian Deformation Fields for Dynamic Scene Rendering. Proceedings of the SIGGRAPH Asia 2025 Conference Papers, 2025, 1-11. DOI: 10.1145/3757377.3764000\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_03_zmBVLw6wO7BrWmsnpt9S3754",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "2fe7f604-599a-4abe-8a7c-2015785310b5",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Now more: Mega-NeRF (Turki et al. CVPR 2022), CityNeRF (Lin et al. ICCV 2021), Mip-NeRF 360, MatrixCity, NeRF-W maybe.\n\nLet me search.",
+       "signature": "2fe7f604-599a-4abe-8a7c-2015785310b5"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1941,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 14208,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "61b7ed1c-3fd7-420b-8593-6a7f8b3a5a1a",
+    "timestamp": "2026-10-31T11:48:58.858Z",
+    "thinking_duration_ms": 808,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "2fe7f604-599a-4abe-8a7c-2015785310b5",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_N7fv5aGGXxm2cCWaKnOP6462",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 6,
+        "query": "Mega-NeRF scalable large-scale neural radiance fields Turki"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1941,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 14208,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "a5861530-0f3b-4c66-a39c-94083599ad73",
+    "timestamp": "2026-10-31T11:48:59.082Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_N7fv5aGGXxm2cCWaKnOP6462",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "2fe7f604-599a-4abe-8a7c-2015785310b5",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_01_GXBzg1jjXhvYNWQ4BQBy3721",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 6,
+        "query": "CityNeRF building city-scale neural radiance fields"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1941,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 14208,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "122be019-d432-4710-b65b-c5cf61e75ea9",
+    "timestamp": "2026-10-31T11:48:59.267Z",
+    "tool_use_meta": [
+     {
+      "id": "call_01_GXBzg1jjXhvYNWQ4BQBy3721",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_N7fv5aGGXxm2cCWaKnOP6462",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Mega-NeRF scalable large-scale neural radiance fields Turki\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Haithem Turki, Deva Ramanan, Mahadev Satyanarayanan. Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly- Throughs. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, 12912-12921. DOI: 10.1109/cvpr52688.2022.01258\\n2. Deepika Mahalingam, Ajay Sigatapu, Deep Doshi, Ganesh Sistu. PGT-NeRF: Physics-Guided Thermal Neural Radiance Fields. Proceedings of the 21st International Conference on Computer Vision Theory and Applications, 2026, 216-226. DOI: 10.5220/0014632600004084\\n3. Jiabao Li, Yuqi Li, Ciliang Sun, Chong Wang, Jinhui Xiang. Spec-NeRF: Multi-Spectral Neural Radiance Fields. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.24188235\\n4. Jiabao Li, Yuqi Li, Ciliang Sun, Chong Wang, Jinhui Xiang. Spec-NeRF: Multi-Spectral Neural Radiance Fields. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.24188235.v1\\n5. Chenyu Ge. SAC-NeRF: Adaptive Ray Sampling for Neural Radiance Fields via Soft Actor-Critic Reinforcement Learning. Institute of Electrical and Electronics Engineers (IEEE), 2026. DOI: 10.36227/techrxiv.176800177.72092357/v1\\n6. Soonjoo Lee, Jeeyoun Kim. A Study on the Paradigm Shift in 3D Animation Production Driven by the Commercialization of NeRF(Neural Radiance Fields). The Korean Journal of animation, 2024, 20(3): 147-172. DOI: 10.51467/asko.2024.09.20.3.147\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "41213f4b-24f0-4245-b6d5-29e36ccfe759",
+    "timestamp": "2026-10-31T11:48:59.470Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Mega-NeRF scalable large-scale neural radiance fields Turki\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Haithem Turki, Deva Ramanan, Mahadev Satyanarayanan. Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly- Throughs. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, 12912-12921. DOI: 10.1109/cvpr52688.2022.01258\\n2. Deepika Mahalingam, Ajay Sigatapu, Deep Doshi, Ganesh Sistu. PGT-NeRF: Physics-Guided Thermal Neural Radiance Fields. Proceedings of the 21st International Conference on Computer Vision Theory and Applications, 2026, 216-226. DOI: 10.5220/0014632600004084\\n3. Jiabao Li, Yuqi Li, Ciliang Sun, Chong Wang, Jinhui Xiang. Spec-NeRF: Multi-Spectral Neural Radiance Fields. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.24188235\\n4. Jiabao Li, Yuqi Li, Ciliang Sun, Chong Wang, Jinhui Xiang. Spec-NeRF: Multi-Spectral Neural Radiance Fields. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.24188235.v1\\n5. Chenyu Ge. SAC-NeRF: Adaptive Ray Sampling for Neural Radiance Fields via Soft Actor-Critic Reinforcement Learning. Institute of Electrical and Electronics Engineers (IEEE), 2026. DOI: 10.36227/techrxiv.176800177.72092357/v1\\n6. Soonjoo Lee, Jeeyoun Kim. A Study on the Paradigm Shift in 3D Animation Production Driven by the Commercialization of NeRF(Neural Radiance Fields). The Korean Journal of animation, 2024, 20(3): 147-172. DOI: 10.51467/asko.2024.09.20.3.147\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Mega-NeRF scalable large-scale neural radiance fields Turki\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Haithem Turki, Deva Ramanan, Mahadev Satyanarayanan. Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly- Throughs. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, 12912-12921. DOI: 10.1109/cvpr52688.2022.01258\n2. Deepika Mahalingam, Ajay Sigatapu, Deep Doshi, Ganesh Sistu. PGT-NeRF: Physics-Guided Thermal Neural Radiance Fields. Proceedings of the 21st International Conference on Computer Vision Theory and Applications, 2026, 216-226. DOI: 10.5220/0014632600004084\n3. Jiabao Li, Yuqi Li, Ciliang Sun, Chong Wang, Jinhui Xiang. Spec-NeRF: Multi-Spectral Neural Radiance Fields. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.24188235\n4. Jiabao Li, Yuqi Li, Ciliang Sun, Chong Wang, Jinhui Xiang. Spec-NeRF: Multi-Spectral Neural Radiance Fields. Institute of Electrical and Electronics Engineers (IEEE), 2023. DOI: 10.36227/techrxiv.24188235.v1\n5. Chenyu Ge. SAC-NeRF: Adaptive Ray Sampling for Neural Radiance Fields via Soft Actor-Critic Reinforcement Learning. Institute of Electrical and Electronics Engineers (IEEE), 2026. DOI: 10.36227/techrxiv.176800177.72092357/v1\n6. Soonjoo Lee, Jeeyoun Kim. A Study on the Paradigm Shift in 3D Animation Production Driven by the Commercialization of NeRF(Neural Radiance Fields). The Korean Journal of animation, 2024, 20(3): 147-172. DOI: 10.51467/asko.2024.09.20.3.147\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_N7fv5aGGXxm2cCWaKnOP6462",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "2fe7f604-599a-4abe-8a7c-2015785310b5",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_02_E2ipcjZRuAojZMc2sYci2195",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 6,
+        "query": "Mip-NeRF 360 unbounded anti-aliased neural radiance fields"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1941,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 14208,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "2990831b-181e-4d5c-ae2d-8e79de24da00",
+    "timestamp": "2026-10-31T11:48:59.480Z",
+    "tool_use_meta": [
+     {
+      "id": "call_02_E2ipcjZRuAojZMc2sYci2195",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "2fe7f604-599a-4abe-8a7c-2015785310b5",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_03_LiQmv6qyLzXfEYE8Zn4q8646",
+       "name": "mcp__citeguard__search_papers",
+       "input": {
+        "limit": 6,
+        "query": "MatrixCity large-scale city dataset neural rendering aerial street"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 1941,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 14208,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "988b7ede-1531-467d-82b6-b2b88b187e4c",
+    "timestamp": "2026-10-31T11:48:59.705Z",
+    "tool_use_meta": [
+     {
+      "id": "call_03_LiQmv6qyLzXfEYE8Zn4q8646",
+      "display_name": "Search Papers",
+      "server_display_name": "citeguard",
+      "tool_name": "search_papers"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_01_GXBzg1jjXhvYNWQ4BQBy3721",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：CityNeRF building city-scale neural radiance fields\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Shen Wang, Guosheng Wang, Donghui Dai, Lei Yang. Scaling Neural Radio Radiance Fields to City-Scale: A Mixture of Experts Approach. IEEE Transactions on Mobile Computing, 2026, 1-18. DOI: 10.1109/tmc.2026.3739011\\n2. Ke Wang, Yazhou Liu, Zheng Wu, Jitpinun Piriyataravet, Vengatesan Govindaraju. Decoupled Spatial-Geometric Consistent Neural Radiance Fields for Cross-Scale Object Composition. Elsevier BV, 2026. DOI: 10.2139/ssrn.6879836\\n3. Doriand Petit. From reconstruction to reasoning : neural radiance fields for comprehensive 3D scene understanding. Agence Bibliographique de l'Enseignement Supérieur. DOI: 10.70675/f5336b62z4c09z48c6zae49z4b4a0d6858f5\\n4. Deepika Mahalingam, Ajay Sigatapu, Deep Doshi, Ganesh Sistu. PGT-NeRF: Physics-Guided Thermal Neural Radiance Fields. Proceedings of the 21st International Conference on Computer Vision Theory and Applications, 2026, 216-226. DOI: 10.5220/0014632600004084\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "c5c1946d-cc04-45f6-92fa-58c1f6b59d70",
+    "timestamp": "2026-10-31T11:49:00.530Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：CityNeRF building city-scale neural radiance fields\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Shen Wang, Guosheng Wang, Donghui Dai, Lei Yang. Scaling Neural Radio Radiance Fields to City-Scale: A Mixture of Experts Approach. IEEE Transactions on Mobile Computing, 2026, 1-18. DOI: 10.1109/tmc.2026.3739011\\n2. Ke Wang, Yazhou Liu, Zheng Wu, Jitpinun Piriyataravet, Vengatesan Govindaraju. Decoupled Spatial-Geometric Consistent Neural Radiance Fields for Cross-Scale Object Composition. Elsevier BV, 2026. DOI: 10.2139/ssrn.6879836\\n3. Doriand Petit. From reconstruction to reasoning : neural radiance fields for comprehensive 3D scene understanding. Agence Bibliographique de l'Enseignement Supérieur. DOI: 10.70675/f5336b62z4c09z48c6zae49z4b4a0d6858f5\\n4. Deepika Mahalingam, Ajay Sigatapu, Deep Doshi, Ganesh Sistu. PGT-NeRF: Physics-Guided Thermal Neural Radiance Fields. Proceedings of the 21st International Conference on Computer Vision Theory and Applications, 2026, 216-226. DOI: 10.5220/0014632600004084\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：CityNeRF building city-scale neural radiance fields\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Shen Wang, Guosheng Wang, Donghui Dai, Lei Yang. Scaling Neural Radio Radiance Fields to City-Scale: A Mixture of Experts Approach. IEEE Transactions on Mobile Computing, 2026, 1-18. DOI: 10.1109/tmc.2026.3739011\n2. Ke Wang, Yazhou Liu, Zheng Wu, Jitpinun Piriyataravet, Vengatesan Govindaraju. Decoupled Spatial-Geometric Consistent Neural Radiance Fields for Cross-Scale Object Composition. Elsevier BV, 2026. DOI: 10.2139/ssrn.6879836\n3. Doriand Petit. From reconstruction to reasoning : neural radiance fields for comprehensive 3D scene understanding. Agence Bibliographique de l'Enseignement Supérieur. DOI: 10.70675/f5336b62z4c09z48c6zae49z4b4a0d6858f5\n4. Deepika Mahalingam, Ajay Sigatapu, Deep Doshi, Ganesh Sistu. PGT-NeRF: Physics-Guided Thermal Neural Radiance Fields. Proceedings of the 21st International Conference on Computer Vision Theory and Applications, 2026, 216-226. DOI: 10.5220/0014632600004084\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_01_GXBzg1jjXhvYNWQ4BQBy3721",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_02_E2ipcjZRuAojZMc2sYci2195",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：Mip-NeRF 360 unbounded anti-aliased neural radiance fields\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, Peter Hedman. Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, 5460-5469. DOI: 10.1109/cvpr52688.2022.00539\\n2. Shihao Qin, Jiangjian Xiao, Jianfei Ge. Dip-NeRF: Depth-Based Anti-Aliased Neural Radiance Fields. Electronics, 2024, 13(8): 1527. DOI: 10.3390/electronics13081527\\n3. Seungtae Nam, Daniel Rho, Jong Hwan Ko, Eunbyung Park. Mip-Grid: Anti-aliased Grid Representations for Neural Radiance Fields. Advances in Neural Information Processing Systems 36, 2023, 2837-2849. DOI: 10.52202/075280-0126\\n4. Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, Peter Hedman. Zip-NeRF: Anti-Aliased Grid-Based Neural Radiance Fields. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 19640-19648. DOI: 10.1109/iccv51070.2023.01804\\n5. Jonathan T. Barron, Ben Mildenhall, Matthew Tancik, Peter Hedman, Ricardo Martin-Brualla, Pratul P. Srinivasan. Mip-NeRF: A Multiscale Representation for Anti-Aliasing Neural Radiance Fields. 2021 IEEE/CVF International Conference on Computer Vision (ICCV), 2021, 5835-5844. DOI: 10.1109/iccv48922.2021.00580\\n6. Arnab Dey, Yassine Ahmine, Andrew I. Comport. Mip-NeRF RGB-D: Depth Assisted Fast Neural Radiance Fields. Journal of WSCG, 2022, 30(1-2): 34-43. DOI: 10.24132/jwscg.2022.5\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "fc25e0b0-9f80-4225-998e-a94c79a5d135",
+    "timestamp": "2026-10-31T11:49:01.361Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：Mip-NeRF 360 unbounded anti-aliased neural radiance fields\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, Peter Hedman. Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, 5460-5469. DOI: 10.1109/cvpr52688.2022.00539\\n2. Shihao Qin, Jiangjian Xiao, Jianfei Ge. Dip-NeRF: Depth-Based Anti-Aliased Neural Radiance Fields. Electronics, 2024, 13(8): 1527. DOI: 10.3390/electronics13081527\\n3. Seungtae Nam, Daniel Rho, Jong Hwan Ko, Eunbyung Park. Mip-Grid: Anti-aliased Grid Representations for Neural Radiance Fields. Advances in Neural Information Processing Systems 36, 2023, 2837-2849. DOI: 10.52202/075280-0126\\n4. Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, Peter Hedman. Zip-NeRF: Anti-Aliased Grid-Based Neural Radiance Fields. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 19640-19648. DOI: 10.1109/iccv51070.2023.01804\\n5. Jonathan T. Barron, Ben Mildenhall, Matthew Tancik, Peter Hedman, Ricardo Martin-Brualla, Pratul P. Srinivasan. Mip-NeRF: A Multiscale Representation for Anti-Aliasing Neural Radiance Fields. 2021 IEEE/CVF International Conference on Computer Vision (ICCV), 2021, 5835-5844. DOI: 10.1109/iccv48922.2021.00580\\n6. Arnab Dey, Yassine Ahmine, Andrew I. Comport. Mip-NeRF RGB-D: Depth Assisted Fast Neural Radiance Fields. Journal of WSCG, 2022, 30(1-2): 34-43. DOI: 10.24132/jwscg.2022.5\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：Mip-NeRF 360 unbounded anti-aliased neural radiance fields\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, Peter Hedman. Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields. 2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2022, 5460-5469. DOI: 10.1109/cvpr52688.2022.00539\n2. Shihao Qin, Jiangjian Xiao, Jianfei Ge. Dip-NeRF: Depth-Based Anti-Aliased Neural Radiance Fields. Electronics, 2024, 13(8): 1527. DOI: 10.3390/electronics13081527\n3. Seungtae Nam, Daniel Rho, Jong Hwan Ko, Eunbyung Park. Mip-Grid: Anti-aliased Grid Representations for Neural Radiance Fields. Advances in Neural Information Processing Systems 36, 2023, 2837-2849. DOI: 10.52202/075280-0126\n4. Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, Peter Hedman. Zip-NeRF: Anti-Aliased Grid-Based Neural Radiance Fields. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 19640-19648. DOI: 10.1109/iccv51070.2023.01804\n5. Jonathan T. Barron, Ben Mildenhall, Matthew Tancik, Peter Hedman, Ricardo Martin-Brualla, Pratul P. Srinivasan. Mip-NeRF: A Multiscale Representation for Anti-Aliasing Neural Radiance Fields. 2021 IEEE/CVF International Conference on Computer Vision (ICCV), 2021, 5835-5844. DOI: 10.1109/iccv48922.2021.00580\n6. Arnab Dey, Yassine Ahmine, Andrew I. Comport. Mip-NeRF RGB-D: Depth Assisted Fast Neural Radiance Fields. Journal of WSCG, 2022, 30(1-2): 34-43. DOI: 10.24132/jwscg.2022.5\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_02_E2ipcjZRuAojZMc2sYci2195",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_03_LiQmv6qyLzXfEYE8Zn4q8646",
+       "type": "tool_result",
+       "content": "{\"result\":\"## 检索结果：MatrixCity large-scale city dataset neural rendering aerial street\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Yixuan Li, Lihan Jiang, Linning Xu, Yuanbo Xiangli, Zhenzhi Wang, Dahua Lin, Bo Dai. MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 3182-3192. DOI: 10.1109/iccv51070.2023.00297\\n2. Deepank Verma, Olaf Mumm, Vanessa Miriam Carlow. CITYLID: A large-scale categorized aerial lidar dataset for street-level research. Environment and Planning B: Urban Analytics and City Science, 2025, 52(6): 1517-1524. DOI: 10.1177/23998083241312273\\n3. Qi Liu, Xiaohan Zhang, Yukui Qiu, Zhenyu Sun. Aerial-NeRF: Adaptive Spatial Partitioning and Sampling for Large-Scale Aerial Rendering. Elsevier BV, 2026. DOI: 10.2139/ssrn.6827461\\n4. Lingao Xiao, Yang He. Are Large-scale Soft Labels Necessary for Large-scale Dataset Distillation?. Advances in Neural Information Processing Systems 37, 2024, 16406-16437. DOI: 10.52202/079017-0524\\n5. Ji'an Zhuang, Kexin Liu, Mo Wang. A Cross-City Transferable Convolutional Neural Network Framework for Street-Scale Urban Flood Risk Assessment. Copernicus GmbH, 2026. DOI: 10.5194/egusphere-egu26-9002\\n6. Qian Gao, Xukun Shen, Wensheng Niu. Large-Scale Synthetic Urban Dataset for Aerial Scene Understanding. IEEE Access, 2020, 8: 42131-42140. DOI: 10.1109/access.2020.2976686\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "d4666584-d166-48f8-a3d2-7670ca36c0f5",
+    "timestamp": "2026-10-31T11:49:02.803Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## 检索结果：MatrixCity large-scale city dataset neural rendering aerial street\\n\\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\\n\\n1. Yixuan Li, Lihan Jiang, Linning Xu, Yuanbo Xiangli, Zhenzhi Wang, Dahua Lin, Bo Dai. MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 3182-3192. DOI: 10.1109/iccv51070.2023.00297\\n2. Deepank Verma, Olaf Mumm, Vanessa Miriam Carlow. CITYLID: A large-scale categorized aerial lidar dataset for street-level research. Environment and Planning B: Urban Analytics and City Science, 2025, 52(6): 1517-1524. DOI: 10.1177/23998083241312273\\n3. Qi Liu, Xiaohan Zhang, Yukui Qiu, Zhenyu Sun. Aerial-NeRF: Adaptive Spatial Partitioning and Sampling for Large-Scale Aerial Rendering. Elsevier BV, 2026. DOI: 10.2139/ssrn.6827461\\n4. Lingao Xiao, Yang He. Are Large-scale Soft Labels Necessary for Large-scale Dataset Distillation?. Advances in Neural Information Processing Systems 37, 2024, 16406-16437. DOI: 10.52202/079017-0524\\n5. Ji'an Zhuang, Kexin Liu, Mo Wang. A Cross-City Transferable Convolutional Neural Network Framework for Street-Scale Urban Flood Risk Assessment. Copernicus GmbH, 2026. DOI: 10.5194/egusphere-egu26-9002\\n6. Qian Gao, Xukun Shen, Wensheng Niu. Large-Scale Synthetic Urban Dataset for Aerial Scene Understanding. IEEE Access, 2020, 8: 42131-42140. DOI: 10.1109/access.2020.2976686\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## 检索结果：MatrixCity large-scale city dataset neural rendering aerial street\n\n以下均为 Crossref 中真实存在的论文，题录可直接使用。请只选择与正文论述直接相关的条目；标题相关不代表内容支持你的论点，必要时在正文中如实表述。\n\n1. Yixuan Li, Lihan Jiang, Linning Xu, Yuanbo Xiangli, Zhenzhi Wang, Dahua Lin, Bo Dai. MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond. 2023 IEEE/CVF International Conference on Computer Vision (ICCV), 2023, 3182-3192. DOI: 10.1109/iccv51070.2023.00297\n2. Deepank Verma, Olaf Mumm, Vanessa Miriam Carlow. CITYLID: A large-scale categorized aerial lidar dataset for street-level research. Environment and Planning B: Urban Analytics and City Science, 2025, 52(6): 1517-1524. DOI: 10.1177/23998083241312273\n3. Qi Liu, Xiaohan Zhang, Yukui Qiu, Zhenyu Sun. Aerial-NeRF: Adaptive Spatial Partitioning and Sampling for Large-Scale Aerial Rendering. Elsevier BV, 2026. DOI: 10.2139/ssrn.6827461\n4. Lingao Xiao, Yang He. Are Large-scale Soft Labels Necessary for Large-scale Dataset Distillation?. Advances in Neural Information Processing Systems 37, 2024, 16406-16437. DOI: 10.52202/079017-0524\n5. Ji'an Zhuang, Kexin Liu, Mo Wang. A Cross-City Transferable Convolutional Neural Network Framework for Street-Scale Urban Flood Risk Assessment. Copernicus GmbH, 2026. DOI: 10.5194/egusphere-egu26-9002\n6. Qian Gao, Xukun Shen, Wensheng Niu. Large-Scale Synthetic Urban Dataset for Aerial Scene Understanding. IEEE Access, 2020, 8: 42131-42140. DOI: 10.1109/access.2020.2976686\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_03_LiQmv6qyLzXfEYE8Zn4q8646",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "22b5f57a-5d3b-4069-b960-865d235d4781",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "I have 10 candidates:\n1. NeRF (Mildenhall et al., ECCV 2020) — DOI 10.1007/978-3-030-58452-8_24, LNCS 2020, 405–421. But LNCS volume? The task requires 卷期页码. ECCV 2020 LNCS vol 12346, pp. 405-421. Crossref returned \"Lecture Notes in Computer Science, 2020, 405-421\" without volume. I can add volume 12346. Hmm — should I add info not in Crossref? The LNCS volume for ECCV 2020 Part I is 12346. Yes, \"Computer Vision – ECCV 2020, Part I, LNCS 12346, pp. 405-421\". That is correct.\n\nActually careful: page 405-421 for NeRF ECCV — yes.\n\n2. Block-NeRF — CVPR 2022, 8238-8248, DOI 10.1109/cvpr52688.2022.00807.\n3. Mega-NeRF — CVPR 2022, 12912-12921, DOI 10.1109/cvpr52688.2022.01258.\n4. Urban Radiance Fields — CVPR 2022, 12922-12932, DOI 10.1109/cvpr52688.2022.01259.\n5. BungeeNeRF — ECCV 2022, LNCS, 106-122, DOI 10.1007/978-3-031-19824-3_7. Volume 13675? ECCV 2022 Part XV? Hmm. The DOI 978-3-031-19824-3 is LNCS 13675 (ECCV 2022 Part XV?). Not certain. I could cite \"Lecture Notes in Computer Science, vol. 13675, pp. 106–122\". Risky. Better to omit volume and list \"Lecture Notes in Computer Science, 2022, 106–122\" — but requirement says 卷期页码. For LNCS, volume is the series volume. I could write \"Lecture Notes in Computer Science, vol. 13675\". Let me verify: BungeeNeRF is in ECCV 2022, Part XV, LNCS 13675, pp. 106–122. I think that's right — ECCV 2022 proceedings: Part XV is LNCS 13675. Hmm, ECCV 2022 has 13667-13687? Part I = 13667... Part XV = 13681? Let me think. ECCV 2022 LNCS volumes: 13661? Actually ECCV 2020 was 12346-12373. ECCV 2022: 13661? Publication: \"Computer Vision – ECCV 2022\", LNCS 13661–13697? Hmm, ECCV 2022 had 39 volumes? No.\n\nI shouldn't guess. Better: use the CRoSSREF metadata as is and put volume where known reliably. Alternatively use the arXiv or the published DOI. Requirement: \"每条包含全部作者、标题、会议/期刊、年份、卷期页码、DOI\". For conference papers, 卷期 may be N/A; I can write \"Lecture Notes in Computer Science, 2022, 106–122\" and give DOI. That satisfies pages. I'd rather not fabricate volume numbers.\n\nHmm, but for LNCS entries I can use the Crossref \"Lecture Notes in Computer Science\" with pages. Acceptable.\n\n6. SUDS — CVPR 2023, 12375-12385, DOI 10.1109/cvpr52729.2023.01191.\n7. Mip-NeRF 360 — CVPR 2022, 5460-5469, DOI 10.1109/cvpr52688.2022.00539.\n8. Instant-NGP — ACM TOG 41(4):1-15, DOI 10.1145/3528223.3530127.\n9. 3DGS — ACM TOG 42(4):1-14, DOI 10.1145/3592433.\n10. MatrixCity — ICCV 2023, 3182-3192, DOI 10.1109/iccv51070.2023.00297.\n\nThat's 10. Maybe include CityNeRF instead of Mip-NeRF 360? CityNeRF is very relevant (ICCV 2021). But Crossref search didn't find it well. Mip-NeRF 360 is relevant for unbounded scenes. I think the set is good. But maybe Mega-NeRF and Block-NeRF plus Urban Radiance Fields plus BungeeNeRF plus SUDS plus MatrixCity plus 3DGS plus Instant-NGP plus NeRF plus Mip-NeRF 360 — good coverage.\n\nNow the article: ~600 Chinese characters. Need to cite [1]-[10] appropriately.\n\nI need to verify the whole reference list with verify_references before output.\n\nLet me write the references and verify.\n\nReference entries (full author lists):\n\n[1] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, Ren Ng. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis. Computer Vision – ECCV 2020, Lecture Notes in Computer Science, 2020, 405–421. DOI: 10.1007/978-3-030-58452-8_24\n\nHmm, but the requirement is 会议/期刊, 年份, 卷期页码. For ECCV, \"ECCV 2020\" + LNCS. I'll write \"In: Computer Vision – ECCV 2020, LNCS, 2020: 405–421.\"\n\n[2] Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, Peter Hedman. Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields. CVPR 2022, 2022: 5460–5469. DOI: 10.1109/CVPR52688.2022.00539\n\n[3] Matthew Tancik, Vincent Casser, Xinchen Yan, Sabeek Pradhan, Ben P. Mildenhall, Pratul Srinivasan, Jonathan T. Barron, Henrik Kretzschmar. Block-NeRF: Scalable Large Scene Neural View Synthesis. CVPR 2022, 2022: 8238–8248. DOI: 10.1109/CVPR52688.2022.00807\n\n[4] Haithem Turki, Deva Ramanan, Mahadev Satyanarayanan. Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly-Throughs. CVPR 2022, 2022: 12912–12921. DOI: 10.1109/CVPR52688.2022.01258\n\n[5] Konstantinos Rematas, Andrew Liu, Pratul Srinivasan, Jonathan Barron, Andrea Tagliasacchi, Thomas Funkhouser, Vittorio Ferrari. Urban Radiance Fields. CVPR 2022, 2022: 12922–12932. DOI: 10.1109/CVPR52688.2022.01259\n\n[6] Yuanbo Xiangli, Linning Xu, Xingang Pan, Nanxuan Zhao, Anyi Rao, Christian Theobalt, Bo Dai, Dahua Lin. BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering. ECCV 2022, LNCS, 2022: 106–122. DOI: 10.1007/978-3-031-19824-3_7\n\n[7] Haithem Turki, Jason Y. Zhang, Francesco Ferroni, Deva Ramanan. SUDS: Scalable Urban Dynamic Scenes. CVPR 2023, 2023: 12375–12385. DOI: 10.1109/CVPR52729.2023.01191\n\n[8] Thomas Müller, Alex Evans, Christoph Schied, Alexander Keller. Instant neural graphics primitives with a multiresolution hash encoding. ACM Transactions on Graphics, 2022, 41(4): 1–15. DOI: 10.1145/3528223.3530127\n\n[9] Bernhard Kerbl, Georgios Kopanas, Thomas Leimkühler, George Drettakis. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics, 2023, 42(4): 1–14. DOI: 10.1145/3592433\n\n[10] Yixuan Li, Lihan Jiang, Linning Xu, Yuanbo Xiangli, Zhenzhi Wang, Dahua Lin, Bo Dai. MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond. ICCV 2023, 2023: 3182–3192. DOI: 10.1109/ICCV51070.2023.00297\n\nNow write ~600-character Chinese review with citation markers. Then verify.\n\nDraft:\n\n标题：神经辐射场用于大规模城市场景重建综述\n\n正文:\n\n城市级三维重建需要在数十平方公里范围内恢复几何与外观，并支持自由视点漫游。神经辐射场（NeRF）以隐式MLP编码密度与颜色，通过体渲染合成新视图，为新视角合成提供了统一框架[1]。然而原始NeRF假设场景有界、视角集中，直接用于城市会遭遇容量不足、训练缓慢与远近距离尺度差异等困难。\n\n尺度扩展主要有三条路线。其一是场景分区与多模型拼接：Block-NeRF将城市划分为多个区块分别训练，并按视角动态融合外观嵌入以处理光照变化[3]；Mega-NeRF利用稀疏航拍视图进行空间划分与几何引导采样，实现大规模航拍场景的虚拟飞行[4]。其二是层次化与多尺度表示：BungeeNeRF由粗到细渐进训练，以单一模型覆盖从卫星到街景的跨尺度细节[6]；Mip-NeRF 360则通过场景收缩与锥形采样处理无界场景的抗锯齿渲染[2]。其三是引入显式结构与先验：Urban Radiance Fields联合优化激光雷达深度与语义分割，显著改善街区的几何一致性[5]；SUDS进一步将动态物体分解为独立场，实现无标注的城市动态街景重建[7]。\n\n效率方面，Instant-NGP的多分辨率哈希编码把训练从数天缩短到分钟级[8]，3D Gaussian Splatting以显式高斯基元实现实时渲染，并逐渐成为城市级重建的替代表示[9]。数据层面，MatrixCity提供了成对的航拍与街景大规模合成数据集，为跨尺度评测建立基准[10]。\n\n总体而言，城市级NeRF仍面临存储开销、动态与光照变化、跨尺度一致性等挑战，显式表示与大模型先验的融合是值得关注的方向。\n\nCount: roughly 600 characters? Let's estimate: paragraph 1 ~130, paragraph 2 ~380, paragraph 3 ~130, closing ~60. Total ~700. Slightly over. Need ~600 字. I'll trim.\n\nLet me count more carefully later; approximately fine (\"约600字\" — 600-700 acceptable). Aim ~620.\n\nTrim some.\n\nNow verify references first.",
+       "signature": "22b5f57a-5d3b-4069-b960-865d235d4781"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 2018,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16384,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "ffba6528-eef7-43f0-808a-e3ab0487769f",
+    "timestamp": "2026-10-31T11:49:16.890Z",
+    "thinking_duration_ms": 13525,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "22b5f57a-5d3b-4069-b960-865d235d4781",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_Y0H7ZkZeZq1VaZfjADZV4065",
+       "name": "mcp__citeguard__verify_references",
+       "input": {
+        "text": "[1] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, Ren Ng. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis. In: Computer Vision – ECCV 2020, Lecture Notes in Computer Science, 2020: 405–421. DOI: 10.1007/978-3-030-58452-8_24\n[2] Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, Peter Hedman. Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields. CVPR 2022, 2022: 5460–5469. DOI: 10.1109/CVPR52688.2022.00539\n[3] Matthew Tancik, Vincent Casser, Xinchen Yan, Sabeek Pradhan, Ben P. Mildenhall, Pratul Srinivasan, Jonathan T. Barron, Henrik Kretzschmar. Block-NeRF: Scalable Large Scene Neural View Synthesis. CVPR 2022, 2022: 8238–8248. DOI: 10.1109/CVPR52688.2022.00807\n[4] Haithem Turki, Deva Ramanan, Mahadev Satyanarayanan. Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly-Throughs. CVPR 2022, 2022: 12912–12921. DOI: 10.1109/CVPR52688.2022.01258\n[5] Konstantinos Rematas, Andrew Liu, Pratul Srinivasan, Jonathan Barron, Andrea Tagliasacchi, Thomas Funkhouser, Vittorio Ferrari. Urban Radiance Fields. CVPR 2022, 2022: 12922–12932. DOI: 10.1109/CVPR52688.2022.01259\n[6] Yuanbo Xiangli, Linning Xu, Xingang Pan, Nanxuan Zhao, Anyi Rao, Christian Theobalt, Bo Dai, Dahua Lin. BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering. ECCV 2022, Lecture Notes in Computer Science, 2022: 106–122. DOI: 10.1007/978-3-031-19824-3_7\n[7] Haithem Turki, Jason Y. Zhang, Francesco Ferroni, Deva Ramanan. SUDS: Scalable Urban Dynamic Scenes. CVPR 2023, 2023: 12375–12385. DOI: 10.1109/CVPR52729.2023.01191\n[8] Thomas Müller, Alex Evans, Christoph Schied, Alexander Keller. Instant Neural Graphics Primitives with a Multiresolution Hash Encoding. ACM Transactions on Graphics, 2022, 41(4): 1–15. DOI: 10.1145/3528223.3530127\n[9] Bernhard Kerbl, Georgios Kopanas, Thomas Leimkühler, George Drettakis. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics, 2023, 42(4): 1–14. DOI: 10.1145/3592433\n[10] Yixuan Li, Lihan Jiang, Linning Xu, Yuanbo Xiangli, Zhenzhi Wang, Dahua Lin, Bo Dai. MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond. ICCV 2023, 2023: 3182–3192. DOI: 10.1109/ICCV51070.2023.00297"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 2018,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 16384,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "98cf363a-6415-49f4-818f-fcecddd8aa7b",
+    "timestamp": "2026-10-31T11:49:19.725Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_Y0H7ZkZeZq1VaZfjADZV4065",
+      "display_name": "Verify References",
+      "server_display_name": "citeguard",
+      "tool_name": "verify_references"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_Y0H7ZkZeZq1VaZfjADZV4065",
+       "type": "tool_result",
+       "content": "{\"result\":\"## CiteGuard 核查报告\\n\\n共 10 条：✅ 9　⚠️ 1　❌ 0　❓ 0\\n\\n### [1] ✅ VERIFIED　《NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis》\\n\\n\\n### [2] ✅ VERIFIED　《Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields》\\n\\n\\n### [3] ✅ VERIFIED　《Block-NeRF: Scalable Large Scene Neural View Synthesis》\\n\\n\\n### [4] ✅ VERIFIED　《Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly-Throughs》\\n\\n\\n### [5] ✅ VERIFIED　《Urban Radiance Fields》\\n\\n\\n### [6] ✅ VERIFIED　《BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering》\\n\\n\\n### [7] ✅ VERIFIED　《SUDS: Scalable Urban Dynamic Scenes》\\n\\n\\n### [8] ✅ VERIFIED　《Instant Neural Graphics Primitives with a Multiresolution Hash Encoding》\\n\\n\\n### [9] ⚠️ MISMATCH　《3D Gaussian Splatting for Real-Time Radiance Field Rendering》\\n\\n- 问题（严重）：第 3 作者 Thomas Leimkühler 不在该论文的作者列表中（该位置应为 Thomas Leimkuehler）\\n- 建议改为：Bernhard Kerbl, Georgios Kopanas, Thomas Leimkuehler, George Drettakis. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics, 2023, 42(4): 1-14. DOI: 10.1145/3592433\\n\\n### [10] ✅ VERIFIED　《MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond》\\n\\n\\n## 下一步\\n\\n1. ⚠️ 条目：按“建议改为”替换整条参考文献（以数据库元数据为准，不要凭记忆修改）；\\n2. ❌ 条目：删除，并同步删除或改写正文中对它的引用；需要补充文献时先用 search_papers 检索；\\n3. 修改后再次调用 verify_references 核查完整的参考文献列表，直到没有 ⚠️ 和 ❌。\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "5a503fe2-8101-4124-b32d-96c257bfbf21",
+    "timestamp": "2026-10-31T11:49:20.121Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## CiteGuard 核查报告\\n\\n共 10 条：✅ 9　⚠️ 1　❌ 0　❓ 0\\n\\n### [1] ✅ VERIFIED　《NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis》\\n\\n\\n### [2] ✅ VERIFIED　《Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields》\\n\\n\\n### [3] ✅ VERIFIED　《Block-NeRF: Scalable Large Scene Neural View Synthesis》\\n\\n\\n### [4] ✅ VERIFIED　《Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly-Throughs》\\n\\n\\n### [5] ✅ VERIFIED　《Urban Radiance Fields》\\n\\n\\n### [6] ✅ VERIFIED　《BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering》\\n\\n\\n### [7] ✅ VERIFIED　《SUDS: Scalable Urban Dynamic Scenes》\\n\\n\\n### [8] ✅ VERIFIED　《Instant Neural Graphics Primitives with a Multiresolution Hash Encoding》\\n\\n\\n### [9] ⚠️ MISMATCH　《3D Gaussian Splatting for Real-Time Radiance Field Rendering》\\n\\n- 问题（严重）：第 3 作者 Thomas Leimkühler 不在该论文的作者列表中（该位置应为 Thomas Leimkuehler）\\n- 建议改为：Bernhard Kerbl, Georgios Kopanas, Thomas Leimkuehler, George Drettakis. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics, 2023, 42(4): 1-14. DOI: 10.1145/3592433\\n\\n### [10] ✅ VERIFIED　《MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond》\\n\\n\\n## 下一步\\n\\n1. ⚠️ 条目：按“建议改为”替换整条参考文献（以数据库元数据为准，不要凭记忆修改）；\\n2. ❌ 条目：删除，并同步删除或改写正文中对它的引用；需要补充文献时先用 search_papers 检索；\\n3. 修改后再次调用 verify_references 核查完整的参考文献列表，直到没有 ⚠️ 和 ❌。\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## CiteGuard 核查报告\n\n共 10 条：✅ 9　⚠️ 1　❌ 0　❓ 0\n\n### [1] ✅ VERIFIED　《NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis》\n\n\n### [2] ✅ VERIFIED　《Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields》\n\n\n### [3] ✅ VERIFIED　《Block-NeRF: Scalable Large Scene Neural View Synthesis》\n\n\n### [4] ✅ VERIFIED　《Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly-Throughs》\n\n\n### [5] ✅ VERIFIED　《Urban Radiance Fields》\n\n\n### [6] ✅ VERIFIED　《BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering》\n\n\n### [7] ✅ VERIFIED　《SUDS: Scalable Urban Dynamic Scenes》\n\n\n### [8] ✅ VERIFIED　《Instant Neural Graphics Primitives with a Multiresolution Hash Encoding》\n\n\n### [9] ⚠️ MISMATCH　《3D Gaussian Splatting for Real-Time Radiance Field Rendering》\n\n- 问题（严重）：第 3 作者 Thomas Leimkühler 不在该论文的作者列表中（该位置应为 Thomas Leimkuehler）\n- 建议改为：Bernhard Kerbl, Georgios Kopanas, Thomas Leimkuehler, George Drettakis. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics, 2023, 42(4): 1-14. DOI: 10.1145/3592433\n\n### [10] ✅ VERIFIED　《MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond》\n\n\n## 下一步\n\n1. ⚠️ 条目：按“建议改为”替换整条参考文献（以数据库元数据为准，不要凭记忆修改）；\n2. ❌ 条目：删除，并同步删除或改写正文中对它的引用；需要补充文献时先用 search_papers 检索；\n3. 修改后再次调用 verify_references 核查完整的参考文献列表，直到没有 ⚠️ 和 ❌。\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_Y0H7ZkZeZq1VaZfjADZV4065",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "6852b7a8-d714-4c04-853c-8f25bc735be2",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "Fix \"Leimkühler\" → \"Leimkuehler\" and re-verify just to be safe (full list again after edit).\n\nActually the official ACM page uses \"Thomas Leimkuehler\" (ASCII). Fix it.",
+       "signature": "6852b7a8-d714-4c04-853c-8f25bc735be2"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 576,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 21760,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "9c5006c7-8642-4df9-9462-1889d0d534d9",
+    "timestamp": "2026-10-31T11:49:21.671Z",
+    "thinking_duration_ms": 918,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "6852b7a8-d714-4c04-853c-8f25bc735be2",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "tool_use",
+       "id": "call_00_uMWKN7D8lR8qQFyatKFk4351",
+       "name": "mcp__citeguard__verify_references",
+       "input": {
+        "text": "[1] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, Ren Ng. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis. In: Computer Vision – ECCV 2020, Lecture Notes in Computer Science, 2020: 405–421. DOI: 10.1007/978-3-030-58452-8_24\n[2] Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, Peter Hedman. Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields. CVPR 2022, 2022: 5460–5469. DOI: 10.1109/CVPR52688.2022.00539\n[3] Matthew Tancik, Vincent Casser, Xinchen Yan, Sabeek Pradhan, Ben P. Mildenhall, Pratul Srinivasan, Jonathan T. Barron, Henrik Kretzschmar. Block-NeRF: Scalable Large Scene Neural View Synthesis. CVPR 2022, 2022: 8238–8248. DOI: 10.1109/CVPR52688.2022.00807\n[4] Haithem Turki, Deva Ramanan, Mahadev Satyanarayanan. Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly-Throughs. CVPR 2022, 2022: 12912–12921. DOI: 10.1109/CVPR52688.2022.01258\n[5] Konstantinos Rematas, Andrew Liu, Pratul Srinivasan, Jonathan Barron, Andrea Tagliasacchi, Thomas Funkhouser, Vittorio Ferrari. Urban Radiance Fields. CVPR 2022, 2022: 12922–12932. DOI: 10.1109/CVPR52688.2022.01259\n[6] Yuanbo Xiangli, Linning Xu, Xingang Pan, Nanxuan Zhao, Anyi Rao, Christian Theobalt, Bo Dai, Dahua Lin. BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering. ECCV 2022, Lecture Notes in Computer Science, 2022: 106–122. DOI: 10.1007/978-3-031-19824-3_7\n[7] Haithem Turki, Jason Y. Zhang, Francesco Ferroni, Deva Ramanan. SUDS: Scalable Urban Dynamic Scenes. CVPR 2023, 2023: 12375–12385. DOI: 10.1109/CVPR52729.2023.01191\n[8] Thomas Müller, Alex Evans, Christoph Schied, Alexander Keller. Instant Neural Graphics Primitives with a Multiresolution Hash Encoding. ACM Transactions on Graphics, 2022, 41(4): 1–15. DOI: 10.1145/3528223.3530127\n[9] Bernhard Kerbl, Georgios Kopanas, Thomas Leimkuehler, George Drettakis. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics, 2023, 42(4): 1–14. DOI: 10.1145/3592433\n[10] Yixuan Li, Lihan Jiang, Linning Xu, Yuanbo Xiangli, Zhenzhi Wang, Dahua Lin, Bo Dai. MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond. ICCV 2023, 2023: 3182–3192. DOI: 10.1109/ICCV51070.2023.00297"
+       }
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 576,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 21760,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "6d86e7e0-aef1-47ac-a577-188e258143ac",
+    "timestamp": "2026-10-31T11:49:24.372Z",
+    "tool_use_meta": [
+     {
+      "id": "call_00_uMWKN7D8lR8qQFyatKFk4351",
+      "display_name": "Verify References",
+      "server_display_name": "citeguard",
+      "tool_name": "verify_references"
+     }
+    ]
+   },
+   {
+    "type": "user",
+    "message": {
+     "role": "user",
+     "content": [
+      {
+       "tool_use_id": "call_00_uMWKN7D8lR8qQFyatKFk4351",
+       "type": "tool_result",
+       "content": "{\"result\":\"## CiteGuard 核查报告\\n\\n共 10 条：✅ 10　⚠️ 0　❌ 0　❓ 0\\n\\n### [1] ✅ VERIFIED　《NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis》\\n\\n\\n### [2] ✅ VERIFIED　《Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields》\\n\\n\\n### [3] ✅ VERIFIED　《Block-NeRF: Scalable Large Scene Neural View Synthesis》\\n\\n\\n### [4] ✅ VERIFIED　《Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly-Throughs》\\n\\n\\n### [5] ✅ VERIFIED　《Urban Radiance Fields》\\n\\n\\n### [6] ✅ VERIFIED　《BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering》\\n\\n\\n### [7] ✅ VERIFIED　《SUDS: Scalable Urban Dynamic Scenes》\\n\\n\\n### [8] ✅ VERIFIED　《Instant Neural Graphics Primitives with a Multiresolution Hash Encoding》\\n\\n\\n### [9] ✅ VERIFIED　《3D Gaussian Splatting for Real-Time Radiance Field Rendering》\\n\\n\\n### [10] ✅ VERIFIED　《MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond》\\n\\n\\n全部通过核查（❓ 条目除外），可以输出终稿。\\n\"}"
+      }
+     ]
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "4deb0d6d-1d3e-4145-9048-f4172a383d5f",
+    "timestamp": "2026-10-31T11:49:24.407Z",
+    "tool_use_result": {
+     "content": "{\"result\":\"## CiteGuard 核查报告\\n\\n共 10 条：✅ 10　⚠️ 0　❌ 0　❓ 0\\n\\n### [1] ✅ VERIFIED　《NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis》\\n\\n\\n### [2] ✅ VERIFIED　《Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields》\\n\\n\\n### [3] ✅ VERIFIED　《Block-NeRF: Scalable Large Scene Neural View Synthesis》\\n\\n\\n### [4] ✅ VERIFIED　《Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly-Throughs》\\n\\n\\n### [5] ✅ VERIFIED　《Urban Radiance Fields》\\n\\n\\n### [6] ✅ VERIFIED　《BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering》\\n\\n\\n### [7] ✅ VERIFIED　《SUDS: Scalable Urban Dynamic Scenes》\\n\\n\\n### [8] ✅ VERIFIED　《Instant Neural Graphics Primitives with a Multiresolution Hash Encoding》\\n\\n\\n### [9] ✅ VERIFIED　《3D Gaussian Splatting for Real-Time Radiance Field Rendering》\\n\\n\\n### [10] ✅ VERIFIED　《MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond》\\n\\n\\n全部通过核查（❓ 条目除外），可以输出终稿。\\n\"}",
+     "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+       "name": "citeguard",
+       "version": ""
+      }
+     },
+     "structuredContent": {
+      "result": "## CiteGuard 核查报告\n\n共 10 条：✅ 10　⚠️ 0　❌ 0　❓ 0\n\n### [1] ✅ VERIFIED　《NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis》\n\n\n### [2] ✅ VERIFIED　《Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields》\n\n\n### [3] ✅ VERIFIED　《Block-NeRF: Scalable Large Scene Neural View Synthesis》\n\n\n### [4] ✅ VERIFIED　《Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly-Throughs》\n\n\n### [5] ✅ VERIFIED　《Urban Radiance Fields》\n\n\n### [6] ✅ VERIFIED　《BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering》\n\n\n### [7] ✅ VERIFIED　《SUDS: Scalable Urban Dynamic Scenes》\n\n\n### [8] ✅ VERIFIED　《Instant Neural Graphics Primitives with a Multiresolution Hash Encoding》\n\n\n### [9] ✅ VERIFIED　《3D Gaussian Splatting for Real-Time Radiance Field Rendering》\n\n\n### [10] ✅ VERIFIED　《MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond》\n\n\n全部通过核查（❓ 条目除外），可以输出终稿。\n"
+     }
+    },
+    "tool_result_meta": [
+     {
+      "id": "call_00_uMWKN7D8lR8qQFyatKFk4351",
+      "permission_decision": {
+       "decision": "accept",
+       "source": "config",
+       "reason_type": "rule"
+      }
+     }
+    ]
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "36a5bdc9-4c6d-4b22-829a-d46e628094e1",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "thinking",
+       "thinking": "All 10 verified. Now present the article with references. ~600 Chinese characters. Let me finalize the text, trimming slightly.\n\nLet me count approximate characters of the body:\n\nParagraph 1: \"城市级三维重建需要在数十平方公里范围内恢复几何与外观，并支持自由视点漫游。神经辐射场（NeRF）以隐式多层感知机编码密度与颜色，通过体渲染合成新视图，为真实感渲染提供了统一框架[1]。但原始 NeRF 假设场景有界、视角集中，直接用于城市会遇到表示容量不足、训练缓慢以及远近尺度差异显著等问题。\" ~140 chars.\n\nParagraph 2: \"尺度扩展主要有三条路线。其一是场景分区与模型拼接：Block-NeRF 将城市划分为多个区块独立训练，并按视角动态融合外观嵌入以应对光照变化[3]；Mega-NeRF 面向稀疏航拍视图进行空间划分与几何引导采样，实现大规模虚拟飞行[4]。其二是层次化多尺度表示：BungeeNeRF 由粗到细渐进训练，用统一模型覆盖从卫星到街景的跨尺度细节[6]；Mip-NeRF 360 通过场景收缩与锥形采样解决无界场景的抗锯齿渲染[2]。其三是引入显式几何先验：Urban Radiance Fields 联合优化激光雷达深度与语义分割，改善街区几何一致性[5]；SUDS 将动态物体分解为独立辐射场，实现无标注的城市动态街景重建[7]。\" ~270.\n\nParagraph 3: \"效率方面，Instant-NGP 的多分辨率哈希编码将训练从数天缩短至分钟级[8]；3D Gaussian Splatting 以显式高斯基元实现实时渲染，正成为城市级重建的重要替代表示[9]。数据层面，MatrixCity 提供成对的航拍与街景大规模合成数据集，为跨尺度评测建立基准[10]。\" ~120.\n\nClosing: \"总体来看，城市级 NeRF 仍在存储开销、动态与光照变化、跨尺度一致性等方面面临挑战，显式表示与数据驱动先验的结合是值得关注的方向。\" ~65.\n\nTotal ~595. Good.\n\nOutput. Use a title and references with numbered list. Mention verification? Not necessary but can note all references verified. Keep it clean.",
+       "signature": "36a5bdc9-4c6d-4b22-829a-d46e628094e1"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 443,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 23168,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "44e93ccc-6b15-442d-b38f-0d6d48ffa0ad",
+    "timestamp": "2026-10-31T11:49:28.274Z",
+    "thinking_duration_ms": 3260,
+    "thinking_display": "updates"
+   },
+   {
+    "type": "assistant",
+    "message": {
+     "id": "36a5bdc9-4c6d-4b22-829a-d46e628094e1",
+     "type": "message",
+     "role": "assistant",
+     "model": "deepseek-flash",
+     "content": [
+      {
+       "type": "text",
+       "text": "# 神经辐射场用于大规模城市场景重建\n\n城市级三维重建需要在数十平方公里范围内恢复几何与外观，并支持自由视点漫游。神经辐射场（NeRF）以隐式多层感知机编码密度与颜色，通过体渲染合成新视图，为真实感渲染提供了统一框架[1]。但原始 NeRF 假设场景有界、视角集中，直接用于城市会遇到表示容量不足、训练缓慢与远近尺度差异显著等问题。\n\n针对尺度的扩展主要有三条路线。第一种是场景分区与模型拼接：Block-NeRF 将城市划分为多个区块分别训练，并按视角动态融合外观嵌入，以应对光照变化[3]；Mega-NeRF 面向稀疏航拍视图做空间划分与几何引导采样，实现大规模虚拟飞行[4]。第二种是层次化多尺度表示：BungeeNeRF 由粗到细渐进训练，以统一模型覆盖从卫星到街景的跨尺度细节[6]；Mip-NeRF 360 则通过场景收缩与锥形采样解决无界场景的抗锯齿渲染[2]。第三种是引入显式几何先验：Urban Radiance Fields 联合优化激光雷达深度与语义分割，提升街区几何一致性[5]；SUDS 将动态物体分解为独立辐射场，实现无标注的城市动态街景重建[7]。\n\n效率方面，Instant-NGP 的多分辨率哈希编码把训练从数天缩短至分钟级[8]；3D Gaussian Splatting 以显式高斯基元实现实时渲染，正逐渐成为城市级重建的重要替代表示[9]。数据层面，MatrixCity 提供了成对的航拍与街景大规模数据集，为跨尺度评测建立基准[10]。\n\n总体来看，城市级 NeRF 仍在存储开销、动态与光照变化、跨尺度一致性等方面面临挑战，显式表示与数据驱动先验的结合是值得关注的方向。\n\n## 参考文献\n\n[1] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, Ren Ng. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis. In: Computer Vision – ECCV 2020, Lecture Notes in Computer Science, 2020: 405–421. DOI: 10.1007/978-3-030-58452-8_24\n\n[2] Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, Peter Hedman. Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields. CVPR 2022, 2022: 5460–5469. DOI: 10.1109/CVPR52688.2022.00539\n\n[3] Matthew Tancik, Vincent Casser, Xinchen Yan, Sabeek Pradhan, Ben P. Mildenhall, Pratul Srinivasan, Jonathan T. Barron, Henrik Kretzschmar. Block-NeRF: Scalable Large Scene Neural View Synthesis. CVPR 2022, 2022: 8238–8248. DOI: 10.1109/CVPR52688.2022.00807\n\n[4] Haithem Turki, Deva Ramanan, Mahadev Satyanarayanan. Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly-Throughs. CVPR 2022, 2022: 12912–12921. DOI: 10.1109/CVPR52688.2022.01258\n\n[5] Konstantinos Rematas, Andrew Liu, Pratul Srinivasan, Jonathan Barron, Andrea Tagliasacchi, Thomas Funkhouser, Vittorio Ferrari. Urban Radiance Fields. CVPR 2022, 2022: 12922–12932. DOI: 10.1109/CVPR52688.2022.01259\n\n[6] Yuanbo Xiangli, Linning Xu, Xingang Pan, Nanxuan Zhao, Anyi Rao, Christian Theobalt, Bo Dai, Dahua Lin. BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering. ECCV 2022, Lecture Notes in Computer Science, 2022: 106–122. DOI: 10.1007/978-3-031-19824-3_7\n\n[7] Haithem Turki, Jason Y. Zhang, Francesco Ferroni, Deva Ramanan. SUDS: Scalable Urban Dynamic Scenes. CVPR 2023, 2023: 12375–12385. DOI: 10.1109/CVPR52729.2023.01191\n\n[8] Thomas Müller, Alex Evans, Christoph Schied, Alexander Keller. Instant Neural Graphics Primitives with a Multiresolution Hash Encoding. ACM Transactions on Graphics, 2022, 41(4): 1–15. DOI: 10.1145/3528223.3530127\n\n[9] Bernhard Kerbl, Georgios Kopanas, Thomas Leimkuehler, George Drettakis. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics, 2023, 42(4): 1–14. DOI: 10.1145/3592433\n\n[10] Yixuan Li, Lihan Jiang, Linning Xu, Yuanbo Xiangli, Zhenzhi Wang, Dahua Lin, Bo Dai. MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond. ICCV 2023, 2023: 3182–3192. DOI: 10.1109/ICCV51070.2023.00297\n\n*说明：10 条参考文献均已通过 CiteGuard 核查（10/10 通过，无虚构或元数据错误）；正文约 600 字。*"
+      }
+     ],
+     "stop_reason": null,
+     "stop_sequence": null,
+     "usage": {
+      "input_tokens": 443,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 23168,
+      "output_tokens": 0,
+      "service_tier": "standard"
+     },
+     "context_management": null
+    },
+    "parent_tool_use_id": null,
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "uuid": "df22c4b0-f128-432f-ad5f-29da6669e5e4",
+    "timestamp": "2026-10-31T11:49:32.778Z"
+   },
+   {
+    "duration_api_ms": 39384,
+    "stop_reason": "end_turn",
+    "session_id": "53df921d-4ae8-4a06-81b9-265886087b98",
+    "total_cost_usd": 0.32611,
+    "usage": {
+     "input_tokens": 18377,
+     "cache_creation_input_tokens": 0,
+     "cache_read_input_tokens": 99200,
+     "output_tokens": 7385,
+     "output_tokens_details": {
+      "thinking_tokens": 0
+     },
+     "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+     },
+     "service_tier": "standard",
+     "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+     },
+     "inference_geo": "",
+     "iterations": [],
+     "speed": "standard",
+     "fallback_credit": null
+    },
+    "modelUsage": {
+     "deepseek-flash": {
+      "inputTokens": 18377,
+      "outputTokens": 7385,
+      "cacheReadInputTokens": 99200,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.32611,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "deepseek-flash",
+      "provider": "firstParty",
+      "costBasis": "unknown"
+     }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+     "spawned": 0,
+     "requested": {
+      "background": 0,
+      "foreground": 0,
+      "unset": 0
+     },
+     "started_in_background": 0,
+     "max_depth": 0,
+     "spawned_by_subagents": 0,
+     "completed": 0,
+     "failed": 0,
+     "killed": {
+      "parent": 0,
+      "user": 0,
+      "system": 0
+     },
+     "refused": {
+      "depth_limit": 0,
+      "concurrency_limit": 0,
+      "budget": 0
+     },
+     "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 16,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "# 神经辐射场用于大规模城市场景重建\n\n城市级三维重建需要在数十平方公里范围内恢复几何与外观，并支持自由视点漫游。神经辐射场（NeRF）以隐式多层感知机编码密度与颜色，通过体渲染合成新视图，为真实感渲染提供了统一框架[1]。但原始 NeRF 假设场景有界、视角集中，直接用于城市会遇到表示容量不足、训练缓慢与远近尺度差异显著等问题。\n\n针对尺度的扩展主要有三条路线。第一种是场景分区与模型拼接：Block-NeRF 将城市划分为多个区块分别训练，并按视角动态融合外观嵌入，以应对光照变化[3]；Mega-NeRF 面向稀疏航拍视图做空间划分与几何引导采样，实现大规模虚拟飞行[4]。第二种是层次化多尺度表示：BungeeNeRF 由粗到细渐进训练，以统一模型覆盖从卫星到街景的跨尺度细节[6]；Mip-NeRF 360 则通过场景收缩与锥形采样解决无界场景的抗锯齿渲染[2]。第三种是引入显式几何先验：Urban Radiance Fields 联合优化激光雷达深度与语义分割，提升街区几何一致性[5]；SUDS 将动态物体分解为独立辐射场，实现无标注的城市动态街景重建[7]。\n\n效率方面，Instant-NGP 的多分辨率哈希编码把训练从数天缩短至分钟级[8]；3D Gaussian Splatting 以显式高斯基元实现实时渲染，正逐渐成为城市级重建的重要替代表示[9]。数据层面，MatrixCity 提供了成对的航拍与街景大规模数据集，为跨尺度评测建立基准[10]。\n\n总体来看，城市级 NeRF 仍在存储开销、动态与光照变化、跨尺度一致性等方面面临挑战，显式表示与数据驱动先验的结合是值得关注的方向。\n\n## 参考文献\n\n[1] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, Ren Ng. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis. In: Computer Vision – ECCV 2020, Lecture Notes in Computer Science, 2020: 405–421. DOI: 10.1007/978-3-030-58452-8_24\n\n[2] Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, Peter Hedman. Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields. CVPR 2022, 2022: 5460–5469. DOI: 10.1109/CVPR52688.2022.00539\n\n[3] Matthew Tancik, Vincent Casser, Xinchen Yan, Sabeek Pradhan, Ben P. Mildenhall, Pratul Srinivasan, Jonathan T. Barron, Henrik Kretzschmar. Block-NeRF: Scalable Large Scene Neural View Synthesis. CVPR 2022, 2022: 8238–8248. DOI: 10.1109/CVPR52688.2022.00807\n\n[4] Haithem Turki, Deva Ramanan, Mahadev Satyanarayanan. Mega-NeRF: Scalable Construction of Large-Scale NeRFs for Virtual Fly-Throughs. CVPR 2022, 2022: 12912–12921. DOI: 10.1109/CVPR52688.2022.01258\n\n[5] Konstantinos Rematas, Andrew Liu, Pratul Srinivasan, Jonathan Barron, Andrea Tagliasacchi, Thomas Funkhouser, Vittorio Ferrari. Urban Radiance Fields. CVPR 2022, 2022: 12922–12932. DOI: 10.1109/CVPR52688.2022.01259\n\n[6] Yuanbo Xiangli, Linning Xu, Xingang Pan, Nanxuan Zhao, Anyi Rao, Christian Theobalt, Bo Dai, Dahua Lin. BungeeNeRF: Progressive Neural Radiance Field for Extreme Multi-scale Scene Rendering. ECCV 2022, Lecture Notes in Computer Science, 2022: 106–122. DOI: 10.1007/978-3-031-19824-3_7\n\n[7] Haithem Turki, Jason Y. Zhang, Francesco Ferroni, Deva Ramanan. SUDS: Scalable Urban Dynamic Scenes. CVPR 2023, 2023: 12375–12385. DOI: 10.1109/CVPR52729.2023.01191\n\n[8] Thomas Müller, Alex Evans, Christoph Schied, Alexander Keller. Instant Neural Graphics Primitives with a Multiresolution Hash Encoding. ACM Transactions on Graphics, 2022, 41(4): 1–15. DOI: 10.1145/3528223.3530127\n\n[9] Bernhard Kerbl, Georgios Kopanas, Thomas Leimkuehler, George Drettakis. 3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM Transactions on Graphics, 2023, 42(4): 1–14. DOI: 10.1145/3592433\n\n[10] Yixuan Li, Lihan Jiang, Linning Xu, Yuanbo Xiangli, Zhenzhi Wang, Dahua Lin, Bo Dai. MatrixCity: A Large-scale City Dataset for City-scale Neural Rendering and Beyond. ICCV 2023, 2023: 3182–3192. DOI: 10.1109/ICCV51070.2023.00297\n\n*说明：10 条参考文献均已通过 CiteGuard 核查（10/10 通过，无虚构或元数据错误）；正文约 600 字。*",
+    "ttft_ms": 3297,
+    "type": "result",
+    "duration_ms": 48337,
+    "uuid": "7b2248a2-87f2-4afa-8294-8c055bb5af64",
+    "ttft_stream_ms": 1126,
+    "time_to_request_ms": 213,
+    "first_content_frame_ms": 1127,
+    "time_to_request_from_spawn_ms": 1326872,
+    "warm_spare_claimed": false,
+    "flag_fetch_kick": "started_after_init_empty",
+    "time_origin_ms": 1793447322982.889,
+    "queued_turn_count": 0,
+    "result_index": 0,
+    "model_usage_since_last_result": {
+     "deepseek-flash": {
+      "inputTokens": 18377,
+      "outputTokens": 7385,
+      "cacheReadInputTokens": 99200,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.32611,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "cacheCreationEphemeral5mInputTokens": 0,
+      "cacheCreationEphemeral1hInputTokens": 0,
+      "canonicalModel": "deepseek-flash",
+      "provider": "firstParty",
+      "costBasis": "unknown"
+     }
+    }
+   }
+  ]
+ },
+ "error": null
+}
