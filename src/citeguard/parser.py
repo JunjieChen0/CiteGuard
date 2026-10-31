@@ -14,13 +14,18 @@ _NAME_WORD = rf"{_UPPER}[\w\u00C0-\u024F'’\-]*"
 _PARTICLES = r"(?:(?:van|von|der|den|de|del|da|di|le|la)\s+)*"
 _SURNAME = rf"{_PARTICLES}{_NAME_WORD}(?:\s+y\s+{_NAME_WORD})?"
 _INITIALS_DOTTED = rf"{_UPPER}\.(?:\s?-?{_UPPER}\.)*"
-_INITIALS_BARE = rf"{_UPPER}(?:[\s-]{_UPPER})*(?=[,.;]|\s+et\s+al)"
+_INITIALS_BARE = rf"{_UPPER}{{1,3}}(?:[\s-]{_UPPER}{{1,3}})*(?=[,.;]|\s+et\s+al)"  # T N、TN、M-W
 _SEP = r"(?:[,;]\s*(?:&\s*|and\s+)?|\s*&\s*|\s+and\s+)"
 _ET_AL = r"(?:et\s+al\.?|等)"
 
 # 风格 A：He, K., Zhang, X.    风格 B：Kipf T N, Welling M / Nichol A. Q.
 _STYLE_A_ITEM = re.compile(rf"(?P<family>{_SURNAME}),\s*(?P<given>{_INITIALS_DOTTED})")
-_STYLE_B_ITEM = re.compile(rf"(?P<family>{_SURNAME})\s+(?P<given>{_INITIALS_DOTTED}|{_INITIALS_BARE})")
+# 风格 B 的姓氏可以是两个词（Khodapanah Aghdam E），第二个词须含小写字母，避免把首字母当姓氏（Kipf T N）
+_SURNAME_B = rf"{_PARTICLES}{_NAME_WORD}(?:\s+{_UPPER}[a-z\u00C0-\u024F'’-]+)?(?:\s+y\s+{_NAME_WORD})?"
+_STYLE_B_ITEM = re.compile(rf"(?P<family>{_SURNAME_B})\s+(?P<given>{_INITIALS_DOTTED}|{_INITIALS_BARE})")
+# 风格 E：Bacchelli, Alberto; Bird, Christian（姓, 全名；分号分隔）
+_STYLE_E_ITEM = re.compile(rf"(?P<family>{_SURNAME}),\s+(?P<given>{_NAME_WORD}(?:\s+(?:{_NAME_WORD}|{_UPPER}\.))*)")
+_SEMICOLON_SEP_RE = re.compile(r";\s*(?:&\s*|and\s+)?")
 # 风格 D：S.-H. Gao, L. Van Der Maaten（首字母在前；姓氏前缀可能大写）
 _CAP_PARTICLES = r"(?:(?:[Vv]an|[Vv]on|[Dd]er|[Dd]en|[Dd]e|[Dd]el|[Dd]a|[Dd]i|[Ll]e|[Ll]a)\s+)*"
 _STYLE_D_ITEM = re.compile(
@@ -76,7 +81,7 @@ def split_references(text: str) -> list[str]:
 
 # ---------------------------------------------------------------- 作者
 
-def _parse_style(text: str, item_re: re.Pattern) -> tuple[list[Author], bool, int] | None:
+def _parse_style(text: str, item_re: re.Pattern, sep_re: re.Pattern = _SEP_RE) -> tuple[list[Author], bool, int] | None:
     authors: list[Author] = []
     pos = 0
     while True:
@@ -85,7 +90,7 @@ def _parse_style(text: str, item_re: re.Pattern) -> tuple[list[Author], bool, in
             return None
         authors.append(Author(m.group("family"), m.group("given")))
         pos = m.end()
-        sep = _SEP_RE.match(text, pos)
+        sep = sep_re.match(text, pos)
         if sep:
             after = sep.end()
             if (et := _ET_AL_RE.match(text, after)):
@@ -136,6 +141,10 @@ def _split_full_name(name: str) -> Author:
 
 def _parse_full_names(text: str) -> tuple[list[Author], bool, int] | None:
     end = _author_block_end(text)
+    quote = re.search(r"[\"“]", text)
+    if quote and text[:quote.start()].rstrip().endswith(",") and (end is None or quote.start() < end):
+        # IEEE 格式：A, B, and C, “标题,” 期刊……——作者段止于引号
+        end = len(text[:quote.start()].rstrip()) - 1
     if end is None:
         return None
     block = text[:end]
@@ -155,6 +164,7 @@ def _parse_full_names(text: str) -> tuple[list[Author], bool, int] | None:
 def _parse_authors(text: str) -> tuple[list[Author], bool, int]:
     """各种格式都试一遍，取识别出作者最多的一种（并列时按 A、B、D、全名的顺序）。"""
     parses = [_parse_style(text, r) for r in (_STYLE_A_ITEM, _STYLE_B_ITEM, _STYLE_D_ITEM)]
+    parses.append(_parse_style(text, _STYLE_E_ITEM, _SEMICOLON_SEP_RE))
     parses.append(_parse_full_names(text))
     candidates = [p for p in parses if p]
     if not candidates:
@@ -168,7 +178,7 @@ def _extract_title(rest: str) -> tuple[str, str]:
     """rest 以标题开头；返回 (标题, 标题之后的文本)。"""
     quoted = re.match(r"\s*[\"“](.+?)[\"”]", rest)
     if quoted:
-        return quoted.group(1).strip().rstrip("."), rest[quoted.end():]
+        return quoted.group(1).strip().rstrip(".,"), rest[quoted.end():]
     cuts = [len(rest)]
     for pattern in (_TYPE_MARK_RE, re.compile(r"\s\*|\*\s|\.\s+In:"), _SENTENCE_END_RE):
         m = pattern.search(rest)
@@ -178,10 +188,27 @@ def _extract_title(rest: str) -> tuple[str, str]:
     return rest[:cut].strip().strip("*").strip().rstrip("."), rest[cut:]
 
 
+_VOLUME_PATTERNS = [
+    re.compile(r"\bvol(?:ume)?\.?\s*(\d{1,4})\b", re.IGNORECASE),  # vol. 9, no. 4
+    re.compile(r"(?<![\w.])(\d{1,4})\s*\(\s*[\w-]{1,8}\s*\)"),  # 36(12)
+    re.compile(r"(?<!\d)(?:19|20)\d{2}\s*,\s*(\d{1,4})\s*[:,]"),  # 2024, 154: 110424
+]
+
+
+def _parse_volume(after: str) -> str | None:
+    text = _ARXIV_RE.sub("", after)
+    for pattern in _VOLUME_PATTERNS:
+        m = pattern.search(text)
+        if m:
+            return m.group(1).lstrip("0") or "0"
+    return None
+
+
 def parse_reference(raw: str) -> Reference:
     text = re.sub(r"\s+", " ", raw).strip()
     doi_m = _DOI_RE.search(text)
-    doi = doi_m.group(1).rstrip(".,;)]").lower() if doi_m else None
+    # DOI 只含 ASCII：截掉紧跟的脚注符号（†）等
+    doi = re.split(r"[^\x21-\x7e]", doi_m.group(1))[0].rstrip(".,;)]").lower() if doi_m else None
     arxiv_m = _ARXIV_RE.search(text) or (re.search(r"10\.48550/arxiv\.(\d{4}\.\d{4,5})", doi) if doi else None)
 
     body = re.split(r"\bDOI\b|https?://doi\.org/", text, maxsplit=1, flags=re.IGNORECASE)[0]
@@ -196,6 +223,7 @@ def parse_reference(raw: str) -> Reference:
         years = _YEAR_RE.findall(_ARXIV_RE.sub("", after)) or _YEAR_RE.findall(body[:pos])
         year = int(years[0]) if years else None
     pages_m = _PAGES_RE.search(after)
+    volume = _parse_volume(after)
     venue = re.split(r",?\s*(?:19|20)\d{2}", _TYPE_MARK_RE.sub("", after), maxsplit=1)[0]
     venue = re.sub(r"^[\s.,:*]*(?:In:\s*)?", "", venue)
     venue = re.split(r"\*|,\s*\d", venue, maxsplit=1)[0].strip(" .,")
@@ -209,6 +237,7 @@ def parse_reference(raw: str) -> Reference:
         doi=doi,
         arxiv_id=arxiv_m.group(1) if arxiv_m else None,
         pages=f"{pages_m.group(1)}-{pages_m.group(2)}" if pages_m else None,
+        volume=volume,
     )
 
 

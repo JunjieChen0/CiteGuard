@@ -42,6 +42,7 @@ class Reference:
     doi: str | None = None
     arxiv_id: str | None = None
     pages: str | None = None
+    volume: str | None = None
 
 
 @dataclass

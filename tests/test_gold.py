@@ -55,3 +55,11 @@ def test_split_ignores_trailing_notes_and_refusal_lists():
     text = ("参考文献\n\n[1] A B. Title one. Venue, 2020. DOI: 10.1/a\n[2] C D. Title two. Venue, 2021.\n\n---\n"
             "说明：参考文献中 [1]–[2] 与正文对应。\n1. 逐条通过 DOI 解析核对；\n2. 补齐条目。\n")
     assert [r[:1] for r in gold.split_references_simple(text)] == ["A", "C"]
+
+
+def test_second_sample_excludes_first(tmp_path):
+    _write_b0(tmp_path, "a", [f"X{i}. Title {i}. 2020." for i in range(30)])
+    items = gold.enumerate_references(tmp_path)
+    first = gold.sample(items, 10, seed=1)
+    second = gold.sample([i for i in items if i["id"] not in {f["id"] for f in first}], 10, seed=2)
+    assert not {i["id"] for i in first} & {i["id"] for i in second}

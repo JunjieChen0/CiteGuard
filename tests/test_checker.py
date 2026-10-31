@@ -155,7 +155,9 @@ def test_arxiv_doi_resolved_via_doi_org_and_compared_with_published_version():
     result = checker(crossref=c, doi_org=d).check(ref)
     assert c.doi_calls == []  # arXiv DOI 直接走 doi.org
     assert result.status is Status.MISMATCH
-    assert sorted(fields(result)) == [("authors", Severity.MINOR), ("pages", Severity.MINOR)]
+    # 12124–12134 是 CVF 开放获取版页码（与 IEEE 版 12114–12124 不同），只作提示
+    assert fields(result) == [("authors", Severity.MINOR)]
+    assert any(d.field == "pages" and d.severity is Severity.INFO for d in result.diffs)
     info = [d.message for d in result.diffs if d.severity is Severity.INFO]
     assert any("10.1109/cvpr52688.2022.01181" in m for m in info)
     assert result.matched.doi == "10.1109/cvpr52688.2022.01181"
@@ -276,3 +278,65 @@ def test_check_text_runs_in_parallel_but_keeps_order():
     results = c.check_text(text)
     assert [r.reference.title for r in results] == [f"Fabricated Paper Title Number {i}" for i in range(1, 7)]
     assert peak[0] > 1
+
+
+def test_arxiv_doi_with_renamed_title_accepted_when_authors_match():
+    # arXiv 记录标题 "Wasserstein GAN"，ICML 版 "Wasserstein Generative Adversarial Networks"
+    wgan = Paper("Wasserstein GAN", [Author("Arjovsky", "Martin"), Author("Chintala", "Soumith"), Author("Bottou", "Léon")],
+                 2017, "arXiv", "10.48550/arxiv.1701.07875", None, "doi.org")
+    d = FakeSource("doi.org", by_doi={"10.48550/arxiv.1701.07875": wgan})
+    ref = parse_reference("Martin Arjovsky, Soumith Chintala, Léon Bottou. Wasserstein Generative Adversarial Networks. "
+                          "ICML, 2017. DOI: 10.48550/arXiv.1701.07875.")
+    result = checker(doi_org=d).check(ref)
+    assert result.status is Status.VERIFIED
+    assert any(x.field == "title" and x.severity is Severity.INFO for x in result.diffs)
+
+
+def test_arxiv_doi_pointing_to_sibling_paper_by_same_authors_is_still_flagged():
+    sibling = Paper("Identity Mappings in Deep Residual Networks", [Author("He", "Kaiming"), Author("Zhang", "Xiangyu")],
+                    2016, "arXiv", "10.48550/arxiv.1603.05027", None, "doi.org")
+    d = FakeSource("doi.org", by_doi={"10.48550/arxiv.1603.05027": sibling})
+    ref = parse_reference("He K, Zhang X. Deep Residual Learning for Image Recognition. CVPR, 2016. "
+                          "DOI: 10.48550/arXiv.1603.05027.")
+    assert checker(doi_org=d).check(ref).status is not Status.VERIFIED
+
+
+def test_published_version_requires_substantial_author_overlap():
+    preprint = Paper("FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting",
+                     [Author("Zhou", "Tian"), Author("Ma", "Ziqing"), Author("Wen", "Qingsong"), Author("Wang", "Xue"),
+                      Author("Sun", "Liang"), Author("Jin", "Rong")], 2022, "arXiv", "10.48550/arxiv.2201.12740", None,
+                     "doi.org")
+    impostor = Paper(preprint.title, [Author("Zhou", "Wei"), Author("Li", "Bo")], 2023, "Book", "10.1/other", "10-34",
+                     "crossref")
+    c = FakeSource("crossref", search={"FEDformer": [impostor]})
+    d = FakeSource("doi.org", by_doi={"10.48550/arxiv.2201.12740": preprint})
+    ref = parse_reference("Zhou, T., Ma, Z., Wen, Q., Wang, X., Sun, L., & Jin, R. (2022). FEDformer: Frequency Enhanced "
+                          "Decomposed Transformer for Long-Term Series Forecasting. *ICML*, PMLR 162, 27268–27286. "
+                          "DOI: 10.48550/arXiv.2201.12740")
+    result = checker(crossref=c, doi_org=d).check(ref)
+    assert result.status is Status.VERIFIED
+    assert result.matched.doi == "10.48550/arxiv.2201.12740"
+
+
+def test_volume_mismatch_is_reported():
+    paper = Paper("Federated learning for medical image analysis: A survey", [Author("Guan", "Hao")], 2024,
+                  "Pattern Recognition", "10.1016/j.patcog.2024.110424", "110424", "crossref", volume="151")
+    c = FakeSource("crossref", by_doi={"10.1016/j.patcog.2024.110424": paper})
+    ref = parse_reference("Guan H, et al. Federated learning for medical image analysis: A survey[J]. Pattern "
+                          "Recognition, 2024, 154: 110424. DOI: 10.1016/j.patcog.2024.110424.")
+    result = checker(crossref=c).check(ref)
+    assert result.status is Status.MISMATCH and fields(result) == [("volume", Severity.MINOR)]
+
+
+def test_published_version_must_be_close_in_time_to_preprint():
+    preprint = Paper("FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting",
+                     [Author("Zhou", "Tian"), Author("Ma", "Ziqing"), Author("Wen", "Qingsong")], 2022, "arXiv",
+                     "10.48550/arxiv.2201.12740", None, "doi.org")
+    reprint = Paper(preprint.title, [Author("Zhou", "Tian"), Author("Ma", "Ziqing"), Author("Wen", "Qingsong")], 2026,
+                    "AI for Time Series", "10.1201/9781003612742-2", "10-34", "crossref")  # 4 年后书中转载
+    c = FakeSource("crossref", search={"FEDformer": [reprint]})
+    d = FakeSource("doi.org", by_doi={"10.48550/arxiv.2201.12740": preprint})
+    ref = parse_reference("Zhou, T., Ma, Z., Wen, Q. (2022). FEDformer: Frequency Enhanced Decomposed Transformer for "
+                          "Long-Term Series Forecasting. *ICML*, PMLR 162, 27268–27286. DOI: 10.48550/arXiv.2201.12740")
+    result = checker(crossref=c, doi_org=d).check(ref)
+    assert result.status is Status.VERIFIED and result.matched.doi == "10.48550/arxiv.2201.12740"

@@ -221,3 +221,31 @@ def test_authors_abbreviated_given_name_in_database():
     assert compare_authors([Author("Biswas", "Saroj Kr.")], True, [Author("Biswas", "Saroj Kumar")]) == []
     # 但名字整体不同仍要报
     assert compare_authors([Author("Zheng", "Nannan")], True, [Author("Zheng", "Ningxin")])
+
+
+def test_authors_database_omits_middle_name():
+    assert compare_authors([Author("Chi", "Ed H.")], True, [Author("Chi", "Ed")]) == []
+    assert compare_authors([Author("Thai", "Zhen Leng")], True, [Author("Thai", "Zhen")]) == []
+
+
+def test_authors_concatenated_initials():
+    assert compare_authors([Author("Hoang", "TN"), Author("Shi", "JY")], True,
+                           [Author("Hoang", "Trong Nghia"), Author("Shi", "Jian-Yu")]) == []
+
+
+def test_compare_titles_database_has_only_the_name():
+    assert compare_titles("PressLight: Learning max pressure control to coordinate traffic signals in arterial network",
+                          "PressLight")[0] is TitleMatch.SAME_MAIN_TITLE
+
+
+def test_compare_volume():
+    from citeguard.matcher import compare_volume
+    assert compare_volume("154", "151")
+    assert not compare_volume("36", "36") and not compare_volume(None, "3") and not compare_volume("3", None)
+
+
+def test_pages_on_cvf_conference_dois_are_info_only():
+    from citeguard.models import Severity
+    diffs = compare_pages("4700-4708", "2261-2269", doi="10.1109/cvpr.2017.243")
+    assert diffs and diffs[0].severity is Severity.INFO
+    assert compare_pages("4700-4708", "2261-2269", doi="10.1109/tpami.2019.1")[0].severity is Severity.MINOR

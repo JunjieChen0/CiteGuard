@@ -261,3 +261,54 @@ def test_parse_abbreviated_given_name_inside_author_list():
                           "smart farming application. ICSCCC, 2026. DOI: 10.1109/icsccc69031.2026.11600091")
     assert [a.family for a in ref.authors] == ["Nath", "Biswas", "Kumar", "Tripathi", "Majumdar"]
     assert ref.title.startswith("A CNN model for soybean leaf disease prediction")
+
+
+# ---- 第 7 步金标准（gold-1）中暴露的格式；修复后的结果在 gold-1 上偏乐观，需在 gold-2 上复测
+@pytest.mark.parametrize(("raw", "families", "title"), [
+    ("Huang K, Xiao C, Hoang TN, Glass L, Sun J. CASTER: Predicting drug interactions with chemical substructure "
+     "representation. *Proceedings of the AAAI Conference on Artificial Intelligence*, 2020, 34(1): 702–709. "
+     "DOI: 10.1609/aaai.v34i01.5412.",
+     ["Huang", "Xiao", "Hoang", "Glass", "Sun"],
+     "CASTER: Predicting drug interactions with chemical substructure representation"),
+    ("Kazerouni A, Khodapanah Aghdam E, Heidari M, Azad R, Fayyaz M, Hacihaliloglu I, Merhof D. Diffusion Models in "
+     "Medical Imaging: A Comprehensive Survey. Medical Image Analysis, 2023, 88: 102846. DOI: 10.1016/j.media.2023.102846.",
+     ["Kazerouni", "Khodapanah Aghdam", "Heidari", "Azad", "Fayyaz", "Hacihaliloglu", "Merhof"],
+     "Diffusion Models in Medical Imaging: A Comprehensive Survey"),
+    ("Bacchelli, Alberto; Bird, Christian. Expectations, Outcomes, and Challenges of Modern Code Review. In: Proceedings "
+     "of the 35th International Conference on Software Engineering (ICSE '13), 2013: 712–721. DOI: 10.1109/ICSE.2013.6606617.",
+     ["Bacchelli", "Bird"], "Expectations, Outcomes, and Challenges of Modern Code Review"),
+    ("Lei Ma, Yu Liu, Xueliang Zhang, Yuanxin Ye, Gaofeng Yin, and Brian Alan Johnson, “Change detection from "
+     "very-high-spatial-resolution optical remote sensing images: Methods, applications, and future directions,” *IEEE "
+     "Geoscience and Remote Sensing Magazine*, vol. 9, no. 4, pp. 68–101, 2021. DOI: 10.1109/MGRS.2021.3065497.",
+     ["Ma", "Liu", "Zhang", "Ye", "Yin", "Johnson"],
+     "Change detection from very-high-spatial-resolution optical remote sensing images: Methods, applications, and "
+     "future directions"),
+    ("Hao Chen and Zhenwei Shi, “A spatial-temporal attention-based method and a new dataset for remote sensing image "
+     "change detection,” *Remote Sensing*, vol. 12, no. 10, Art. no. 1662, 2020. DOI: 10.3390/rs12101662.",
+     ["Chen", "Shi"], "A spatial-temporal attention-based method and a new dataset for remote sensing image change detection"),
+])
+def test_parse_formats_from_gold1(raw, families, title):
+    ref = parse_reference(raw)
+    assert [a.family for a in ref.authors] == families
+    assert ref.title == title
+
+
+def test_kipf_style_still_single_word_surname():
+    assert [a.family for a in parse_reference(SURNAME_INITIALS).authors] == ["Kipf", "Welling"]
+
+
+def test_doi_drops_trailing_footnote_marker():
+    ref = parse_reference("Ye, H.; Jiang, X. Interpretable Charge Predictions. *NAACL-HLT 2018*, 2018: 1854–1864. "
+                          "DOI: 10.18653/v1/N18-1168.†")
+    assert ref.doi == "10.18653/v1/n18-1168"
+
+
+@pytest.mark.parametrize(("raw", "volume"), [
+    ("Guan H, Yap P T. Federated learning for medical image analysis: A survey[J]. Pattern Recognition, 2024, 154: "
+     "110424. DOI: 10.1016/j.patcog.2024.110424.", "154"),
+    ("Chen H, Zhang Y. Low-Dose CT. IEEE Transactions on Medical Imaging, 2017, 36(12): 2524–2535.", "36"),
+    ("A B, C D, “Title here,” *IEEE Mag.*, vol. 9, no. 4, pp. 68–101, 2021.", "9"),
+    ("He K, Zhang X. Deep residual learning. CVPR, 2016: 770–778. DOI: 10.1109/CVPR.2016.90.", None),
+])
+def test_parse_volume(raw, volume):
+    assert parse_reference(raw).volume == volume

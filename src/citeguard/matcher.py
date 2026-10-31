@@ -67,6 +67,8 @@ def compare_titles(claimed: str, actual: str) -> tuple[TitleMatch, float]:
         return TitleMatch.SAME_MAIN_TITLE, score
     if c_main and c_main == a_main and c_sub and a_sub:
         return TitleMatch.SUBTITLE_DIFFERS, score
+    if c_main and c_sub and not a_sub and c_main == a:  # 数据库只记录了名称（"PressLight"）
+        return TitleMatch.SAME_MAIN_TITLE, score
     return TitleMatch.DIFFERENT, score
 
 
@@ -91,7 +93,7 @@ def _family_matches(claimed: Author, actual: Author) -> bool:
 
 def _given_matches(claimed: Author, actual: Author) -> bool:
     family_tokens = set(_tokens(actual.family))
-    c_tokens = [t for t in _tokens(claimed.given) if t not in family_tokens]  # "L. Van Der" + "Maaten"
+    c_tokens = [t for t in _given_tokens(claimed.given) if t not in family_tokens]  # "L. Van Der" + "Maaten"
     a_given = "".join(_tokens(actual.given))
     if not c_tokens or not a_given:
         return True
@@ -100,7 +102,20 @@ def _given_matches(claimed: Author, actual: Author) -> bool:
     if "".join(c_tokens) == a_given:
         return True
     a_tokens = [t for t in _tokens(actual.given) if t not in family_tokens]
-    return len(c_tokens) == len(a_tokens) and all(_token_matches(c, a) for c, a in zip(c_tokens, a_tokens))
+    # 一方省略了中间名（Ed H. Chi ↔ Ed Chi、Zhen Leng Thai ↔ Zhen Thai）：较短的一方须与另一方开头逐个匹配
+    n = min(len(c_tokens), len(a_tokens))
+    return n > 0 and all(_token_matches(c, a) for c, a in zip(c_tokens[:n], a_tokens[:n]))
+
+
+def _given_tokens(given: str) -> list[str]:
+    """名字拆成小写词；连写的大写首字母（Vancouver 格式 "TN"、"JY"）拆成单个字母。"""
+    tokens: list[str] = []
+    for raw in given.replace(".", " ").split():
+        if raw.isalpha() and raw.isupper() and 2 <= len(raw) <= 3:
+            tokens += list(raw.lower())
+        else:
+            tokens += _tokens(raw)
+    return tokens
 
 
 def _is_abbreviation(short: str, long: str) -> bool:
@@ -182,13 +197,27 @@ def _first_page(pages: str | None) -> str | None:
     return parts[0] or None
 
 
-def compare_pages(claimed: str | None, actual: str | None) -> list[Diff]:
+_CVF_DOI_RE = re.compile(r"^10\.1109/(?:cvpr|iccv|wacv|cvprw|iccvw)", re.IGNORECASE)
+
+
+def compare_pages(claimed: str | None, actual: str | None, doi: str | None = None) -> list[Diff]:
     c, a = _first_page(claimed), _first_page(actual)
     if not c or not a or re.fullmatch(r"1\s*[–—-]\s*1", actual or ""):  # 早期访问记录的占位页码
         return []
     if c.lower() == a.lower():
         return []
+    if doi and _CVF_DOI_RE.match(doi):
+        # CVPR/ICCV 的 IEEE Xplore 版与 CVF 开放获取版页码不同（第 7 步金标准已逐篇核对），无法判断引用的是哪一版
+        return [Diff("pages", claimed or "", actual or "", Severity.INFO,
+                     f"页码与 IEEE 版（{actual}）不同；若引用的是 CVF 开放获取版可忽略")]
     return [Diff("pages", claimed or "", actual or "", Severity.MINOR, f"页码不符：{claimed} → {actual}")]
+
+
+def compare_volume(claimed: str | None, actual: str | None) -> list[Diff]:
+    c, a = (re.sub(r"^0+", "", (x or "").strip()) for x in (claimed, actual))
+    if not c or not a or c == a:
+        return []
+    return [Diff("volume", c, a, Severity.MINOR, f"卷号不符：{c} → {a}")]
 
 
 # ---------------------------------------------------------------- 判定

@@ -7,6 +7,7 @@ CiteGuard 只在 score 阶段、标注完成之后运行。
     uv run python -m experiments.gold sample      # → results/gold/sample.csv
     uv run python -m experiments.gold evidence    # → results/gold/evidence.json + evidence.md（人工核对用）
     uv run python -m experiments.gold score       # 读 annotation.csv，输出混淆矩阵与精确率/召回率
+    uv run python -m experiments.gold sample --set 2   # gold-2：从 gold-1 之外的条目中再抽 100 条（结果在 results/gold2/）
 """
 
 from __future__ import annotations
@@ -27,8 +28,10 @@ from experiments.pilot import RESULTS_DIR
 
 B0_DIR = RESULTS_DIR / "main" / "B0"
 GOLD_DIR = RESULTS_DIR / "gold"
+GOLD2_DIR = RESULTS_DIR / "gold2"
 SAMPLE_SIZE = 100
 SEED = 20261031
+SEED2 = 20261101
 STATUSES = ["VERIFIED", "MISMATCH", "NOT_FOUND"]
 
 
@@ -190,22 +193,27 @@ def score(gold_dir: Path) -> dict:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="金标准")
     parser.add_argument("command", choices=["sample", "evidence", "score"])
+    parser.add_argument("--set", type=int, choices=[1, 2], default=1)
     args = parser.parse_args(argv)
     sys.stdout.reconfigure(encoding="utf-8")
+    gold_dir = GOLD_DIR if args.set == 1 else GOLD2_DIR
     if args.command == "sample":
         items = enumerate_references(B0_DIR)
-        chosen = sample(items, SAMPLE_SIZE)
-        write_csv(GOLD_DIR / "sample.csv", chosen, ["id", "slug", "idx", "raw"])
-        print(f"共 {len(items)} 条引用，抽取 {len(chosen)} 条 → {GOLD_DIR / 'sample.csv'}")
+        if args.set == 2:
+            used = {row["id"] for row in read_csv(GOLD_DIR / "sample.csv")}
+            items = [i for i in items if i["id"] not in used]
+        chosen = sample(items, SAMPLE_SIZE, seed=SEED if args.set == 1 else SEED2)
+        write_csv(gold_dir / "sample.csv", chosen, ["id", "slug", "idx", "raw"])
+        print(f"可抽 {len(items)} 条，抽取 {len(chosen)} 条 → {gold_dir / 'sample.csv'}")
     elif args.command == "evidence":
-        items = read_csv(GOLD_DIR / "sample.csv")
+        items = read_csv(gold_dir / "sample.csv")
         with httpx.Client(timeout=30, headers={"User-Agent": "CiteGuard-gold/0.1"}) as client:
             evidence = [collect_evidence(i, client) for i in items]
-        (GOLD_DIR / "evidence.json").write_text(json.dumps(evidence, ensure_ascii=False, indent=1), encoding="utf-8")
-        (GOLD_DIR / "evidence.md").write_text(evidence_markdown(evidence), encoding="utf-8")
-        print(GOLD_DIR / "evidence.md")
+        (gold_dir / "evidence.json").write_text(json.dumps(evidence, ensure_ascii=False, indent=1), encoding="utf-8")
+        (gold_dir / "evidence.md").write_text(evidence_markdown(evidence), encoding="utf-8")
+        print(gold_dir / "evidence.md")
     else:
-        print(json.dumps(score(GOLD_DIR), ensure_ascii=False, indent=2))
+        print(json.dumps(score(gold_dir), ensure_ascii=False, indent=2))
     return 0
 
 

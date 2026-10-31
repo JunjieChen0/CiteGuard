@@ -16,6 +16,7 @@ from citeguard.matcher import (
     compare_authors,
     compare_pages,
     compare_titles,
+    compare_volume,
     compare_year,
     decide_status,
 )
@@ -27,6 +28,8 @@ T = TypeVar("T")
 _RANK = {TitleMatch.SAME: 3, TitleMatch.SAME_MAIN_TITLE: 2, TitleMatch.SUBTITLE_DIFFERS: 1, TitleMatch.DIFFERENT: 0}
 _ARXIV_PREFIX = "10.48550/"
 MAX_CANDIDATES = 3
+# WGAN（"Wasserstein GAN" ↔ ICML 版标题）相似度 0.48；同作者的另一篇（ResNet ↔ Identity Mappings）0.39
+ARXIV_RENAMED_TITLE_MIN_SIMILARITY = 0.45
 DEFAULT_CACHE_DIR = Path(".citeguard_cache")
 
 
@@ -104,7 +107,9 @@ class Checker:
     def _published_version(self, preprint: Paper, run: _Run) -> Paper | None:
         for paper in run.call(self.crossref.search, preprint.title) or []:
             same = compare_titles(preprint.title, paper.title)[0] in (TitleMatch.SAME, TitleMatch.SAME_MAIN_TITLE)
-            if same and paper.doi and not paper.doi.startswith(_ARXIV_PREFIX) and _author_overlap_papers(preprint, paper):
+            close = preprint.year is None or paper.year is None or abs(paper.year - preprint.year) <= 2
+            if same and close and paper.doi and not paper.doi.startswith(_ARXIV_PREFIX) and \
+                    _author_overlap_papers(preprint, paper):  # 排除多年后的书籍转载等
                 return paper
         return None
 
@@ -124,6 +129,12 @@ class Checker:
                 hit = self._hit(ref, paper) if ref.title else _Hit(paper, TitleMatch.SAME, 1.0, 0)
                 if _RANK[hit.match] >= 2:
                     matched, title_match = paper, hit.match
+                elif ref.doi.startswith(_ARXIV_PREFIX) and hit.score >= ARXIV_RENAMED_TITLE_MIN_SIMILARITY \
+                        and _authors_in_order(ref, paper):
+                    # arXiv 记录常保留最初的标题（"Wasserstein GAN" ↔ ICML 版标题），作者完全一致时视为同一篇
+                    matched, title_match = paper, TitleMatch.SAME
+                    diffs.append(Diff("title", ref.title, paper.title, Severity.INFO,
+                                      f"标题与 arXiv 记录《{paper.title}》不同（可能是不同版本的标题）"))
                 else:
                     doi_diff = Diff("doi", ref.doi, "", Severity.MAJOR,
                                     f"DOI {ref.doi} 指向另一篇论文：《{paper.title}》")
@@ -175,7 +186,8 @@ class Checker:
         diffs += compare_authors(ref.authors, ref.authors_truncated, target.authors)
         if compare_year(ref.year, matched.year) and compare_year(ref.year, target.year):
             diffs += compare_year(ref.year, target.year)
-        diffs += compare_pages(ref.pages, target.pages)
+        diffs += compare_pages(ref.pages, target.pages, target.doi)
+        diffs += compare_volume(ref.volume, target.volume)
         note = "；".join(f"数据源请求失败：{f}" for f in run.failures)  # 找正式版本时也可能失败
         return Result(ref, decide_status(True, diffs), target, diffs, candidates, note)
 
@@ -187,12 +199,24 @@ class Checker:
             return list(pool.map(self.check, refs))
 
 
+def _last_token(author) -> str:
+    return author.family.lower().split()[-1] if author.family.strip() else ""
+
+
 def _author_overlap_papers(a: Paper, b: Paper) -> bool:
-    """预印本与正式版至少有一位作者姓氏相同（数据库缺作者时不作要求）。"""
+    """预印本与正式版至少一半作者的姓氏相同（数据库缺作者时不作要求）。"""
     if not a.authors or not b.authors:
         return True
-    last_token = lambda author: author.family.lower().split()[-1] if author.family.strip() else ""  # noqa: E731
-    return bool({last_token(x) for x in a.authors} & {last_token(x) for x in b.authors} - {""})
+    preprint = {_last_token(x) for x in a.authors} - {""}
+    shared = preprint & {_last_token(x) for x in b.authors}
+    return len(shared) * 2 >= len(preprint)
+
+
+def _authors_in_order(ref: Reference, paper: Paper) -> bool:
+    """Agent 列出的作者（至少 2 位）与记录的前几位作者姓氏逐个相同。"""
+    if len(ref.authors) < 2 or len(paper.authors) < len(ref.authors):
+        return False
+    return all(_last_token(c) == _last_token(a) for c, a in zip(ref.authors, paper.authors))
 
 
 def build_default_checker(cache_dir: Path | None = DEFAULT_CACHE_DIR,
