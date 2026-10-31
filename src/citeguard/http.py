@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import threading
 import time
 from collections.abc import Callable, Mapping
 from urllib.parse import urlencode, urlsplit
@@ -17,7 +18,8 @@ MAX_RETRY_AFTER_SECONDS = 30.0  # 更长的等待（如 OpenAlex 额度耗尽时
 
 # 第 2 步实测的限流（docs/数据源实测.md）
 DEFAULT_MIN_INTERVAL = {
-    "api.crossref.org": 1.0,
+    "api.crossref.org": 0.2,  # DOI 查询 5 次/秒
+    "api.crossref.org/search": 1.0,  # 检索 1 次/秒
     "doi.org": 0.2,
     "api.openalex.org": 0.2,
     "api.semanticscholar.org": 1.0,
@@ -45,16 +47,18 @@ class HttpClient:
         self._max_retries = max_retries
         self._sleep = sleep
         self._clock = clock
-        self._last_request: dict[str, float] = {}
+        self._next_slot: dict[str, float] = {}
+        self._lock = threading.Lock()
         self._blocked_until: dict[str, float] = {}
 
     def get_json(self, url: str, params: Mapping[str, str] | None = None,
-                 headers: Mapping[str, str] | None = None) -> dict | list | None:
-        return self._get(url, params, headers, as_json=True)
+                 headers: Mapping[str, str] | None = None, rate_key: str | None = None) -> dict | list | None:
+        """rate_key：同一主机下需要单独限速的接口（如 Crossref 检索），默认按主机限速。"""
+        return self._get(url, params, headers, as_json=True, rate_key=rate_key)
 
     def get_text(self, url: str, params: Mapping[str, str] | None = None,
-                 headers: Mapping[str, str] | None = None) -> str | None:
-        return self._get(url, params, headers, as_json=False)
+                 headers: Mapping[str, str] | None = None, rate_key: str | None = None) -> str | None:
+        return self._get(url, params, headers, as_json=False, rate_key=rate_key)
 
     def _cache_key(self, url: str, params: Mapping[str, str] | None, headers: Mapping[str, str] | None,
                    as_json: bool) -> str:
@@ -62,16 +66,18 @@ class HttpClient:
         accept = (headers or {}).get("Accept", "")
         return f"{'json' if as_json else 'text'} {url}?{urlencode(public)} accept={accept}"
 
-    def _wait_turn(self, host: str) -> None:
-        interval = self._min_interval.get(host, 0.0)
-        last = self._last_request.get(host)
-        if last is not None and interval > 0:
-            remaining = interval - (self._clock() - last)
-            if remaining > 0:
-                self._sleep(remaining)
-        self._last_request[host] = self._clock()
+    def _wait_turn(self, key: str) -> None:
+        # 加锁预约下一个时间槽，锁外睡眠：多线程并发时请求依次排开
+        interval = self._min_interval.get(key, 0.0)
+        with self._lock:
+            now = self._clock()
+            last = self._next_slot.get(key)
+            slot = now if last is None else max(now, last + interval)
+            self._next_slot[key] = slot
+        if slot > now:
+            self._sleep(slot - now)
 
-    def _get(self, url, params, headers, as_json):
+    def _get(self, url, params, headers, as_json, rate_key=None):
         key = self._cache_key(url, params, headers, as_json)
         cached = self._cache.get(key)
         if cached is not MISSING:
@@ -81,7 +87,7 @@ class HttpClient:
             raise FetchError(f"{host} 已因限流暂停使用（服务端要求等待过久）")
         last_error = ""
         for attempt in range(self._max_retries + 1):
-            self._wait_turn(host)
+            self._wait_turn(rate_key or host)
             try:
                 resp = self._client.get(url, params=params, headers=headers)
             except httpx.HTTPError as exc:

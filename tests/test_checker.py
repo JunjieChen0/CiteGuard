@@ -252,3 +252,27 @@ def test_falls_back_to_main_title_search_when_subtitle_is_mangled():
     assert result.status is Status.MISMATCH
     assert sorted(fields(result)) == [("title", Severity.MAJOR), ("year", Severity.MINOR)]
     assert result.matched.doi == "10.1093/jamia/ocae066"
+
+
+def test_check_text_runs_in_parallel_but_keeps_order():
+    import threading
+    import time
+
+    active, peak = [0], [0]
+    lock = threading.Lock()
+
+    class SlowSource(FakeSource):
+        def search(self, query, limit=5):
+            with lock:
+                active[0] += 1
+                peak[0] = max(peak[0], active[0])
+            time.sleep(0.05)
+            with lock:
+                active[0] -= 1
+            return []
+
+    text = "参考文献\n\n" + "\n".join(f"{i}. Fabricated Paper Title Number {i}. 2020." for i in range(1, 7))
+    c = Checker(crossref=SlowSource("crossref"), doi_org=FakeSource("doi.org"), max_workers=3)
+    results = c.check_text(text)
+    assert [r.reference.title for r in results] == [f"Fabricated Paper Title Number {i}" for i in range(1, 7)]
+    assert peak[0] > 1

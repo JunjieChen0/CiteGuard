@@ -190,3 +190,74 @@ def test_parse_references_skips_numbered_items_that_are_not_references():
 def test_parse_references_keeps_title_only_items_with_year():
     text = "参考文献\n\n1. PresRecST: 面向中草药处方推荐的序列推荐方法. 2022.\n2. TCMChat: A Generative Model. 2024.\n"
     assert [r.year for r in parse_references(text)] == [2022, 2024]
+
+
+# 第 5 步演示中 Agent 实际提交的格式：首字母在前、带连字符的首字母、多词姓氏
+INITIALS_FIRST = ("[7] S.-H. Gao, M.-M. Cheng, K. Zhao, X.-Y. Zhang, M.-H. Yang, P. H. S. Torr. Res2Net: A New "
+                  "Multi-Scale Backbone Architecture. IEEE Transactions on Pattern Analysis and Machine Intelligence, "
+                  "2021, 43(2): 652-662. DOI: 10.1109/TPAMI.2019.2938758.")
+
+
+def test_parse_initials_first_with_hyphens():
+    ref = parse_references("参考文献\n\n" + INITIALS_FIRST)[0]
+    assert ref.title == "Res2Net: A New Multi-Scale Backbone Architecture"
+    assert ref.authors[0] == Author("Gao", "S.-H.")
+    assert ref.authors[-1] == Author("Torr", "P. H. S.")
+    assert ref.year == 2021 and ref.pages == "652-662"
+
+
+def test_parse_initials_first_with_multi_word_surname():
+    ref = parse_reference("G. Huang, Z. Liu, L. Van Der Maaten, K. Q. Weinberger. Densely Connected Convolutional "
+                          "Networks. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2017: "
+                          "2261-2269. DOI: 10.1109/CVPR.2017.243.")
+    assert ref.title == "Densely Connected Convolutional Networks"
+    assert ref.authors[2] == Author("Van Der Maaten", "L.")
+    assert ref.year == 2017
+
+
+# 第 5 步演示中造成误判 ❌ 的真实条目
+@pytest.mark.parametrize(("raw", "families", "title"), [
+    ("Rutuja S. Magar, Deepali V. Patil, Swati Sharma. To analyse synthetic pomegranate disease images using dual "
+     "GAN-diffusion based learning for efficient disease detection. 2025 IEEE Pune Section International Conference "
+     "(PuneCon), 2025, 1-6. DOI: 10.1109/punecon67554.2025.11379810",
+     ["Magar", "Patil", "Sharma"],
+     "To analyse synthetic pomegranate disease images using dual GAN-diffusion based learning for efficient disease "
+     "detection"),
+    ("Rutuja S. Magar; Deepali V. Patil; Swati Sharma. To analyse synthetic pomegranate disease images. PuneCon, 2025.",
+     ["Magar", "Patil", "Sharma"], "To analyse synthetic pomegranate disease images"),
+    ("Saravanan Srinivasan, Faritha Banu J, Sudhan M B, Sankar M, Saravanan S, Vairamuthu M. DiffMamba-FSL: A "
+     "diffusion-augmented mamba state space network for few-shot plant disease recognition under heterogeneous "
+     "imaging conditions. Pattern Recognition Letters, 2026, 302-311. DOI: 10.1016/j.patrec.2026.10.011",
+     ["Srinivasan", "J", "B", "M", "S", "M"],
+     "DiffMamba-FSL: A diffusion-augmented mamba state space network for few-shot plant disease recognition under "
+     "heterogeneous imaging conditions"),
+    ("Xingcai Wu, Qiaoling Wan, Ya Yu, Yujiao Dan, Hanying Xie, G.M.A.D. Sirishantha, et al. LesionDiff: Synthetic "
+     "data via lesion information transfer diffusion model facilitates plant disease diagnosis. The Crop Journal, "
+     "2026, 14: 1051-1063. DOI: 10.1016/j.cj.2026.01.011",
+     ["Wu", "Wan", "Yu", "Dan", "Xie", "Sirishantha"],
+     "LesionDiff: Synthetic data via lesion information transfer diffusion model facilitates plant disease diagnosis"),
+    ("Virendra Kumar Shrivastava, Prakruthi Ganiga, Rathnakar Achary, Chetan J. Shelke, A. Ezil Sam Leni, "
+     "Ramalakshmi K. Deep learning fusion: Potato leaf disease classification through generative diffusion model. "
+     "AI and ML Solutions Driving Modern Farming and Urban Innovation, 2025, 42-53. "
+     "DOI: 10.2174/9798898812102125030006",
+     ["Shrivastava", "Ganiga", "Achary", "Shelke", "Leni", "K"],
+     "Deep learning fusion: Potato leaf disease classification through generative diffusion model"),
+    ("Hongxu Yin, Arash Vahdat, Jose M. Alvarez, Arun Mallya, Jan Kautz, Pavlo Molchanov. A-ViT: Adaptive Tokens for "
+     "Efficient Vision Transformer[C]//CVPR. 2022.",
+     ["Yin", "Vahdat", "Alvarez", "Mallya", "Kautz", "Molchanov"], "A-ViT: Adaptive Tokens for Efficient Vision Transformer"),
+    ("Younghoon Lee. Enhancing plant health classification via diffusion model-based data augmentation. Multimedia "
+     "Systems, 2025. DOI: 10.1007/s00530-025-01745-1",
+     ["Lee"], "Enhancing plant health classification via diffusion model-based data augmentation"),
+])
+def test_parse_full_name_lists_from_demo(raw, families, title):
+    ref = parse_reference(raw)
+    assert [a.family for a in ref.authors] == families
+    assert ref.title == title
+
+
+def test_parse_abbreviated_given_name_inside_author_list():
+    ref = parse_reference("Swarnali Nath, Saroj Kr. Biswas, Kunal Kumar, Deeksha Tripathi, Sounak Majumdar. A CNN model "
+                          "for soybean leaf disease prediction treating class imbalance problem using diffusion model: A "
+                          "smart farming application. ICSCCC, 2026. DOI: 10.1109/icsccc69031.2026.11600091")
+    assert [a.family for a in ref.authors] == ["Nath", "Biswas", "Kumar", "Tripathi", "Majumdar"]
+    assert ref.title.startswith("A CNN model for soybean leaf disease prediction")

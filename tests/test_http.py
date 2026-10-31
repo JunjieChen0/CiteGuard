@@ -136,3 +136,36 @@ def test_long_retry_after_fails_fast_and_blocks_host():
         http.get_json("https://api.openalex.org/works", params={"search": "b"})
     assert calls == ["api.openalex.org"]
     assert sleeps == []
+
+
+def test_rate_key_allows_separate_limits_per_endpoint():
+    http, sleeps = _client(lambda request: httpx.Response(200, json={}),
+                           min_interval={"api.example.org": 0.2, "api.example.org/search": 1.0})
+    http.get_json("https://api.example.org/works/1")
+    http.get_json("https://api.example.org/works/2")
+    http.get_json("https://api.example.org/works", params={"q": "a"}, rate_key="api.example.org/search")
+    http.get_json("https://api.example.org/works", params={"q": "b"}, rate_key="api.example.org/search")
+    assert sleeps == [0.2, 1.0]
+
+
+def test_rate_limit_is_thread_safe():
+    import threading
+
+    lock = threading.Lock()
+    starts: list[float] = []
+    clock = [0.0]
+
+    def sleep(seconds):
+        with lock:
+            clock[0] = max(clock[0], 0.0)  # 模拟：各线程各自睡到预约时间
+        starts.append(seconds)
+
+    http = HttpClient(httpx.Client(transport=httpx.MockTransport(lambda r: httpx.Response(200, json={}))),
+                      min_interval={"api.example.org": 1.0}, sleep=sleep, clock=lambda: clock[0])
+    threads = [threading.Thread(target=http.get_json, args=(f"https://api.example.org/{i}",)) for i in range(4)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    # 4 个并发请求必须分别预约到 0、1、2、3 秒，不能挤在同一时刻
+    assert sorted(starts) == [1.0, 2.0, 3.0]

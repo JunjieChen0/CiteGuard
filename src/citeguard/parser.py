@@ -15,12 +15,17 @@ _PARTICLES = r"(?:(?:van|von|der|den|de|del|da|di|le|la)\s+)*"
 _SURNAME = rf"{_PARTICLES}{_NAME_WORD}(?:\s+y\s+{_NAME_WORD})?"
 _INITIALS_DOTTED = rf"{_UPPER}\.(?:\s?-?{_UPPER}\.)*"
 _INITIALS_BARE = rf"{_UPPER}(?:[\s-]{_UPPER})*(?=[,.;]|\s+et\s+al)"
-_SEP = r"(?:,\s*(?:&\s*|and\s+)?|\s*&\s*|\s+and\s+)"
+_SEP = r"(?:[,;]\s*(?:&\s*|and\s+)?|\s*&\s*|\s+and\s+)"
 _ET_AL = r"(?:et\s+al\.?|等)"
 
 # 风格 A：He, K., Zhang, X.    风格 B：Kipf T N, Welling M / Nichol A. Q.
 _STYLE_A_ITEM = re.compile(rf"(?P<family>{_SURNAME}),\s*(?P<given>{_INITIALS_DOTTED})")
 _STYLE_B_ITEM = re.compile(rf"(?P<family>{_SURNAME})\s+(?P<given>{_INITIALS_DOTTED}|{_INITIALS_BARE})")
+# 风格 D：S.-H. Gao, L. Van Der Maaten（首字母在前；姓氏前缀可能大写）
+_CAP_PARTICLES = r"(?:(?:[Vv]an|[Vv]on|[Dd]er|[Dd]en|[Dd]e|[Dd]el|[Dd]a|[Dd]i|[Ll]e|[Ll]a)\s+)*"
+_STYLE_D_ITEM = re.compile(
+    rf"(?P<given>{_INITIALS_DOTTED})\s+(?P<family>{_CAP_PARTICLES}{_NAME_WORD}(?:\s+y\s+{_NAME_WORD})?)(?!\w)"
+)
 _SEP_RE = re.compile(_SEP)
 _ET_AL_RE = re.compile(rf"{_ET_AL}")
 
@@ -91,9 +96,46 @@ def _parse_style(text: str, item_re: re.Pattern) -> tuple[list[Author], bool, in
         return authors, False, pos
 
 
+_LOWER_PARTICLES = {"van", "von", "der", "den", "de", "del", "da", "di", "le", "la", "y"}
+_NAME_TOKEN = rf"(?:{_NAME_WORD}|(?:{_UPPER}\.-?)+|{_UPPER}[a-z]{{1,2}}\.|{'|'.join(sorted(_LOWER_PARTICLES))})"
+_NAME_RE = re.compile(rf"{_NAME_TOKEN}(?:\s+{_NAME_TOKEN})*")
+_NEXT_SEGMENT_RE = re.compile(r"\s+([^,;]*?)(?=[,;]|\.\s|\.?$)")
+
+
+def _is_name(text: str) -> bool:
+    return bool(_NAME_RE.fullmatch(text)) and len(text.split()) <= 4
+
+
+def _author_block_end(text: str) -> int | None:
+    """全名格式的作者段在哪个句点结束。
+
+    首字母后的句点（Jose M. Alvarez、A. Ezil Sam Leni、Vairamuthu M. 标题……）要看后面：
+    紧跟着的一段（到下一个逗号/分号/句点为止）仍像人名，就还在作者段内。
+    """
+    for m in re.finditer(r"\.(?=\s)", text):
+        before = text[:m.start()]
+        nxt = _NEXT_SEGMENT_RE.match(text, m.end())
+        next_is_name = bool(nxt and nxt.group(1) and _is_name(nxt.group(1)))
+        if next_is_name and re.search(r"(?:^|[\s.-])[A-Z]$", before):
+            continue
+        # 名字缩写（Saroj Kr. Biswas、Md. Rahman）：后面一段是人名且以逗号/分号结束
+        if next_is_name and re.search(r"(?:^|\s)[A-Z][a-z]{1,2}$", before) and \
+                text[nxt.end():nxt.end() + 1] in (",", ";"):
+            continue
+        return m.start()
+    return None
+
+
+def _split_full_name(name: str) -> Author:
+    tokens = name.split()
+    i = len(tokens) - 1
+    while i > 0 and tokens[i - 1] in _LOWER_PARTICLES:  # Laurens van der Maaten
+        i -= 1
+    return Author(" ".join(tokens[i:]), " ".join(tokens[:i]))
+
+
 def _parse_full_names(text: str) -> tuple[list[Author], bool, int] | None:
-    # 作者段在第一个"非缩写首字母"的句点处结束（Jose M. Alvarez 中的 M. 不算）
-    end = next((m.start() for m in re.finditer(r"\.(?=\s)", text) if not re.search(r"(?:^|[\s-])[A-Z]$", text[:m.start()])), None)
+    end = _author_block_end(text)
     if end is None:
         return None
     block = text[:end]
@@ -101,22 +143,23 @@ def _parse_full_names(text: str) -> tuple[list[Author], bool, int] | None:
     if (et := re.search(rf"{_SEP}{_ET_AL}$", block)):
         truncated, block = True, block[:et.start()]
     names = [n.strip() for n in re.split(_SEP, block) if n.strip()]
-    if not names or any(":" in n or len(n.split()) > 5 for n in names):
+    if not names or not all(_NAME_RE.fullmatch(n) and len(n.split()) <= 6 for n in names):
         return None
-    if not all(re.fullmatch(rf"(?:{_NAME_WORD}|[A-Z]\.)(?:\s+(?:{_NAME_WORD}|[A-Z]\.))*", n) for n in names):
+    if len(names) == 1 and len(names[0].split()) > 3:  # 很可能是"仅标题"的条目
         return None
-    if len(names) == 1 and len(names[0].split()) > 3:
+    if len(names) > 1 and any(len(n.split()) < 2 for n in names):  # "Vaswani, A., ..." 是风格 A，不是全名
         return None
-    authors = [Author(n.split()[-1], " ".join(n.split()[:-1])) for n in names]
-    return authors, truncated, end + 1
+    return [_split_full_name(n) for n in names], truncated, end + 1
 
 
 def _parse_authors(text: str) -> tuple[list[Author], bool, int]:
-    for parse in (lambda t: _parse_style(t, _STYLE_A_ITEM), lambda t: _parse_style(t, _STYLE_B_ITEM), _parse_full_names):
-        parsed = parse(text)
-        if parsed:
-            return parsed
-    return [], False, 0
+    """各种格式都试一遍，取识别出作者最多的一种（并列时按 A、B、D、全名的顺序）。"""
+    parses = [_parse_style(text, r) for r in (_STYLE_A_ITEM, _STYLE_B_ITEM, _STYLE_D_ITEM)]
+    parses.append(_parse_full_names(text))
+    candidates = [p for p in parses if p]
+    if not candidates:
+        return [], False, 0
+    return max(candidates, key=lambda p: len(p[0]))
 
 
 # ---------------------------------------------------------------- 标题与其他字段

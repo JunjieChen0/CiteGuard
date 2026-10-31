@@ -65,4 +65,6 @@ def csl_to_paper(record: dict, source: str) -> Paper:
         doi=normalize_doi(record.get("DOI")),
         pages=record.get("page"),
         source=source,
+        volume=record.get("volume"),
+        issue=record.get("issue"),
     )

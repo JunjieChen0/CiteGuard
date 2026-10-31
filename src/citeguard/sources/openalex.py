@@ -28,6 +28,8 @@ class OpenAlexSource:
             doi=normalize_doi(work.get("doi")),
             pages=f"{first_page}-{last_page}" if first_page and last_page else first_page,
             source=self.name,
+            volume=biblio.get("volume"),
+            issue=biblio.get("issue"),
         )
 
     def get_by_doi(self, doi: str) -> Paper | None:

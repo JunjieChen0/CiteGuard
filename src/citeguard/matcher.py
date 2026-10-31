@@ -90,20 +90,45 @@ def _family_matches(claimed: Author, actual: Author) -> bool:
 
 
 def _given_matches(claimed: Author, actual: Author) -> bool:
-    c_tokens = _tokens(claimed.given)
+    family_tokens = set(_tokens(actual.family))
+    c_tokens = [t for t in _tokens(claimed.given) if t not in family_tokens]  # "L. Van Der" + "Maaten"
     a_given = "".join(_tokens(actual.given))
     if not c_tokens or not a_given:
         return True
     if all(len(t) == 1 for t in c_tokens):  # 只给了首字母：比第一个首字母
         return c_tokens[0] == a_given[0]
-    return "".join(c_tokens) == a_given
+    if "".join(c_tokens) == a_given:
+        return True
+    a_tokens = [t for t in _tokens(actual.given) if t not in family_tokens]
+    return len(c_tokens) == len(a_tokens) and all(_token_matches(c, a) for c, a in zip(c_tokens, a_tokens))
+
+
+def _is_abbreviation(short: str, long: str) -> bool:
+    """Kr ↔ Kumar、Md ↔ Mohammed：首字母相同、≤3 个字母且按顺序出现在全名中。"""
+    if len(short) > 3 or len(short) >= len(long) or short[0] != long[0]:
+        return False
+    rest = iter(long[1:])
+    return all(ch in rest for ch in short[1:])
+
+
+def _token_matches(c: str, a: str) -> bool:
+    if c == a or (len(c) == 1 and a.startswith(c)) or (len(a) == 1 and c.startswith(a)):
+        return True
+    return _is_abbreviation(c, a) or _is_abbreviation(a, c)
 
 
 def _same_person(claimed: Author, actual: Author) -> bool:
     full_c = Counter(_tokens(claimed.full))
     if len(full_c) > 1 and full_c == Counter(_tokens(actual.full)):  # 多词姓氏拆分方式不同（Anasosalu Vasu）
         return True
-    return _family_matches(claimed, actual) and _given_matches(claimed, actual)
+    if len(full_c) > 1 and "".join(_tokens(claimed.full)) == "".join(_tokens(actual.full)):  # Sudhan MB / Sudhan M B
+        return True
+    if _family_matches(claimed, actual) and _given_matches(claimed, actual):
+        return True
+    # 姓名顺序颠倒："Sirishantha GMAD" ↔ given="G.M.A.D.", family="Sirishantha"
+    initials = "".join(t[0] for t in _tokens(actual.given))
+    return bool(initials) and "".join(_tokens(claimed.family)) == initials and \
+        "".join(_tokens(claimed.given)) == "".join(_tokens(actual.family))
 
 
 def compare_authors(claimed: list[Author], truncated: bool, actual: list[Author]) -> list[Diff]:

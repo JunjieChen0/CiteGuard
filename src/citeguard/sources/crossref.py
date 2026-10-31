@@ -23,8 +23,10 @@ class CrossrefSource:
         data = self._http.get_json(f"{self.base_url}/works/{quote(doi, safe='/()')}", params=self._params)
         return csl_to_paper(data["message"], self.name) if data else None
 
-    def search(self, query: str, limit: int = 5) -> list[Paper]:
+    def search(self, query: str, limit: int = 5, from_year: int | None = None) -> list[Paper]:
         params = {**self._params, "query.bibliographic": query, "rows": str(limit)}
-        data = self._http.get_json(f"{self.base_url}/works", params=params) or {}
+        if from_year:
+            params["filter"] = f"from-pub-date:{from_year}"
+        data = self._http.get_json(f"{self.base_url}/works", params=params, rate_key="api.crossref.org/search") or {}
         items = (data.get("message") or {}).get("items", [])
         return [csl_to_paper(item, self.name) for item in items if item.get("type") not in _SKIP_TYPES]

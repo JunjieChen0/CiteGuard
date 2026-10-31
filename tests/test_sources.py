@@ -184,3 +184,38 @@ def test_source_propagates_fetch_errors():
 ])
 def test_split_display_name(name, author):
     assert split_display_name(name) == author
+
+
+def test_crossref_search_and_doi_use_separate_rate_keys():
+    keys = []
+
+    class SpyHttp:
+        def get_json(self, url, params=None, headers=None, rate_key=None):
+            keys.append(rate_key)
+            return {"message": {"items": []}} if "query.bibliographic" in (params or {}) else None
+
+    source = CrossrefSource(SpyHttp())
+    source.get_by_doi("10.1/x")
+    source.search("t")
+    assert keys == [None, "api.crossref.org/search"]
+
+
+def test_crossref_search_from_year_filter():
+    seen = []
+
+    def handler(request):
+        seen.append(request)
+        return httpx.Response(200, json={"message": {"items": []}})
+
+    CrossrefSource(make_http(handler)).search("diffusion crop disease", limit=8, from_year=2022)
+    assert seen[0].url.params["filter"] == "from-pub-date:2022"
+    assert seen[0].url.params["rows"] == "8"
+
+
+def test_crossref_and_openalex_parse_volume_and_issue():
+    paper = CrossrefSource(make_http(lambda r: httpx.Response(200, json=fixture("cr_doi_etcm.json")))
+                           ).get_by_doi("10.1093/nar/gky987")
+    assert (paper.volume, paper.issue) == ("47", "D1")
+    work = {**OPENALEX_WORK, "biblio": {"volume": "43", "issue": "2", "first_page": "652", "last_page": "662"}}
+    oa = OpenAlexSource(make_http(lambda r: httpx.Response(200, json=work))).get_by_doi("10.1/x")
+    assert (oa.volume, oa.issue, oa.pages) == ("43", "2", "652-662")

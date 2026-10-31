@@ -198,3 +198,26 @@ def test_single_group_author_is_not_checked_for_missing_authors():
     # GPT-4 Technical Report：Agent 写 "OpenAI"，数据库列出 281 位作者
     db = [Author("OpenAI", ""), Author("Achiam", "Josh"), Author("Adler", "Steven")]
     assert compare_authors([Author("OpenAI", "")], False, db) == []
+
+
+def test_authors_initial_plus_particles_matches_full_db_name():
+    # 若解析器把姓氏前缀划进了名字（"L. Van Der" + "Maaten"），比对也不应误报
+    assert compare_authors([Author("Maaten", "L. Van Der")], True, [Author("Van Der Maaten", "Laurens")]) == []
+
+
+def test_authors_reversed_name_order_with_initials():
+    # Agent 写 "Sirishantha GMAD"，数据库为 given="G.M.A.D.", family="Sirishantha"
+    assert compare_authors([Author("GMAD", "Sirishantha")], True, [Author("Sirishantha", "G.M.A.D.")]) == []
+
+
+def test_authors_initials_spacing_differs():
+    db = [Author("B", "Sudhan M"), Author("M B", "Sudhan")]
+    assert compare_authors([Author("MB", "Sudhan")], True, db[:1]) == []
+    assert compare_authors([Author("MB", "Sudhan")], True, db[1:]) == []
+
+
+def test_authors_abbreviated_given_name_in_database():
+    assert compare_authors([Author("Biswas", "Saroj Kumar")], True, [Author("Biswas", "Saroj Kr.")]) == []
+    assert compare_authors([Author("Biswas", "Saroj Kr.")], True, [Author("Biswas", "Saroj Kumar")]) == []
+    # 但名字整体不同仍要报
+    assert compare_authors([Author("Zheng", "Nannan")], True, [Author("Zheng", "Ningxin")])

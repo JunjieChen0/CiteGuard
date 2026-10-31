@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from concurrent.futures import ThreadPoolExecutor
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -69,6 +70,7 @@ class Checker:
     doi_org: Source
     search_sources: list[Source] = field(default_factory=list)  # Crossref 之后依次尝试
     arxiv: ArxivSource | None = None
+    max_workers: int = 4  # 各数据源按主机/接口限速，并发只是让不同数据源的等待重叠
 
     # ------------------------------------------------------------ 查找
 
@@ -178,7 +180,11 @@ class Checker:
         return Result(ref, decide_status(True, diffs), target, diffs, candidates, note)
 
     def check_text(self, text: str) -> list[Result]:
-        return [self.check(ref) for ref in parse_references(text)]
+        refs = parse_references(text)
+        if self.max_workers <= 1 or len(refs) <= 1:
+            return [self.check(ref) for ref in refs]
+        with ThreadPoolExecutor(max_workers=self.max_workers) as pool:
+            return list(pool.map(self.check, refs))
 
 
 def _author_overlap_papers(a: Paper, b: Paper) -> bool:

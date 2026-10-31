@@ -55,6 +55,8 @@ class Paper:
     doi: str | None = None
     pages: str | None = None
     source: str = ""
+    volume: str | None = None
+    issue: str | None = None
 
 
 @dataclass
