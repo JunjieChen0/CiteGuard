@@ -19,12 +19,17 @@ _SEP = r"(?:[,;]\s*(?:&\s*|and\s+)?|\s*&\s*|\s+and\s+)"
 _ET_AL = r"(?:et\s+al\.?|等)"
 
 # 风格 A：He, K., Zhang, X.    风格 B：Kipf T N, Welling M / Nichol A. Q.
-_STYLE_A_ITEM = re.compile(rf"(?P<family>{_SURNAME}),\s*(?P<given>{_INITIALS_DOTTED})")
+_INNER_PARTICLES = r"(?:(?:du|des|de|van|von|der|den|da|di|le|la|del)\s+)*"
 # 风格 B 的姓氏可以是两个词（Khodapanah Aghdam E），第二个词须含小写字母，避免把首字母当姓氏（Kipf T N）
-_SURNAME_B = rf"{_PARTICLES}{_NAME_WORD}(?:\s+{_UPPER}[a-z\u00C0-\u024F'’-]+)?(?:\s+y\s+{_NAME_WORD})?"
+# 第二个词前可有小写前缀（Ogier du Terrail）
+_SURNAME_B = rf"{_PARTICLES}{_NAME_WORD}(?:\s+{_INNER_PARTICLES}{_UPPER}[a-z\u00C0-\u024F'’-]+)?(?:\s+y\s+{_NAME_WORD})?"
+# 风格 A 同样允许两词姓氏（Avila Pires, B.、Gheshlaghi Azar, M.）
+_STYLE_A_ITEM = re.compile(rf"(?P<family>{_SURNAME_B}),\s*(?P<given>{_INITIALS_DOTTED})")
 _STYLE_B_ITEM = re.compile(rf"(?P<family>{_SURNAME_B})\s+(?P<given>{_INITIALS_DOTTED}|{_INITIALS_BARE})")
 # 风格 E：Bacchelli, Alberto; Bird, Christian（姓, 全名；分号分隔）
-_STYLE_E_ITEM = re.compile(rf"(?P<family>{_SURNAME}),\s+(?P<given>{_NAME_WORD}(?:\s+(?:{_NAME_WORD}|{_UPPER}\.))*)")
+# 名字在前、首字母在后（Steven C. H.）；首字母之后不再接名字，避免吞掉标题开头（CodeT5）
+_GIVEN_WORD = rf"{_UPPER}[a-z\u00C0-\u024F'’-]+"  # 名字词至少含一个小写字母，单个大写字母按首字母处理
+_STYLE_E_ITEM = re.compile(rf"(?P<family>{_SURNAME}),\s+(?P<given>{_GIVEN_WORD}(?:\s+{_GIVEN_WORD})*(?:\s+{_UPPER}\.)*)")
 _SEMICOLON_SEP_RE = re.compile(r";\s*(?:&\s*|and\s+)?")
 # 风格 D：S.-H. Gao, L. Van Der Maaten（首字母在前；姓氏前缀可能大写）
 _CAP_PARTICLES = r"(?:(?:[Vv]an|[Vv]on|[Dd]er|[Dd]en|[Dd]e|[Dd]el|[Dd]a|[Dd]i|[Ll]e|[Ll]a)\s+)*"
@@ -37,7 +42,7 @@ _ET_AL_RE = re.compile(rf"{_ET_AL}")
 _DOI_RE = re.compile(r"\b(10\.\d{4,9}/[^\s\"<>，。]+)", re.IGNORECASE)
 _ARXIV_RE = re.compile(r"arXiv[:\s.]*(\d{4}\.\d{4,5})", re.IGNORECASE)
 _YEAR_RE = re.compile(r"(?<!\d)((?:19|20)\d{2})(?!\d)")
-_PAGES_RE = re.compile(r"(?<![\w.])([A-Z]?\d+)\s*[–—-]\s*([A-Z]?\d+)(?!\w|\.\d)")
+_PAGES_RE = re.compile(r"(?<![\w.(])([A-Z]?\d+)\s*[–—-]\s*([A-Z]?\d+)(?!\w|\.\d)")  # 跳过括号里的期号 8(3–4)
 _TYPE_MARK_RE = re.compile(r"\[(?:C|J|M|D|A|R|S|P|EB/OL|J/OL)\](?://)?")
 _HEADING_RE = re.compile(
     r"^\s*(?:#+\s*)?(?:\*\*)?\s*(?:参考文献|References|Bibliography|引用文献)\s*[:：]?\s*(?:\*\*)?\s*$",
@@ -190,7 +195,7 @@ def _extract_title(rest: str) -> tuple[str, str]:
 
 _VOLUME_PATTERNS = [
     re.compile(r"\bvol(?:ume)?\.?\s*(\d{1,4})\b", re.IGNORECASE),  # vol. 9, no. 4
-    re.compile(r"(?<![\w.])(\d{1,4})\s*\(\s*[\w-]{1,8}\s*\)"),  # 36(12)
+    re.compile(r"(?<![\w.])(\d{1,4})\s*\(\s*[\w–—-]{1,8}\s*\)"),  # 36(12)、8(3–4)
     re.compile(r"(?<!\d)(?:19|20)\d{2}\s*,\s*(\d{1,4})\s*[:,]"),  # 2024, 154: 110424
 ]
 
@@ -209,6 +214,8 @@ def parse_reference(raw: str) -> Reference:
     doi_m = _DOI_RE.search(text)
     # DOI 只含 ASCII：截掉紧跟的脚注符号（†）等
     doi = re.split(r"[^\x21-\x7e]", doi_m.group(1))[0].rstrip(".,;)]").lower() if doi_m else None
+    if doi and re.search(r"[*`]", doi):  # 说明文字里的 "10.48550/arXiv.*" 之类不是 DOI
+        doi = None
     arxiv_m = _ARXIV_RE.search(text) or (re.search(r"10\.48550/arxiv\.(\d{4}\.\d{4,5})", doi) if doi else None)
 
     body = re.split(r"\bDOI\b|https?://doi\.org/", text, maxsplit=1, flags=re.IGNORECASE)[0]

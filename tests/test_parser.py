@@ -312,3 +312,40 @@ def test_doi_drops_trailing_footnote_marker():
 ])
 def test_parse_volume(raw, volume):
     assert parse_reference(raw).volume == volume
+
+
+# ---- gold-2 暴露的格式（v3）；修复后在 gold-3（剩余 40 条）上独立验证
+@pytest.mark.parametrize(("raw", "families", "title"), [
+    ("Grill, J.-B., Strub, F., Altché, F., Tallec, C., Richemond, P. H., Buchatskaya, E., Doersch, C., Avila Pires, B., "
+     "Guo, Z. D., Gheshlaghi Azar, M., Piot, B., Kavukcuoglu, K., Munos, R., & Valko, M. (2020). Bootstrap Your Own "
+     "Latent: A New Approach to Self-Supervised Learning. *Advances in Neural Information Processing Systems (NeurIPS)*, "
+     "vol. 33, pp. 21271–21284. DOI: 10.48550/arXiv.2006.07733",
+     ["Grill", "Strub", "Altché", "Tallec", "Richemond", "Buchatskaya", "Doersch", "Avila Pires", "Guo",
+      "Gheshlaghi Azar", "Piot", "Kavukcuoglu", "Munos", "Valko"],
+     "Bootstrap Your Own Latent: A New Approach to Self-Supervised Learning"),
+    ("Andreux M, Ogier du Terrail J, Beguier C, Tramel E W. Siloed federated learning for multi-centric histopathology "
+     "datasets[C]//Domain Adaptation and Representation Transfer (DART 2020). LNCS vol 12444. 2020: 129–139. "
+     "DOI: 10.1007/978-3-030-60548-3_13.",
+     ["Andreux", "Ogier du Terrail", "Beguier", "Tramel"], "Siloed federated learning for multi-centric histopathology datasets"),
+    ("Wang, Yue; Wang, Weishi; Joty, Shafiq; Hoi, Steven C. H. CodeT5: Identifier-aware Unified Pre-trained "
+     "Encoder-Decoder Models for Code Understanding and Generation. In: EMNLP 2021, 2021: 8696–8708. "
+     "DOI: 10.18653/v1/2021.emnlp-main.685.",
+     ["Wang", "Wang", "Joty", "Hoi"],
+     "CodeT5: Identifier-aware Unified Pre-trained Encoder-Decoder Models for Code Understanding and Generation"),
+])
+def test_parse_formats_from_gold2(raw, families, title):
+    ref = parse_reference(raw)
+    assert [a.family for a in ref.authors] == families
+    assert ref.title == title
+
+
+def test_issue_range_in_parentheses_is_not_pages():
+    ref = parse_reference("Williams, R. J. (1992). Simple statistical gradient-following algorithms for connectionist "
+                          "reinforcement learning. Machine Learning, 8(3–4), 229–256. https://doi.org/10.1007/BF00992696")
+    assert ref.pages == "229-256" and ref.volume == "8"
+
+
+def test_note_line_with_doi_pattern_is_not_a_reference():
+    text = ("参考文献\n\n1. He K. Deep Residual Learning. CVPR, 2016. DOI: 10.1109/CVPR.2016.90.\n\n"
+            "2. **文献核验**：因本会话无联网权限，[3][4] 采用 arXiv DOI（`10.48550/arXiv.*`）格式，数值本身我相信是对的。\n")
+    assert len(parse_references(text)) == 1

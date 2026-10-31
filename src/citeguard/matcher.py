@@ -102,9 +102,12 @@ def _given_matches(claimed: Author, actual: Author) -> bool:
     if "".join(c_tokens) == a_given:
         return True
     a_tokens = [t for t in _tokens(actual.given) if t not in family_tokens]
-    # 一方省略了中间名（Ed H. Chi ↔ Ed Chi、Zhen Leng Thai ↔ Zhen Thai）：较短的一方须与另一方开头逐个匹配
-    n = min(len(c_tokens), len(a_tokens))
-    return n > 0 and all(_token_matches(c, a) for c, a in zip(c_tokens[:n], a_tokens[:n]))
+    # 一方省略了部分名字（Ed H. Chi ↔ Ed Chi、Yihong Eric Zhao ↔ Eric Zhao）：较短的一方须按顺序出现在另一方中
+    short, long = sorted((c_tokens, a_tokens), key=len)
+    if not short:
+        return False
+    it = iter(long)
+    return all(any(_token_matches(x, y) or _token_matches(y, x) for y in it) for x in short)
 
 
 def _given_tokens(given: str) -> list[str]:

@@ -249,3 +249,9 @@ def test_pages_on_cvf_conference_dois_are_info_only():
     diffs = compare_pages("4700-4708", "2261-2269", doi="10.1109/cvpr.2017.243")
     assert diffs and diffs[0].severity is Severity.INFO
     assert compare_pages("4700-4708", "2261-2269", doi="10.1109/tpami.2019.1")[0].severity is Severity.MINOR
+
+
+def test_authors_database_omits_first_given_name():
+    # Agent 写 "Yihong Eric Zhao"，数据库为 "Eric Zhao"
+    assert compare_authors([Author("Zhao", "Yihong Eric")], True, [Author("Zhao", "Eric")]) == []
+    assert compare_authors([Author("Zheng", "Nannan")], True, [Author("Zheng", "Ningxin")])
