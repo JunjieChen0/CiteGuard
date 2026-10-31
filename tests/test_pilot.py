@@ -2,7 +2,15 @@ import json
 from pathlib import Path
 
 from experiments import pilot
-from experiments.pilot import TOPICS, build_prompt, result_path, run_pilot
+from experiments.pilot import (
+    PROMPT_TEMPLATE_R2,
+    ROUNDS,
+    TOPICS,
+    TOPICS_R2,
+    build_prompt,
+    result_path,
+    run_pilot,
+)
 
 
 def test_topics_have_unique_slugs_and_one_hot_control():
@@ -86,7 +94,7 @@ def test_run_pilot_records_error_instead_of_crashing(tmp_path: Path):
 def test_main_filters_topics_by_slug(monkeypatch, tmp_path: Path):
     seen: dict = {}
 
-    def fake_run_pilot(topics, out_dir, runs):
+    def fake_run_pilot(topics, out_dir, runs, template):
         seen.update(slugs=[t["slug"] for t in topics], out_dir=out_dir, runs=runs)
         return []
 
@@ -96,3 +104,44 @@ def test_main_filters_topics_by_slug(monkeypatch, tmp_path: Path):
 
     assert code == 0
     assert seen == {"slugs": [TOPICS[0]["slug"]], "out_dir": tmp_path, "runs": 3}
+
+
+def test_round2_topics_are_new_and_include_one_hot_control():
+    r1 = {t["slug"] for t in TOPICS}
+    r2 = [t["slug"] for t in TOPICS_R2]
+
+    assert len(r2) == len(set(r2))
+    assert not r1 & set(r2)
+    assert sum(t["kind"] == "hot" for t in TOPICS_R2) == 1
+
+
+def test_round2_prompt_demands_direct_recent_references():
+    prompt = build_prompt("主题X", PROMPT_TEMPLATE_R2)
+
+    assert "主题X" in prompt
+    assert "直接研究该主题" in prompt
+    assert "2022" in prompt
+    assert "15 条" in prompt
+    assert "不要使用任何工具" in prompt
+
+
+def test_run_pilot_uses_given_template(tmp_path: Path):
+    calls: list = []
+    topics = [{"slug": "a", "topic": "主题A", "kind": "niche"}]
+
+    run_pilot(topics, tmp_path, runner=_fake_runner(calls), template="T:{topic}")
+
+    assert calls[0][0] == "T:主题A"
+
+
+def test_main_round2_uses_round_defaults(monkeypatch):
+    seen: dict = {}
+
+    def fake_run_pilot(topics, out_dir, runs, template):
+        seen.update(n=len(topics), out_dir=out_dir, template=template)
+        return []
+
+    monkeypatch.setattr(pilot, "run_pilot", fake_run_pilot)
+
+    assert pilot.main(["--round", "r2"]) == 0
+    assert seen == {"n": len(TOPICS_R2), "out_dir": ROUNDS["r2"]["out"], "template": PROMPT_TEMPLATE_R2}

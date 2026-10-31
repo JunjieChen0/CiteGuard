@@ -1,0 +1,102 @@
+{
+  "slug": "vit-efficient",
+  "topic": "视觉 Transformer（ViT）的高效化变体",
+  "kind": "hot",
+  "run": 1,
+  "prompt": "用中文写一篇约 800 字的综述，主题是：视觉 Transformer（ViT）的高效化变体。文末列出 15 条英文参考文献，必须是直接研究该主题的论文，不要引用通用的基础模型或经典方法论文，优先选择 2022 年以后发表的工作。每条包含全部作者、标题、会议/期刊、年份、卷期页码、DOI。直接输出文本，不要使用任何工具。",
+  "timestamp": "2026-10-31T06:30:02.480038+00:00",
+  "response": {
+    "duration_api_ms": 111354,
+    "stop_reason": "end_turn",
+    "session_id": "e06f63bd-a6b4-4748-a1c8-3db45b1a0e7a",
+    "total_cost_usd": 0.5349250000000001,
+    "usage": {
+      "input_tokens": 11095,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 19178,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "deepseek-flash": {
+        "inputTokens": 11095,
+        "outputTokens": 19178,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.5349250000000001,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 0,
+        "canonicalModel": "deepseek-flash",
+        "provider": "firstParty",
+        "costBasis": "unknown"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 1,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "# 视觉 Transformer 的高效化变体：进展与展望\n\n视觉 Transformer（ViT）把图像切分为 patch 序列，再通过自注意力建模全局依赖，在识别与检测任务上展现出超越卷积网络的潜力。然而，标准自注意力对 token 数量呈二次复杂度：在高分辨率输入下，计算量和显存占用会急剧上升；再加上它缺乏局部归纳偏置、依赖大规模预训练，因此难以直接部署到移动端和密集预测场景。近年来，“高效化”已从简单的剪枝压缩，发展为架构、算子、动态计算与部署协同设计的系统性问题。\n\n第一类思路是重塑骨干的层次结构。PVTv2 采用金字塔特征图和线性空间缩减注意力，把高分辨率阶段的代价压到可接受范围；CSWin 用十字形窗口分别在水平和垂直两个方向并行计算注意力，以线性复杂度获得全局感受野；MobileViT 将轻量卷积与 Transformer 块交替堆叠，用卷积提取局部纹理、用注意力建模长程关系；TinyViT 结合层次化窗口注意力与大规模预训练蒸馏，在 500 万至 2100 万参数区间逼近大模型精度。这些工作表明，把卷积的局部性与注意力的全局性按阶段混合，仍然是性价比最高的设计之一。\n\n第二类思路直接改造注意力算子与访存模式。EfficientViT（Liu 等）指出，多头注意力的主要瓶颈在于内存访问，而非浮点运算，并据此提出级联组注意力与内存高效的块布局；EfficientViT（Cai 等）以多尺度线性注意力替代 softmax 注意力，使高分辨率密集预测的复杂度降为线性；MobileViTv2 的可分离自注意力只需 O(k) 的代价就能生成全局描述子；LightViT 在全卷积框架内通过轻量聚合实现全局交互；SwiftFormer 以加性注意力替代二次点积，进一步压低移动端延迟。它们的共同结论是：注意力如何组织，比“是否使用注意力”更关键。\n\n第三类思路是让计算随输入自适应。A-ViT 根据 token 的不确定性逐层判定是否停止计算并输出结果，让简单样本提前退出；EfficientFormer 与 EfficientFormerV2 从实际延迟预算出发，联合搜索模型的维度与深度，把 ViT 的速度推进到 MobileNet 的水平；FastViT 用结构重参数化方法，把训练时的多分支结构在推理时折叠为单路卷积。面向部署，I-ViT 实现了纯整型推理，规避了 LayerNorm 与 Softmax 的浮点依赖；EfficientViT-SAM 将高效骨干网络用于分割大模型，验证了实际加速收益。\n\n总体来看，高效 ViT 已从单点改进走向“架构—算子—训练—部署”的协同优化，但评测仍过度依赖 FLOPs 与参数量等代理指标，与真实延迟、能耗存在明显偏差。未来值得关注的方向包括：硬件感知的搜索空间与延迟建模、动态稀疏与量化的联合优化、自监督预训练下的高效微调，以及面向端侧的统一基准。\n\n## 参考文献\n\n[1] Sachin Mehta, Mohammad Rastegari. MobileViT: Light-weight, General-purpose, and Mobile-friendly Vision Transformer[C]//International Conference on Learning Representations (ICLR). 2022. arXiv:2110.02178. DOI: 10.48550/arXiv.2110.02178.\n\n[2] Sachin Mehta, Mohammad Rastegari. Separable Self-attention for Mobile Vision Transformers[J]. arXiv preprint arXiv:2206.02680, 2022. DOI: 10.48550/arXiv.2206.02680.\n\n[3] Wenhai Wang, Enze Xie, Xiang Li, Deng-Ping Fan, Kaitao Song, Ding Liang, Tong Lu, Ping Luo, Ling Shao. PVT v2: Improved Baselines with Pyramid Vision Transformer[J]. Computational Visual Media, 2022, 8(3): 415–424. DOI: 10.1007/s41095-022-0274-8.\n\n[4] Kan Wu, Jinnian Zhang, Houwen Peng, Mengchen Liu, Bin Xiao, Jianlong Fu, Lu Yuan. TinyViT: Fast Pretraining Distillation for Small Vision Transformers[C]//European Conference on Computer Vision (ECCV), LNCS 13681. 2022: 68–85. DOI: 10.1007/978-3-031-19803-8_5.\n\n[5] Xiaoyi Dong, Jianmin Bao, Dongdong Chen, Weining Zhang, Nenghai Yu, Lu Yuan, Dong Chen, Baining Guo. CSWin Transformer: A General Vision Transformer Backbone with Cross-Shaped Windows[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). 2022: 12124–12134. DOI: 10.48550/arXiv.2107.00652.\n\n[6] Yanyu Li, Geng Yuan, Yang Wen, Ju Hu, Georgios Evangelidis, Sergey Tulyakov, Yanzhi Wang, Jian Ren. EfficientFormer: Vision Transformers at MobileNet Speed[C]//Advances in Neural Information Processing Systems (NeurIPS). 2022. arXiv:2206.01191. DOI: 10.48550/arXiv.2206.01191.\n\n[7] Hongxu Yin, Arash Vahdat, Jose M. Alvarez, Arun Mallya, Jan Kautz, Pavlo Molchanov. A-ViT: Adaptive Tokens for Efficient Vision Transformer[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). 2022. arXiv:2112.07658. DOI: 10.48550/arXiv.2112.07658.\n\n[8] Tao Huang, Lang Huang, Shan You, Fei Wang, Chen Qian, Chang Xu. LightViT: Towards Light-Weight Convolution-Free Vision Transformers[J]. arXiv preprint arXiv:2207.05557, 2022. DOI: 10.48550/arXiv.2207.05557.\n\n[9] Xinyu Liu, Houwen Peng, Nannan Zheng, Yin Yang, Hui Hu, Yixuan Yuan. EfficientViT: Memory Efficient Vision Transformer with Cascaded Group Attention[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). 2023: 14420–14430. DOI: 10.48550/arXiv.2305.07027.\n\n[10] Han Cai, Junyan Li, Muyan Hu, Chuang Gan, Song Han. EfficientViT: Multi-Scale Linear Attention for High-Resolution Dense Prediction[C]//Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV). 2023. arXiv:2205.14756. DOI: 10.48550/arXiv.2205.14756.\n\n[11] Yanyu Li, Ju Hu, Yang Wen, Georgios Evangelidis, Sergey Tulyakov, Yanzhi Wang, Jian Ren. EfficientFormerV2: Rethinking Vision Transformers for MobileNet Size and Speed[C]//Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV). 2023. arXiv:2212.08059. DOI: 10.48550/arXiv.2212.08059.\n\n[12] Pavan Kumar Anasosalu Vasu, James Gabrielsson, Chunuan Zhu, Oncel Tuzel, Anurag Ranjan. FastViT: A Fast Hybrid Vision Transformer using Structural Reparameterization[C]//Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV). 2023. arXiv:2303.14189. DOI: 10.48550/arXiv.2303.14189.\n\n[13] Abdelrahman Shaker, Muhammad Maaz, Hanoona Rasheed, Salman Khan, Ming-Hsuan Yang, Fahad Shahbaz Khan. SwiftFormer: Efficient Additive Attention for Transformer-based Real-time Mobile Vision Applications[C]//Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV). 2023. arXiv:2303.15446. DOI: 10.48550/arXiv.2303.15446.\n\n[14] Zhikai Li, Qingyi Gu. I-ViT: Integer-only Quantization for Efficient Vision Transformer Inference[C]//Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV). 2023. arXiv:2207.01405. DOI: 10.48550/arXiv.2207.01405.\n\n[15] Zhuoyang Zhang, Han Cai, Song Han. EfficientViT-SAM: Accelerated Segment Anything Model Without Performance Loss[J]. arXiv preprint arXiv:2402.05008, 2024. DOI: 10.48550/arXiv.2402.05008.\n\n> 注：以上 15 篇均直接以 ViT 的高效化为研究对象，且为 2022 年及以后发表或公开的工作。因未联网逐条核验，会议论文以 arXiv 编号辅助定位、DOI 采用可解析的 arXiv DOI（期刊论文给出正式 DOI）；正式版页码与卷期信息请在 IEEE Xplore、Springer 上复核后使用。",
+    "ttft_ms": 104029,
+    "type": "result",
+    "duration_ms": 111605,
+    "uuid": "6b237c8d-6f99-40dc-95f2-2733d5ab73d3",
+    "ttft_stream_ms": 983,
+    "time_to_request_ms": 282,
+    "first_content_frame_ms": 984,
+    "time_to_request_from_spawn_ms": 230031,
+    "warm_spare_claimed": false,
+    "flag_fetch_kick": "started_after_init_empty",
+    "time_origin_ms": 1793428090389.5566,
+    "queued_turn_count": 0,
+    "result_index": 0
+  },
+  "error": null
+}

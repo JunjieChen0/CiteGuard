@@ -5,6 +5,7 @@ experiments/results/pilot/annotation.csv。正式的核查逻辑在第 4 步 TDD
 
 用法：
     uv run python -m experiments.check_pilot > experiments/results/pilot/evidence.json
+    uv run python -m experiments.check_pilot experiments/results/pilot_r2 > experiments/results/pilot_r2/evidence.json
 """
 
 from __future__ import annotations
@@ -42,7 +43,7 @@ def split_references(text: str) -> list[str]:
     refs = []
     for line in references_section(text).splitlines():
         m = NUMBERED_RE.match(line)
-        if m and "DOI" in line:
+        if m:
             refs.append(m.group(1).strip())
     return refs
 
@@ -77,7 +78,7 @@ def get_with_retry(client: httpx.Client, url: str, **kwargs) -> httpx.Response:
 
 def fetch_doi(client: httpx.Client, doi: str) -> dict | None:
     resp = get_with_retry(client, f"https://doi.org/{doi}", headers={"Accept": CSL_ACCEPT}, follow_redirects=True)
-    if resp.status_code == 404:
+    if resp.status_code in (400, 404):  # DOI 不存在或格式非法
         return None
     resp.raise_for_status()
     data = resp.json()
@@ -116,10 +117,12 @@ def search_crossref(client: httpx.Client, title: str) -> list[dict]:
     return sorted(hits, key=lambda h: -h["sim"])[:3]
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    args = sys.argv[1:] if argv is None else argv
+    results_dir = Path(args[0]) if args else Path(DEFAULT_OUT_DIR)
     evidence = []
     with httpx.Client(timeout=30, headers={"User-Agent": "CiteGuard-pilot/0.1"}) as client:
-        for path in sorted(Path(DEFAULT_OUT_DIR).glob("*__run*.json")):
+        for path in sorted(results_dir.glob("*__run*.json")):
             record = json.loads(path.read_text(encoding="utf-8"))
             text = (record.get("response") or {}).get("result", "")
             for i, ref in enumerate(split_references(text), 1):

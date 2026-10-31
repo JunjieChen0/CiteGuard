@@ -1,0 +1,102 @@
+{
+  "slug": "gnn-power-transient",
+  "topic": "图神经网络用于电力系统暂态稳定评估",
+  "kind": "niche",
+  "run": 1,
+  "prompt": "用中文写一篇约 800 字的综述，主题是：图神经网络用于电力系统暂态稳定评估。文末列出 15 条英文参考文献，必须是直接研究该主题的论文，不要引用通用的基础模型或经典方法论文，优先选择 2022 年以后发表的工作。每条包含全部作者、标题、会议/期刊、年份、卷期页码、DOI。直接输出文本，不要使用任何工具。",
+  "timestamp": "2026-10-31T06:26:36.494625+00:00",
+  "response": {
+    "duration_api_ms": 20659,
+    "stop_reason": "end_turn",
+    "session_id": "7b5ce63a-9c67-4cc2-a81e-9619354cb42e",
+    "total_cost_usd": 0.124855,
+    "usage": {
+      "input_tokens": 11091,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 2776,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "modelUsage": {
+      "deepseek-flash": {
+        "inputTokens": 11091,
+        "outputTokens": 2776,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.124855,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "cacheCreationEphemeral5mInputTokens": 0,
+        "cacheCreationEphemeral1hInputTokens": 0,
+        "canonicalModel": "deepseek-flash",
+        "provider": "firstParty",
+        "costBasis": "unknown"
+      }
+    },
+    "permission_denials": [],
+    "terminal_reason": "completed",
+    "fast_mode_state": "off",
+    "fast_mode_disabled_reason": "sdk_opt_in_required",
+    "subagent_stats": {
+      "spawned": 0,
+      "requested": {
+        "background": 0,
+        "foreground": 0,
+        "unset": 0
+      },
+      "started_in_background": 0,
+      "max_depth": 0,
+      "spawned_by_subagents": 0,
+      "completed": 0,
+      "failed": 0,
+      "killed": {
+        "parent": 0,
+        "user": 0,
+        "system": 0
+      },
+      "refused": {
+        "depth_limit": 0,
+        "concurrency_limit": 0,
+        "budget": 0
+      },
+      "by_type": {}
+    },
+    "safety_stops": 0,
+    "is_error": false,
+    "num_turns": 1,
+    "subtype": "success",
+    "api_error_status": null,
+    "result": "## 图神经网络用于电力系统暂态稳定评估研究综述\n\n电力系统暂态稳定评估（TSA）是电网安全防御体系的第一道防线。传统时域仿真精度高但计算代价大，难以满足在线应用需求；直接法受模型简化假设限制；而基于相量测量单元（PMU）数据的机器学习方法虽然响应快，却普遍将系统视为独立同分布样本，忽略了电网固有的拓扑连接关系。图神经网络（GNN）以节点和边刻画状态量与支路关系，天然适配网络化的电力系统，近年来成为 TSA 研究的热点。\n\n在建模层面，主流做法将母线或发电机视为节点、输电线路视为边：节点特征取电压幅值、相角、有功与无功功率、转子转速等，边特征取导纳、潮流或电气距离。图卷积网络（GCN）与图注意力网络（GAT）通过邻域聚合提取故障后的空间相关性，GAT 还能借助注意力权重区分关键机组与联络线。为刻画暂态过程的时序演化，研究者进一步将 GNN 与 LSTM、GRU、时序卷积网络或 Transformer 串联，构成时空图神经网络：空间分支捕捉扰动传播，时间分支刻画轨迹动态，二者融合后输出稳定/失稳判别或稳定裕度。\n\n在应用上，GNN 已被用于故障后短时窗内的快速判别、失稳发电机组的定位，以及预防控制与切机策略的辅助决策。相较多层感知机或卷积网络，GNN 在 IEEE 39 节点、118 节点及省级电网算例上通常表现出更高的判别精度与更强的噪声鲁棒性，且参数量更小、推理更快，具备在线部署潜力。\n\n挑战同样明显。其一，失稳样本稀缺且类别不平衡，需借助仿真增广、迁移学习与代价敏感学习。其二，拓扑泛化能力不足：模型在训练拓扑上表现优异，一旦发生线路投切或网架变化，精度可能骤降，需引入拓扑自适应与归纳式学习。其三，可解释性欠缺，注意力权重尚不足以支撑调度员信任。其四，物理一致性不足，纯数据驱动可能违背暂态能量等基本规律，物理信息嵌入的 GNN 是重要方向。其五，面向实际 PMU 的量测缺失、通信时延与坏数据问题仍待解决。\n\n展望未来，物理信息图神经网络、面向拓扑变化的元学习、数字孪生环境下的在线增量学习，以及可解释性与不确定性量化，将是推动 GNN 从算例走向工程应用的关键。\n\n---\n\n**关于参考文献，我需要说明一点：**\n\n上面的综述正文我可以直接完成，但你要求的 15 条参考文献包含**全部作者、卷期页码和 DOI**。这些字段我无法在不检索的情况下可靠给出，凭记忆生成几乎必然产生虚构条目和错误 DOI，这会误导读者，也比留空更有害。因此我不编造这份清单。\n\n如果你允许我使用检索工具，我可以逐条核验，补上 15 篇 2022 年以后、直接研究“GNN + 电力系统暂态稳定评估”的论文，并确保作者、期刊、卷期页与 DOI 均可溯源。需要我这样做吗？",
+    "ttft_ms": 17339,
+    "type": "result",
+    "duration_ms": 20835,
+    "uuid": "bd1414fa-97ea-4a7d-acbc-3d34a078fe44",
+    "ttft_stream_ms": 1124,
+    "time_to_request_ms": 192,
+    "first_content_frame_ms": 1124,
+    "time_to_request_from_spawn_ms": 114743,
+    "warm_spare_claimed": false,
+    "flag_fetch_kick": "started_after_init_empty",
+    "time_origin_ms": 1793427975224.7578,
+    "queued_turn_count": 0,
+    "result_index": 0
+  },
+  "error": null
+}
